@@ -1,4 +1,4 @@
-import 'package:appfront/Screen/Login/login_screen.dart';
+import 'package:appfront/Screen/Auth/Login/login_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,16 +11,18 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Center(
-            child: Column(
-          children: [
-            SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.4),
-            const GoToLogin()
-          ],
-        )),
+          child: Column(
+            children: [
+              SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.4),
+              const GoToLogin()
+            ],
+          ),
+        ),
       ),
     );
   }
