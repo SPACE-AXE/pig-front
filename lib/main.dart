@@ -1,3 +1,4 @@
+import 'package:appfront/Screen/login_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -9,11 +10,21 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       home: Scaffold(
         body: Center(
-          child: Text('Hello World!'),
-        ),
+            child: Column(
+          children: [
+            ElevatedButton(
+                onPressed: () => {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginScreen()))
+                    },
+                child: const Text("go to login"))
+          ],
+        )),
       ),
     );
   }
