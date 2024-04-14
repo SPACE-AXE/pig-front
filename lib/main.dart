@@ -1,4 +1,4 @@
-import 'package:appfront/Screen/Auth/Login/login_screen.dart';
+import 'package:appfront/Screen/Auth/login/login_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {

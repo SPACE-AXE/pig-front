@@ -14,14 +14,28 @@ class IdAndPwd extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const TextField(
-            decoration: InputDecoration(hintText: "아이디"),
+            decoration: InputDecoration(
+              hintText: "아이디",
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xff39c5bb),
+                ),
+              ),
+            ),
           ),
           SizedBox(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.03,
           ),
           const TextField(
-            decoration: InputDecoration(hintText: "비밀번호"),
+            decoration: InputDecoration(
+              hintText: "비밀번호",
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xff39c5bb),
+                ),
+              ),
+            ),
           ),
         ],
       ),
