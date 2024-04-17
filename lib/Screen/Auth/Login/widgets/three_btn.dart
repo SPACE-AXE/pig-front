@@ -1,3 +1,4 @@
+import 'package:appfront/Screen/Auth/register/register_screen.dart';
 import 'package:flutter/material.dart';
 
 class ThreeBtn extends StatelessWidget {
@@ -20,7 +21,14 @@ class ThreeBtn extends StatelessWidget {
             child: const Text("비밀번호 재설정"),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const RegisterScreen(),
+                ),
+              );
+            },
             child: const Text("회원 가입"),
           ),
         ],
