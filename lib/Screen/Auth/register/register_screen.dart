@@ -20,6 +20,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _password = TextEditingController();
   final TextEditingController _phone = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final _pwdKey = GlobalKey<FormState>();
 
   bool idDuplicateFlag = false;
   final RegExp _emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
@@ -53,21 +54,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 idInput(context),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 nicknameInput(context),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 emailInput(context),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 nameInput(context),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 passwordInput(context),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                passwordCheckInput(context),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 birthInput(context),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 phoneInput(context),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 enterBtn(context)
               ],
             ),
@@ -209,15 +212,51 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return SizedBox(
         width: MediaQuery.of(context).size.width * 0.6,
         child: CustomFormField(
+          obscureText: true,
           text: "비밀번호",
           controller: _password,
         ));
+  }
+
+  SizedBox passwordCheckInput(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.6,
+      child: Form(
+        key: _pwdKey,
+        child: TextFormField(
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return "필수 입력값입니다.";
+            }
+            if (value != _password.text) {
+              return "비밀번호가 일치하지 않습니다.";
+            }
+            return null;
+          },
+          maxLength: 13,
+          obscureText: true,
+          decoration: const InputDecoration(
+            counterText: '',
+            hintText: "비밀번호 확인",
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Color(0xff39c5bb),
+              ),
+            ),
+          ),
+          onChanged: (value) {
+            _pwdKey.currentState!.validate();
+          },
+        ),
+      ),
+    );
   }
 
   SizedBox nameInput(BuildContext context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width * 0.6,
         child: CustomFormField(
+          obscureText: false,
           text: "이름",
           controller: _username,
         ));
@@ -290,6 +329,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         SizedBox(
             width: MediaQuery.of(context).size.width * 0.4,
             child: CustomFormField(
+              obscureText: true,
               text: "아이디",
               controller: _id,
             )),

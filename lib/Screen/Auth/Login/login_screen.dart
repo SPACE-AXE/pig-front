@@ -13,6 +13,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final idPwdFormKey = GlobalKey<FormState>();
+
   String id = '';
   String pwd = '';
 
@@ -48,6 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
               height: MediaQuery.of(context).size.height * 0.1,
             ),
             IdAndPwd(
+              idPwdFormKey: idPwdFormKey,
               updateId: updateId,
               updatePwd: updatePwd,
             ),
@@ -56,6 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
               height: MediaQuery.of(context).size.height * 0.03,
             ),
             LoginBtn(
+              idPwdFormKey: idPwdFormKey,
               id: id,
               pwd: pwd,
             ),

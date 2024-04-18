@@ -3,9 +3,15 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
 class LoginBtn extends StatefulWidget {
+  final GlobalKey<FormState> idPwdFormKey;
   final String id;
   final String pwd;
-  const LoginBtn({super.key, required this.id, required this.pwd});
+  const LoginBtn({
+    super.key,
+    required this.id,
+    required this.pwd,
+    required this.idPwdFormKey,
+  });
 
   @override
   State<LoginBtn> createState() => _LoginBtnState();
@@ -22,12 +28,13 @@ class _LoginBtnState extends State<LoginBtn> {
           elevation: 5,
         ),
         onPressed: () {
-          Map<String, dynamic> userData = {
-            'username': widget.id,
-            'password': widget.pwd,
-          };
-          logIn(userData);
-          Navigator.pop(context);
+          if (widget.idPwdFormKey.currentState!.validate()) {
+            Map<String, dynamic> userData = {
+              'username': widget.id,
+              'password': widget.pwd,
+            };
+            logIn(userData, context);
+          }
         },
         child: const Text(
           "로그인",
@@ -41,7 +48,7 @@ class _LoginBtnState extends State<LoginBtn> {
     );
   }
 
-  void logIn(Map<String, dynamic> userData) async {
+  void logIn(Map<String, dynamic> userData, BuildContext context) async {
     String url = 'https://api.parkchargego.link/auth/login';
     Uri uri = Uri.parse(url);
     http.Response response = await http.post(uri, body: userData);
@@ -56,10 +63,11 @@ class _LoginBtnState extends State<LoginBtn> {
         textColor: Colors.white,
         fontSize: 16,
       );
+      Navigator.pop(context);
     } else {
       print(uri);
       Fluttertoast.showToast(
-        msg: '사용할 수 없는 아이디입니다.',
+        msg: '아이디 혹은 비밀번호가 맞지 않습니다.',
         gravity: ToastGravity.BOTTOM,
         backgroundColor: const Color(0xff39c5bb),
       );
