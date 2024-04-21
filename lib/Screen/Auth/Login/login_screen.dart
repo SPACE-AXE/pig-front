@@ -54,10 +54,6 @@ class _LoginScreenState extends State<LoginScreen> {
               updateId: updateId,
               updatePwd: updatePwd,
             ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.03,
-            ),
             LoginBtn(
               idPwdFormKey: idPwdFormKey,
               id: id,
@@ -68,10 +64,6 @@ class _LoginScreenState extends State<LoginScreen> {
               height: MediaQuery.of(context).size.height * 0.03,
             ),
             const ThreeBtn(),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.1,
-            ),
           ],
         ),
       ),
