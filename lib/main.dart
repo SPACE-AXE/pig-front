@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:appfront/Screen/Auth/login/login_screen.dart';
 import 'package:appfront/Screen/Auth/map/map_screen.dart';
 import 'package:flutter/material.dart';
