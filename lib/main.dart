@@ -24,7 +24,7 @@ class MainApp extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * 0.4),
               const GoToLogin(),
-              const GoToMap()
+              const GoToMap(),
             ],
           ),
         ),
