@@ -1,8 +1,13 @@
+import 'dart:developer';
+
 import 'package:appfront/Screen/Auth/login/login_screen.dart';
 import 'package:appfront/Screen/Auth/map/map_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_naver_map/flutter_naver_map.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await NaverMapSdk.instance.initialize(clientId: "etuftq1yhk");
   runApp(const MainApp());
 }
 
