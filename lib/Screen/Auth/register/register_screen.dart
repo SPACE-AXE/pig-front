@@ -20,12 +20,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _password = TextEditingController();
   final TextEditingController _phone = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final _pwdKey = GlobalKey<FormState>();
 
   bool idDuplicateFlag = false;
   final RegExp _emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
 
   String _birth = '';
   bool emailCheck = true;
+  bool pwdCheckFlag = false;
 
   String name = '';
   String nickname = '';
@@ -53,22 +55,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-                idInput(context),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-                nicknameInput(context),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-                emailInput(context),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-                nameInput(context),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-                passwordInput(context),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-                birthInput(context),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-                phoneInput(context),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-                enterBtn(context)
+                // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                Expanded(flex: 1, child: idInput(context)),
+                // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                Expanded(flex: 1, child: nicknameInput(context)),
+                // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                Expanded(flex: 1, child: emailInput(context)),
+                // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                Expanded(flex: 1, child: nameInput(context)),
+                // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                Expanded(flex: 1, child: passwordInput(context)),
+                // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                Expanded(flex: 1, child: passwordCheckInput(context)),
+                // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                Expanded(flex: 1, child: birthInput(context)),
+                // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                Expanded(flex: 1, child: phoneInput(context)),
+                // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                enterBtn(context),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
               ],
             ),
           ),
@@ -77,6 +82,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   ElevatedButton enterBtn(BuildContext context) {
     return ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          fixedSize: const Size(200, 10),
+        ),
         onPressed: () {
           if (_formKey.currentState!.validate()) {
             if (_birth == "") {
@@ -89,6 +97,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 textColor: Colors.white,
                 fontSize: 16,
               );
+            } else if (!pwdCheckFlag) {
+              _pwdKey.currentState!.validate();
             } else if (idDuplicateFlag) {
               setState(() {
                 name = _id.text;
@@ -122,11 +132,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
             }
           }
         },
-        child: const Text("확인"));
+        child: const Text(
+          "회원가입",
+          style: TextStyle(fontSize: 20, color: Colors.black),
+        ));
   }
 
-  SizedBox phoneInput(BuildContext context) {
-    return SizedBox(
+  Container phoneInput(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(),
       width: MediaQuery.of(context).size.width * 0.6,
       child: TextFormField(
         validator: (value) {
@@ -164,67 +178,121 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Container birthInput(BuildContext context) {
     return Container(
+      decoration: const BoxDecoration(),
       width: MediaQuery.of(context).size.width * 0.6,
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: Color(0xff39c5bb),
-          ),
-        ),
-      ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            "생일: $_birth",
-            style: TextStyle(
-              fontSize: 17,
-              color: Colors.black.withOpacity(0.6),
+          Expanded(
+            flex: 3,
+            child: TextField(
+              readOnly: true,
+              decoration: InputDecoration(
+                counterText: '',
+                hintText: _birth == '' ? "생일" : "생일: $_birth",
+                enabledBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color(0xff39c5bb),
+                  ),
+                ),
+              ),
+              onChanged: (value) {
+                if (_pwdKey.currentState!.validate()) {
+                  pwdCheckFlag = !pwdCheckFlag;
+                }
+              },
             ),
           ),
-          IconButton(
-              onPressed: () {
-                showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(1900),
-                        lastDate: DateTime.now())
-                    .then((selectedDate) {
-                  if (selectedDate != null) {
-                    setState(() {
-                      birth = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-                          .format(selectedDate);
-                      _birth = DateFormat("yyyy-MM-dd").format(selectedDate);
+          Expanded(
+              flex: 1,
+              child: IconButton(
+                  iconSize: 30,
+                  onPressed: () {
+                    showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime.now())
+                        .then((selectedDate) {
+                      if (selectedDate != null) {
+                        setState(() {
+                          birth = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                              .format(selectedDate);
+                          _birth =
+                              DateFormat("yyyy-MM-dd").format(selectedDate);
+                        });
+                      }
                     });
-                  }
-                });
-              },
-              icon: const Icon(Icons.date_range))
+                  },
+                  icon: const Icon(Icons.date_range))),
         ],
       ),
     );
   }
 
-  SizedBox passwordInput(BuildContext context) {
-    return SizedBox(
+  Container passwordInput(BuildContext context) {
+    return Container(
+        decoration: const BoxDecoration(),
         width: MediaQuery.of(context).size.width * 0.6,
         child: CustomFormField(
+          obscureText: true,
           text: "비밀번호",
           controller: _password,
         ));
   }
 
-  SizedBox nameInput(BuildContext context) {
-    return SizedBox(
+  Container passwordCheckInput(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(),
+      width: MediaQuery.of(context).size.width * 0.6,
+      child: Form(
+        key: _pwdKey,
+        child: TextFormField(
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return "필수 입력값입니다.";
+            }
+            if (value != _password.text) {
+              return "비밀번호가 일치하지 않습니다.";
+            }
+            return null;
+          },
+          maxLength: 13,
+          obscureText: true,
+          decoration: const InputDecoration(
+            counterText: '',
+            hintText: "비밀번호 확인",
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Color(0xff39c5bb),
+              ),
+            ),
+          ),
+          onChanged: (value) {
+            if (_pwdKey.currentState!.validate()) {
+              pwdCheckFlag = !pwdCheckFlag;
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  Container nameInput(BuildContext context) {
+    return Container(
+        decoration: const BoxDecoration(),
         width: MediaQuery.of(context).size.width * 0.6,
         child: CustomFormField(
+          obscureText: false,
           text: "이름",
           controller: _username,
         ));
   }
 
-  SizedBox emailInput(BuildContext context) {
-    return SizedBox(
+  Container emailInput(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(),
       width: MediaQuery.of(context).size.width * 0.6,
       child: TextFormField(
         validator: (value) {
@@ -260,8 +328,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  SizedBox nicknameInput(BuildContext context) {
-    return SizedBox(
+  Container nicknameInput(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(),
       width: MediaQuery.of(context).size.width * 0.6,
       child: TextFormField(
         validator: (value) {
@@ -283,33 +352,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Row idInput(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-            width: MediaQuery.of(context).size.width * 0.4,
+  Container idInput(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(),
+      width: MediaQuery.of(context).size.width * 0.6,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            flex: 3,
             child: CustomFormField(
+              obscureText: false,
               text: "아이디",
               controller: _id,
-            )),
-        ElevatedButton(
-          onPressed: () {
-            setState(() {
-              name = _id.text;
-            });
-            idDuplicateFlag ? null : checkUserIdDuplicate(name);
-          },
-          style: ButtonStyle(
-            side: MaterialStateProperty.all(
-              BorderSide(
-                color: idDuplicateFlag ? const Color(0xff39c5bb) : Colors.red,
-              ),
             ),
           ),
-          child: const Text("중복확인"),
-        )
-      ],
+          Expanded(
+            flex: 2,
+            child: ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  name = _id.text;
+                });
+                idDuplicateFlag ? null : checkUserIdDuplicate(name);
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.all(1),
+                side: BorderSide(
+                  color: idDuplicateFlag ? const Color(0xff39c5bb) : Colors.red,
+                ),
+              ),
+              child: const Text(
+                "중복확인",
+                style: TextStyle(fontSize: 15, color: Colors.black),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 
