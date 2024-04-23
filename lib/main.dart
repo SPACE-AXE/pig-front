@@ -82,15 +82,14 @@ class MainApp extends StatelessWidget {
                     backgroundColor: Color(0xFF39c5bb),
                   ),
                   child: Row(
-                    mainAxisSize: MainAxisSize.min, // 버튼 내용을 중앙에 위치시키기 위해
+                    mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      // 이미지 크기를 제한하고 이미지의 비율을 적절하게 조정
                       Container(
-                        width: 150, // 이미지의 너비를 제한
-                        height: 150, // 이미지의 높이를 제한
+                        width: 150,
+                        height: 150,
                         child: Image.asset(
                           'lib/assets/images/park icon.png',
-                          fit: BoxFit.scaleDown, // 비율 유지하면서 가능한 크기 내로 축소
+                          fit: BoxFit.scaleDown,
                         ),
                       )
                     ],
