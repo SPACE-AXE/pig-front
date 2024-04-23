@@ -1,8 +1,8 @@
 // ignore_for_file: avoid_unnecessary_containers
 
-import 'package:appfront/Screen/Login/widgets/id_pwd.dart';
-import 'package:appfront/Screen/Login/widgets/login_btn.dart';
-import 'package:appfront/Screen/Login/widgets/three_btn.dart';
+import 'package:appfront/Screen/Auth/Login/widgets/id_pwd.dart';
+import 'package:appfront/Screen/Auth/Login/widgets/login_btn.dart';
+import 'package:appfront/Screen/Auth/Login/widgets/three_btn.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {
