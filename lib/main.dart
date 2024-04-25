@@ -10,10 +10,10 @@ import 'package:appfront/QRScreen.dart';
 import 'package:appfront/PrePaymentScreen.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await DesktopWindow.setWindowSize(const Size(360, 800));
-  await DesktopWindow.setMinWindowSize(const Size(360, 800));
-  await DesktopWindow.setMaxWindowSize(const Size(360, 800));
+  //WidgetsFlutterBinding.ensureInitialized();
+  //await DesktopWindow.setWindowSize(const Size(360, 800));
+  //await DesktopWindow.setMinWindowSize(const Size(360, 800));
+  //await DesktopWindow.setMaxWindowSize(const Size(360, 800));
   runApp(const MainApp());
 }
 
