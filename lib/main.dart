@@ -2,7 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/rendering.dart';
 
-import 'package:appfront/Screen/Auth/map/map_screen.dart';
+import 'package:appfront/Screen/map/map_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:appfront/Screen/Auth/Login/login_screen.dart';
 import 'package:desktop_window/desktop_window.dart';
@@ -96,27 +96,35 @@ Widget _buildBody(BuildContext context) {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: buttonSize,
-              height: buttonSize,
-              margin: const EdgeInsets.only(right: 10),
-              child: ElevatedButton(
-                // 주차장 버튼
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  backgroundColor: const Color(0xFF39c5bb),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.asset(
-                    'lib/assets/images/park icon.png',
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
+                width: buttonSize,
+                height: buttonSize,
+                margin: const EdgeInsets.only(right: 10),
+                child: Builder(
+                  builder: (BuildContext newContext) {
+                    return ElevatedButton(
+                      // 주차장 버튼
+                      onPressed: () {
+                        Navigator.push(
+                            newContext,
+                            MaterialPageRoute(
+                                builder: (context) => const MapScreen()));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        backgroundColor: const Color(0xFF39c5bb),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.asset(
+                          'lib/assets/images/park icon.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
+                )),
             const SizedBox(width: 5),
             SizedBox(
               width: buttonSize,
