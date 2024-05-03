@@ -237,10 +237,10 @@ class _DraggableFloatingActionButtonState
 
   void checkDragDirection(Offset offset) {
     debugPrint("x, y ${offset.dx}, ${offset.dy}");
-    if (offset.dx > MediaQuery.of(context).size.width / 2 + 150) {
+    if (offset.dx > MediaQuery.of(context).size.width / 2 + 100) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => PrePaymentScreen()));
-    } else if (offset.dx < MediaQuery.of(context).size.width / 2 - 150) {
+    } else if (offset.dx < MediaQuery.of(context).size.width / 2 - 100) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => QRScreen()));
     }
