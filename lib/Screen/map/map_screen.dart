@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:appfront/Screen/map/widgets/naver_map.dart';
 import 'package:appfront/Screen/map/widgets/search_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
@@ -18,42 +20,63 @@ class _MapScreenState extends State<MapScreen> {
   final marker =
       NMarker(id: "test", position: const NLatLng(36.144786, 128.39281));
   List<NMarker> markers = [];
+  final TextEditingController spaceController = TextEditingController();
 
   Location location = Location();
-
   double lat = 0.0;
   double lng = 0.0;
+  int price = 10000;
+  int space = 10000;
+  String disabled = 'N';
 
   @override
   void initState() {
     super.initState();
     // 위치 정보를 가져오는 비동기 작업을 시작
-    _getPosition().then((_) {
+    getPosition().then((_) {
       // 위치 정보를 가져오는 작업이 완료되면 getPark()를 호출
       getPark().then((parkData) {
-        markers = makeMarkers(parkData);
-        print(markers);
-        setState(() {});
+        setState(() {
+          markers = makeMarkers(parkData);
+        });
       });
     });
   }
 
-  Future<Map<String, dynamic>> getPark() async {
-    String url =
-        'http://localhost:3000/map?lat=$lat&lng=$lng&price=100000&space=100000&disabled=false';
-    Uri uri = Uri.parse(url);
-
-    http.Response response = await http.get(uri);
-    if (response.statusCode == 200) {
-      var json = jsonDecode(response.body);
-
-      return json;
-    } else {
-      throw Exception('Failed to load park data');
-    }
+  void setPrice(double value) {
+    setState(() {
+      price = value.toInt();
+    });
+    getPark().then((parkData) {
+      setState(() {
+        markers = makeMarkers(parkData);
+      });
+    });
   }
 
-  Future<void> _getPosition() async {
+  void setSpace(String value) {
+    setState(() {
+      space = int.parse(value);
+    });
+    getPark().then((parkData) {
+      setState(() {
+        markers = makeMarkers(parkData);
+      });
+    });
+  }
+
+  void setDisabled(String value) {
+    setState(() {
+      disabled = value;
+    });
+    getPark().then((parkData) {
+      setState(() {
+        markers = makeMarkers(parkData);
+      });
+    });
+  }
+
+  Future<void> getPosition() async {
     try {
       // 위치를 결정하고 완료될 때까지 기다림
       await location._determinePosition();
@@ -70,22 +93,59 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
+  Future<Map<String, dynamic>> getPark() async {
+    print(
+        "lat:$lat, lng: $lng, price: $price, space: $space, disabled: $disabled");
+    String url =
+        'http://localhost:3000/map?lat=$lat&lng=$lng&price=$price&space=$space&disabled=$disabled';
+    Uri uri = Uri.parse(url);
+
+    http.Response response = await http.get(uri);
+    if (response.statusCode == 200) {
+      var json = jsonDecode(response.body);
+      return json;
+    } else {
+      throw Exception('Failed to load park data');
+    }
+  }
+
   List<NMarker> makeMarkers(Map<String, dynamic> parkData) {
     List<dynamic> pcg = parkData['pcg'];
     List<dynamic> public = parkData['public'];
+    List<NMarker> markers = [];
 
-    List<NMarker> markers = public.map((park) {
+    public.map((park) async {
       var latitude = park['latitude'];
       var longitude = park['longitude'];
       var name = park['prkplceNm'];
-      print("$name, $longitude, $latitude");
-      return NMarker(
-        id: name,
-        position: NLatLng(double.parse(latitude), double.parse(longitude)),
-      );
+      http.Response response;
+      if (latitude == '') {
+        var addr = park['rdnmadr'] != "" ? park['rdnmadr'] : park['lnmadr'];
+
+        String url = 'http://localhost:3000/map/addr?addr=$addr';
+        Uri uri = Uri.parse(url);
+
+        await http.get(uri).then((value) {
+          response = value;
+          var json = jsonDecode(response.body);
+          setState(() {
+            markers.add(NMarker(
+              id: name,
+              position:
+                  NLatLng(double.parse(json['y']), double.parse(json['x'])),
+            ));
+          });
+        });
+      } else {
+        setState(() {
+          markers.add(NMarker(
+            id: name,
+            position: NLatLng(double.parse(latitude), double.parse(longitude)),
+          ));
+        });
+      }
     }).toList();
 
-    print(markers);
     return markers;
   }
 
@@ -96,18 +156,31 @@ class _MapScreenState extends State<MapScreen> {
       appBar: AppBar(
         title: const Text("주차장 찾기"),
       ),
-      body: Stack(
-        children: [
-          lat != 0.0 && lng != 0.0
-              ? MyNaverMap(
-                  marker: marker,
+      body: lat != 0.0 && lng != 0.0 && markers.isNotEmpty
+          ? Stack(
+              children: [
+                MyNaverMap(
+                  markers: markers,
                   lat: lat,
                   lng: lng,
-                )
-              : const CircularProgressIndicator(),
-          const MySearchBar(),
-        ],
-      ),
+                  price: price,
+                  space: space,
+                  disabled: disabled,
+                ),
+                MySearchBar(
+                  disabled: disabled,
+                  spaceController: spaceController,
+                  setPrice: setPrice,
+                  setSpace: setSpace,
+                  setDisabled: setDisabled,
+                ),
+              ],
+            )
+          : const Center(
+              child: CircularProgressIndicator(
+                strokeWidth: 5,
+              ),
+            ), // markers를 사용하는 위젯을 반환합니다.
     );
   }
 }

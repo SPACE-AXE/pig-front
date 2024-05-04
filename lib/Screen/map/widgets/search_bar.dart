@@ -1,7 +1,20 @@
+import 'package:appfront/Screen/map/widgets/filter_page.dart';
 import 'package:flutter/material.dart';
 
 class MySearchBar extends StatefulWidget {
-  const MySearchBar({super.key});
+  final TextEditingController spaceController;
+  final String disabled;
+  final Function(double) setPrice;
+  final Function(String) setSpace;
+  final Function(String) setDisabled;
+  const MySearchBar({
+    super.key,
+    required this.disabled,
+    required this.spaceController,
+    required this.setDisabled,
+    required this.setPrice,
+    required this.setSpace,
+  });
 
   @override
   State<MySearchBar> createState() => _MySearchBarState();
@@ -14,19 +27,49 @@ class _MySearchBarState extends State<MySearchBar> {
       top: 20.0, // 지도의 상단에 위치
       left: 20.0, // 지도의 왼쪽에 위치
       right: 20.0, // 지도의 오른쪽에 위치
-      child: SearchBar(
-        backgroundColor: const MaterialStatePropertyAll(Color(0xffffffff)),
-        side: const MaterialStatePropertyAll(
-          BorderSide(
-            color: Color(0xff39c5bb),
+      child: Column(
+        children: [
+          SearchBar(
+            backgroundColor: const MaterialStatePropertyAll(Color(0xffffffff)),
+            side: const MaterialStatePropertyAll(
+              BorderSide(
+                color: Color(0xff39c5bb),
+              ),
+            ),
+            leading: IconButton(
+              icon: const Icon(Icons.filter_list_rounded),
+              onPressed: () {
+                mapInfo(
+                  context,
+                  widget.disabled,
+                  widget.spaceController,
+                  widget.setPrice,
+                  widget.setSpace,
+                  widget.setDisabled,
+                );
+              },
+            ),
+            trailing: const [Icon(Icons.search)],
           ),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.filter_list_rounded),
-          onPressed: () {},
-        ),
-        trailing: const [Icon(Icons.search)],
+        ],
       ),
     );
   }
+}
+
+void mapInfo(
+    context, disabled, spaceController, setPrice, setSpace, setDisabled) {
+  showModalBottomSheet(
+    enableDrag: true,
+    context: context,
+    builder: (BuildContext context) {
+      return FilterPage(
+        disabled: disabled,
+        spaceController: spaceController,
+        setPrice: setPrice,
+        setSpace: setSpace,
+        setDisabled: setDisabled,
+      );
+    },
+  );
 }

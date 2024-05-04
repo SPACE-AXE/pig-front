@@ -10,11 +10,12 @@ import 'package:flutter/widgets.dart';
 import 'package:appfront/QRScreen.dart';
 import 'package:appfront/PrePaymentScreen.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NaverMapSdk.instance.initialize(clientId: "etuftq1yhk");
-  runApp(const MainApp());
+  runApp(const ProviderScope(child: MainApp()));
 }
 
 class MainApp extends StatelessWidget {
