@@ -231,6 +231,7 @@ class _DraggableFloatingActionButtonState
           backgroundColor: const Color(0xFF39c5bb),
           child: const Icon(Icons.navigation),
         ),
+        childWhenDragging: Container(),
         onDragEnd: (details) {
           setState(() {
             position = details.offset;
@@ -247,10 +248,10 @@ class _DraggableFloatingActionButtonState
 
   void checkDragDirection(Offset offset) {
     debugPrint("x, y ${offset.dx}, ${offset.dy}");
-    if (offset.dx > MediaQuery.of(context).size.width / 2) {
+    if (offset.dx > MediaQuery.of(context).size.width / 2 + 100) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => PrePaymentScreen()));
-    } else if (offset.dx < MediaQuery.of(context).size.width / 2) {
+    } else if (offset.dx < MediaQuery.of(context).size.width / 2 - 100) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => QRScreen()));
     }
