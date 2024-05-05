@@ -128,12 +128,15 @@ class _MapScreenState extends State<MapScreen> {
         await http.get(uri).then((value) {
           response = value;
           var json = jsonDecode(response.body);
+
+          List<NMarker> tmpMarkers = [];
           setState(() {
-            markers.add(NMarker(
+            tmpMarkers.add(NMarker(
               id: name,
               position:
                   NLatLng(double.parse(json['y']), double.parse(json['x'])),
             ));
+            markers = tmpMarkers;
           });
         });
       } else {
