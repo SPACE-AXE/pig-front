@@ -201,45 +201,55 @@ class DraggableFloatingActionButton extends StatefulWidget {
 
 class _DraggableFloatingActionButtonState
     extends State<DraggableFloatingActionButton> {
-  Offset position = Offset(100, 500);
+  Offset position = Offset(0, 0);
 
   @override
   void initState() {
     super.initState();
-    position = Offset(100, 500);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      left: position.dx,
-      top: position.dy,
-      child: Draggable(
-        child: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(Icons.navigation),
-        ),
-        feedback: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(Icons.navigation),
-          backgroundColor: Color(0xFF39c5bb),
-        ),
-        onDragEnd: (details) {
-          setState(() {
-            position = details.offset;
-            checkDragDirection(details.offset);
-          });
-        },
-      ),
+    final screenSize = MediaQuery.of(context).size;
+    final double fabSize = 56;
+    final double initialLeft = (screenSize.width / 2) - (fabSize / 2);
+    final double initialTop = screenSize.height - fabSize - 20;
+    position = Offset(initialLeft, initialTop);
+    return Stack(
+      children: [
+        Positioned(
+          left: position.dx,
+          top: position.dy,
+          child: Draggable(
+            child: FloatingActionButton(
+              onPressed: () {},
+              child: Icon(Icons.local_atm),
+            ),
+            feedback: FloatingActionButton(
+              onPressed: () {},
+              child: Icon(Icons.navigation),
+              backgroundColor: Color(0xFF39c5bb),
+            ),
+            childWhenDragging: Container(),
+            onDragEnd: (details) {
+              setState(() {
+                position = details.offset;
+                checkDragDirection(details.offset);
+                position = Offset(initialLeft, initialTop);
+              });
+            },
+          ),
+        )
+      ],
     );
   }
 
   void checkDragDirection(Offset offset) {
     debugPrint("x, y ${offset.dx}, ${offset.dy}");
-    if (offset.dx > MediaQuery.of(context).size.width / 2) {
+    if (offset.dx > MediaQuery.of(context).size.width / 2 + 100) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => PrePaymentScreen()));
-    } else if (offset.dx < MediaQuery.of(context).size.width / 2) {
+    } else if (offset.dx < MediaQuery.of(context).size.width / 2 - 100) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => QRScreen()));
     }
