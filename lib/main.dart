@@ -1,11 +1,8 @@
 import 'dart:math';
-import 'dart:ui';
-import 'package:flutter/rendering.dart';
-
 import 'package:flutter/material.dart';
+
 import 'package:appfront/Screen/Auth/Login/login_screen.dart';
 import 'package:desktop_window/desktop_window.dart';
-import 'package:flutter/widgets.dart';
 import 'package:appfront/QRScreen.dart';
 import 'package:appfront/PrePaymentScreen.dart';
 
@@ -245,13 +242,18 @@ class _DraggableFloatingActionButtonState
   }
 
   void checkDragDirection(Offset offset) {
-    debugPrint("x, y ${offset.dx}, ${offset.dy}");
-    if (offset.dx > MediaQuery.of(context).size.width / 2 + 100) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    debugPrint("x, y ${offset.dx}, ${offset.dy}"); // 버튼 옮겼을 때 위치 출력
+    debugPrint(// 가로 중앙값, 좌, 우 적용값
+        "${MediaQuery.of(context).size.width / 2}, ${MediaQuery.of(context).size.width / 2 + 150}, ${MediaQuery.of(context).size.width / 2 - 150}");
+    if (offset.dx > MediaQuery.of(context).size.width / 2 + 150) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => PrePaymentScreen()));
-    } else if (offset.dx < MediaQuery.of(context).size.width / 2 - 100) {
+    } else if (offset.dx < MediaQuery.of(context).size.width / 2 - 150) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => QRScreen()));
     }
+    position = Offset(screenWidth / 2 - 24, screenHeight - 56);
   }
 }
