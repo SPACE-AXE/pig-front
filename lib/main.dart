@@ -29,7 +29,6 @@ class MainApp extends StatelessWidget {
         appBar: _buildAppBar(),
         body: _buildBody(context),
         floatingActionButton: const DraggableFloatingActionButton(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
     );
   }

@@ -9,7 +9,7 @@ PODS:
   - geolocator_apple (1.2.0):
     - Flutter
   - MTBBarcodeScanner (5.0.11)
-  - NMapsGeometry (1.0.1)
+  - NMapsGeometry (1.0.2)
   - NMapsMap (3.17.0):
     - NMapsGeometry
   - path_provider_foundation (0.0.1):
@@ -55,12 +55,12 @@ SPEC CHECKSUMS:
   fluttertoast: 9f2f8e81bb5ce18facb9748d7855bf5a756fe3db
   geolocator_apple: 6cbaf322953988e009e5ecb481f07efece75c450
   MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
-  NMapsGeometry: 53c573ead66466681cf123f99f698dc8071a4b83
+  NMapsGeometry: 4e02554fa9880ef02ed96b075dc84355d6352479
   NMapsMap: a5b909a31b6f3d27a670f6eb2ddc913c38975474
   path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
   qr_code_scanner: bb67d64904c3b9658ada8c402e8b4d406d5d796e
   Toast: 1f5ea13423a1e6674c4abdac5be53587ae481c4e
 
-PODFILE CHECKSUM: 4e79f8c460b2f01d7e2e180ca4dbf8bd60e66bf1
+PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
 
 COCOAPODS: 1.15.2

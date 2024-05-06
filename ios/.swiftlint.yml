@@ -1,5 +1,0 @@
-
-included:
-  - ExSwiftLint
-excluded:
-  - Pods
