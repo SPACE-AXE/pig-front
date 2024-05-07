@@ -115,7 +115,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 'username': username,
                 'password': password,
                 'birth': birth,
-                'phone': phone,
               };
               register(userData);
               Navigator.pop(context);
@@ -434,6 +433,7 @@ void register(Map<String, dynamic> userData) async {
     CustomToast.showToast("회원가입이 완료되었습니다.");
   } else {
     print(uri);
+    print(response.body);
     CustomToast.showToast("이메일 혹은 전화번호가 중복되었습니다.");
   }
 }

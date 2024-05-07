@@ -1,3 +1,4 @@
+import 'package:appfront/Screen/map/widgets/park_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 
@@ -44,6 +45,7 @@ class _MyNaverMapState extends State<MyNaverMap> {
           controller.addOverlay(marker);
           marker.setOnTapListener((overlay) {
             print(overlay.info.id);
+            parkInfo(context, overlay.info.id);
           });
         }
 
@@ -59,4 +61,14 @@ class _MyNaverMapState extends State<MyNaverMap> {
       onSelectedIndoorChanged: (indoor) {},
     );
   }
+}
+
+void parkInfo(BuildContext context, String name) {
+  showModalBottomSheet(
+    enableDrag: true,
+    context: context,
+    builder: (BuildContext context) {
+      return ParkInfo(name: name);
+    },
+  );
 }

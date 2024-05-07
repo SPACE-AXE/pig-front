@@ -27,7 +27,7 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: _buildAppBar(),
-        body: _buildBody(context),
+        body: MyBody(context: context),
         floatingActionButton: const DraggableFloatingActionButton(),
       ),
     );
@@ -61,144 +61,163 @@ class MainApp extends StatelessWidget {
   }
 }
 
-Widget _buildBody(BuildContext context) {
-  //버튼 요소들
-  double buttonSize = MediaQuery.of(context).size.width * 0.45;
+class MyBody extends StatefulWidget {
+  final BuildContext context;
+  const MyBody({super.key, required this.context});
 
-  return Padding(
-    padding: const EdgeInsets.all(10),
-    child: Column(
-      // 유저 정보 버튼
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Builder(
-          builder: (BuildContext newContext) {
-            return ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                    newContext,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginScreen()));
-              },
-              style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  backgroundColor: const Color(0xFF39c5bb),
-                  minimumSize: const Size(double.infinity, 100)),
-              child: const Text('로그인 해주세요.'),
-            );
-          },
-        ),
-        const SizedBox(height: 15),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-                width: buttonSize,
-                height: buttonSize,
-                margin: const EdgeInsets.only(right: 10),
-                child: Builder(
-                  builder: (BuildContext newContext) {
-                    return ElevatedButton(
-                      // 주차장 버튼
-                      onPressed: () {
-                        Navigator.push(
-                            newContext,
-                            MaterialPageRoute(
-                                builder: (context) => const MapScreen()));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        backgroundColor: const Color(0xFF39c5bb),
+  @override
+  State<MyBody> createState() => _MyBodyState();
+}
+
+class _MyBodyState extends State<MyBody> {
+  String name = '';
+
+  void setResult(e) {
+    setState(() {
+      name = e;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        // 유저 정보 버튼
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Builder(
+            builder: (BuildContext newContext) {
+              return ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      newContext,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginScreen(),
                       ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.asset(
-                          'lib/assets/images/park icon.png',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    );
+                    ).then((value) => setResult(value['name']));
                   },
-                )),
-            const SizedBox(width: 5),
-            SizedBox(
-              width: buttonSize,
-              height: buttonSize,
-              child: ElevatedButton(
-                // 이용 내역 버튼
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  backgroundColor: const Color(0xFF39c5bb),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.asset(
-                    'lib/assets/images/logo.png',
-                    fit: BoxFit.cover,
+                  style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      backgroundColor: const Color(0xFF39c5bb),
+                      minimumSize: const Size(double.infinity, 100)),
+                  child: name == ''
+                      ? const Text('로그인 해주세요.')
+                      : Text('$name 님 어서오세요.'));
+            },
+          ),
+          const SizedBox(height: 15),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                  width: MediaQuery.of(widget.context).size.width * 0.45,
+                  height: MediaQuery.of(widget.context).size.width * 0.45,
+                  margin: const EdgeInsets.only(right: 10),
+                  child: Builder(
+                    builder: (BuildContext newContext) {
+                      return ElevatedButton(
+                        // 주차장 버튼
+                        onPressed: () {
+                          Navigator.push(
+                              newContext,
+                              MaterialPageRoute(
+                                  builder: (context) => const MapScreen()));
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          backgroundColor: const Color(0xFF39c5bb),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.asset(
+                            'lib/assets/images/park icon.png',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      );
+                    },
+                  )),
+              const SizedBox(width: 5),
+              SizedBox(
+                width: MediaQuery.of(widget.context).size.width * 0.45,
+                height: MediaQuery.of(widget.context).size.width * 0.45,
+                child: ElevatedButton(
+                  // 이용 내역 버튼
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    backgroundColor: const Color(0xFF39c5bb),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.asset(
+                      'lib/assets/images/logo.png',
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 10),
-        ElevatedButton(
-          //설명 버튼
-          onPressed: () {},
-          style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.zero,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            backgroundColor: const Color(0xFF39c5bb),
-            minimumSize: const Size(double.infinity, 100),
+            ],
           ),
-          child: const Text('박차고에 대해 알고 싶어요!'),
-        ),
-        const SizedBox(height: 10),
-        Row(
-          children: [
-            Expanded(
-              child: ElevatedButton(
-                // QR 버튼
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  backgroundColor: const Color(0xFF39c5bb),
-                  minimumSize: const Size(double.infinity, 100),
-                ),
-                child: const Text('Button 2'),
-              ),
+          const SizedBox(height: 10),
+          ElevatedButton(
+            //설명 버튼
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.zero,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              backgroundColor: const Color(0xFF39c5bb),
+              minimumSize: const Size(double.infinity, 100),
             ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: ElevatedButton(
-                // 사전 결제 버튼
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  backgroundColor: const Color(0xFF39c5bb),
-                  minimumSize: const Size(double.infinity, 100),
+            child: const Text('박차고에 대해 알고 싶어요!'),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  // QR 버튼
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    backgroundColor: const Color(0xFF39c5bb),
+                    minimumSize: const Size(double.infinity, 100),
+                  ),
+                  child: const Text('Button 2'),
                 ),
-                child: const Text('Button 3'),
               ),
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
+              const SizedBox(width: 10),
+              Expanded(
+                child: ElevatedButton(
+                  // 사전 결제 버튼
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    backgroundColor: const Color(0xFF39c5bb),
+                    minimumSize: const Size(double.infinity, 100),
+                  ),
+                  child: const Text('Button 3'),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class DraggableFloatingActionButton extends StatefulWidget {
