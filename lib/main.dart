@@ -1,12 +1,9 @@
 import 'dart:math';
-import 'dart:ui';
-import 'package:flutter/rendering.dart';
-
 import 'package:appfront/Screen/map/map_screen.dart';
 import 'package:flutter/material.dart';
+
 import 'package:appfront/Screen/Auth/Login/login_screen.dart';
 import 'package:desktop_window/desktop_window.dart';
-import 'package:flutter/widgets.dart';
 import 'package:appfront/QRScreen.dart';
 import 'package:appfront/PrePaymentScreen.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
@@ -230,48 +227,62 @@ class DraggableFloatingActionButton extends StatefulWidget {
 
 class _DraggableFloatingActionButtonState
     extends State<DraggableFloatingActionButton> {
-  Offset position = const Offset(100, 500);
+  Offset position = const Offset(0, 0);
 
   @override
   void initState() {
     super.initState();
-    position = const Offset(100, 500);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      left: position.dx,
-      top: position.dy,
-      child: Draggable(
-        feedback: FloatingActionButton(
-          onPressed: () {},
-          backgroundColor: const Color(0xFF39c5bb),
-          child: const Icon(Icons.navigation),
-        ),
-        childWhenDragging: Container(),
-        onDragEnd: (details) {
-          setState(() {
-            position = details.offset;
-            checkDragDirection(details.offset);
-          });
-        },
-        child: FloatingActionButton(
-          onPressed: () {},
-          child: const Icon(Icons.navigation),
-        ),
-      ),
+    final screenSize = MediaQuery.of(context).size;
+    const double fabSize = 56;
+    final double initialLeft = (screenSize.width / 2) - (fabSize / 2);
+    final double initialTop = screenSize.height - fabSize - 20;
+    position = Offset(initialLeft, initialTop);
+    return Stack(
+      children: [
+        Positioned(
+          left: position.dx,
+          top: position.dy,
+          child: Draggable(
+            feedback: FloatingActionButton(
+              onPressed: () {},
+              backgroundColor: const Color(0xFF39c5bb),
+              child: const Icon(Icons.navigation),
+            ),
+            childWhenDragging: Container(),
+            onDragEnd: (details) {
+              setState(() {
+                position = details.offset;
+                checkDragDirection(details.offset);
+                position = Offset(initialLeft, initialTop);
+              });
+            },
+            child: FloatingActionButton(
+              onPressed: () {},
+              child: const Icon(Icons.local_atm),
+            ),
+          ),
+        )
+      ],
     );
   }
 
   void checkDragDirection(Offset offset) {
-    debugPrint("x, y ${offset.dx}, ${offset.dy}");
-    if (offset.dx > MediaQuery.of(context).size.width / 2 + 100) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    debugPrint("x, y ${offset.dx}, ${offset.dy}"); // 버튼 옮겼을 때 위치 출력
+    debugPrint(// 가로 중앙값, 좌, 우 적용값
+        "${MediaQuery.of(context).size.width / 2}, ${MediaQuery.of(context).size.width / 2 + 150}, ${MediaQuery.of(context).size.width / 2 - 150}");
+    if (offset.dx > MediaQuery.of(context).size.width / 2 + 150) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => PrePaymentScreen()));
-    } else if (offset.dx < MediaQuery.of(context).size.width / 2 - 100) {
+    } else if (offset.dx < MediaQuery.of(context).size.width / 2 - 150) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => QRScreen()));
     }
+    position = Offset(screenWidth / 2 - 24, screenHeight - 56);
   }
 }
