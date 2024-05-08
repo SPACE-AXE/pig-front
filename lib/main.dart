@@ -218,6 +218,7 @@ class _DraggableFloatingActionButtonState
           left: position.dx,
           top: position.dy,
           child: Draggable(
+            axis: Axis.horizontal,
             child: FloatingActionButton(
               onPressed: () {},
               child: Icon(Icons.local_atm),
@@ -230,9 +231,8 @@ class _DraggableFloatingActionButtonState
             childWhenDragging: Container(),
             onDragEnd: (details) {
               setState(() {
-                position = details.offset;
+                position = Offset(details.offset.dx, initialTop);;
                 checkDragDirection(details.offset);
-                position = Offset(initialLeft, initialTop);
               });
             },
           ),
@@ -244,6 +244,7 @@ class _DraggableFloatingActionButtonState
   void checkDragDirection(Offset offset) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final Top = MediaQuery.of(context).size.height - 76;
     debugPrint("x, y ${offset.dx}, ${offset.dy}"); // 버튼 옮겼을 때 위치 출력
     debugPrint(// 가로 중앙값, 좌, 우 적용값
         "${MediaQuery.of(context).size.width / 2}, ${MediaQuery.of(context).size.width / 2 + 150}, ${MediaQuery.of(context).size.width / 2 - 150}");
