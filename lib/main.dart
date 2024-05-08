@@ -224,7 +224,7 @@ class _DraggableFloatingActionButtonState
             ),
             feedback: FloatingActionButton(
               onPressed: () {},
-              child: Icon(Icons.navigation),
+              child: Icon(Icons.local_atm),
               backgroundColor: Color(0xFF39c5bb),
             ),
             childWhenDragging: Container(),
