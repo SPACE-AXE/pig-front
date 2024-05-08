@@ -5,12 +5,9 @@ import 'package:appfront/Screen/Auth/Login/login_screen.dart';
 import 'package:desktop_window/desktop_window.dart';
 import 'package:appfront/QRScreen.dart';
 import 'package:appfront/PrePaymentScreen.dart';
+import 'package:appfront/cardScreen.dart';
 
 void main() async {
-  //WidgetsFlutterBinding.ensureInitialized();
-  //await DesktopWindow.setWindowSize(const Size(360, 800));
-  //await DesktopWindow.setMinWindowSize(const Size(360, 800));
-  //await DesktopWindow.setMaxWindowSize(const Size(360, 800));
   runApp(const MainApp());
 }
 
@@ -155,10 +152,17 @@ Widget _buildBody(BuildContext context) {
         Row(
           children: [
             Expanded(
-              child: ElevatedButton(
-                // QR 버튼
-                onPressed: () {},
-                child: const Text('Button 2'),
+              child: Builder(
+                builder : (BuildContext newContext) {
+                return ElevatedButton(
+                // 카드 관리
+                onPressed: () {
+                   Navigator.push(
+                    newContext,
+                    MaterialPageRoute(
+                        builder: (context) => CardScreen()));
+                },
+                child: const Text('카드 관리'),
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.zero,
                   shape: RoundedRectangleBorder(
@@ -166,8 +170,9 @@ Widget _buildBody(BuildContext context) {
                   backgroundColor: Color(0xFF39c5bb),
                   minimumSize: Size(double.infinity, 100),
                 ),
-              ),
-            ),
+              );
+              }
+            )),
             SizedBox(width: 10),
             Expanded(
               child: ElevatedButton(
