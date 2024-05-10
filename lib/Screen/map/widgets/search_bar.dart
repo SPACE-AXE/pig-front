@@ -60,11 +60,8 @@ class _MySearchBarState extends State<MySearchBar> {
                 );
               },
             ),
-            trailing: [
-              IconButton(
-                icon: const Icon(Icons.search),
-                onPressed: () {},
-              ),
+            trailing: const [
+              Icon(Icons.search),
             ],
             onChanged: (value) {
               widget.setSearch(value);

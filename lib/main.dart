@@ -248,10 +248,6 @@ class _DraggableFloatingActionButtonState
           top: position.dy,
           child: Draggable(
             axis: Axis.horizontal,
-            child: FloatingActionButton(
-              onPressed: () {},
-              child: const Icon(Icons.local_atm),
-            ),
             feedback: FloatingActionButton(
               onPressed: () {},
               backgroundColor: const Color(0xFF39c5bb),

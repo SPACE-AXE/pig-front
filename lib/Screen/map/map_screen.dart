@@ -44,20 +44,20 @@ class _MapScreenState extends State<MapScreen> {
     });
   }
 
-  void makeMap(String addr) async {
+  void makeMap(String place) async {
     markers = [];
-    String url = 'http://localhost:3000/map/addr?addr=$addr';
+    String url = 'http://localhost:3000/map/place?place=$place';
 
     Uri uri = Uri.parse(url);
 
     await http.get(uri).then((value) {
       http.Response response = value;
       var json = jsonDecode(response.body);
-
-      print("12312312123: ${json['y']}");
+      var tmp1 = double.parse(json['y']);
+      var tmp2 = double.parse(json['x']);
       setState(() {
-        lat = double.parse(json['y']);
-        lng = double.parse(json['x']);
+        lat = double.parse(tmp1.toStringAsFixed(6));
+        lng = double.parse(tmp2.toStringAsFixed(6));
       });
     });
     // 위치 정보를 가져오는 작업이 완료되면 getPark()를 호출
@@ -134,7 +134,9 @@ class _MapScreenState extends State<MapScreen> {
         'http://localhost:3000/map?lat=$lat&lng=$lng&price=$price&space=$space&disabled=$disabled';
     Uri uri = Uri.parse(url);
 
+    print(uri);
     http.Response response = await http.get(uri);
+    print(response);
     if (response.statusCode == 200) {
       var json = jsonDecode(response.body);
       return json;
