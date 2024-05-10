@@ -5,12 +5,14 @@ import 'package:flutter/widgets.dart';
 class Filters extends StatefulWidget {
   final TextEditingController spaceController;
   final String disabled;
+  final double sliderValue;
   final Function(double) setPrice;
   final Function(String) setSpace;
   final Function(String) setDisabled;
   const Filters({
     super.key,
     required this.disabled,
+    required this.sliderValue,
     required this.spaceController,
     required this.setDisabled,
     required this.setPrice,
@@ -34,6 +36,7 @@ class _FiltersState extends State<Filters> {
   @override
   void initState() {
     super.initState();
+    _sliderValue = widget.sliderValue;
     if (widget.disabled == 'N') {
       switchValue = false;
     } else {
@@ -61,19 +64,27 @@ class _FiltersState extends State<Filters> {
                 ),
               ],
             ),
-            Slider(
-              value: _sliderValue,
-              secondaryTrackValue: _sliderValue,
-              min: 0.0,
-              max: 5000.0,
-              divisions: 10, // 10개의 구간으로 나누어서 표시, 없으면 연속적
-              label: '$_sliderValue',
-              onChanged: (value) {
-                _onChanged(value);
-              },
-              onChangeEnd: (value) {
-                widget.setPrice(_sliderValue);
-              },
+            Row(
+              children: [
+                Expanded(
+                  flex: 7,
+                  child: Slider(
+                    value: _sliderValue,
+                    secondaryTrackValue: _sliderValue,
+                    min: 0.0,
+                    max: 5000.0,
+                    divisions: 10, // 10개의 구간으로 나누어서 표시, 없으면 연속적
+                    label: '${_sliderValue.toInt()}',
+                    onChanged: (value) {
+                      _onChanged(value);
+                    },
+                    onChangeEnd: (value) {
+                      widget.setPrice(_sliderValue);
+                    },
+                  ),
+                ),
+                Expanded(flex: 1, child: Text("${_sliderValue.toInt()}")),
+              ],
             ),
             const SizedBox(height: 20),
             Container(

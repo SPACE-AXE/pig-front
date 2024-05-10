@@ -48,11 +48,6 @@ class _MyNaverMapState extends State<MyNaverMap> {
             parkInfo(context, overlay.info.id);
           });
         }
-
-        // controller.addOverlay(widget.markers);
-        // final onMarkerInfoWindow = NInfoWindow.onMarker(
-        //     id: widget.markers.info.id, text: "${widget.lat}, ${widget.lng}");
-        // widget.markers.openInfoWindow(onMarkerInfoWindow);
       },
       onMapTapped: (point, latLng) {},
       onSymbolTapped: (symbol) {},
@@ -65,6 +60,7 @@ class _MyNaverMapState extends State<MyNaverMap> {
 
 void parkInfo(BuildContext context, String name) {
   showModalBottomSheet(
+    isScrollControlled: true,
     enableDrag: true,
     context: context,
     builder: (BuildContext context) {

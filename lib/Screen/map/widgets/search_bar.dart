@@ -4,13 +4,21 @@ import 'package:flutter/material.dart';
 class MySearchBar extends StatefulWidget {
   final TextEditingController spaceController;
   final String disabled;
+  final double sliderValue;
+  final String search;
+  final Function(String) makeMap;
+  final Function(String) setSearch;
   final Function(double) setPrice;
   final Function(String) setSpace;
   final Function(String) setDisabled;
   const MySearchBar({
     super.key,
     required this.disabled,
+    required this.sliderValue,
     required this.spaceController,
+    required this.search,
+    required this.makeMap,
+    required this.setSearch,
     required this.setDisabled,
     required this.setPrice,
     required this.setSpace,
@@ -21,6 +29,8 @@ class MySearchBar extends StatefulWidget {
 }
 
 class _MySearchBarState extends State<MySearchBar> {
+  String searchValue = '';
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -39,9 +49,10 @@ class _MySearchBarState extends State<MySearchBar> {
             leading: IconButton(
               icon: const Icon(Icons.filter_list_rounded),
               onPressed: () {
-                mapInfo(
+                filter(
                   context,
                   widget.disabled,
+                  widget.sliderValue,
                   widget.spaceController,
                   widget.setPrice,
                   widget.setSpace,
@@ -49,7 +60,18 @@ class _MySearchBarState extends State<MySearchBar> {
                 );
               },
             ),
-            trailing: const [Icon(Icons.search)],
+            trailing: [
+              IconButton(
+                icon: const Icon(Icons.search),
+                onPressed: () {},
+              ),
+            ],
+            onChanged: (value) {
+              widget.setSearch(value);
+            },
+            onSubmitted: (value) {
+              widget.makeMap(value);
+            },
           ),
         ],
       ),
@@ -57,13 +79,14 @@ class _MySearchBarState extends State<MySearchBar> {
   }
 }
 
-void mapInfo(
-    context, disabled, spaceController, setPrice, setSpace, setDisabled) {
+void filter(context, disabled, sliderValue, spaceController, setPrice, setSpace,
+    setDisabled) {
   showModalBottomSheet(
     enableDrag: true,
     context: context,
     builder: (BuildContext context) {
       return FilterPage(
+        sliderValue: sliderValue,
         disabled: disabled,
         spaceController: spaceController,
         setPrice: setPrice,

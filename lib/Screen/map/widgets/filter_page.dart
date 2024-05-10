@@ -6,11 +6,13 @@ import 'package:flutter/widgets.dart';
 class FilterPage extends StatefulWidget {
   final TextEditingController spaceController;
   final String disabled;
+  final double sliderValue;
   final Function(double) setPrice;
   final Function(String) setSpace;
   final Function(String) setDisabled;
   const FilterPage({
     super.key,
+    required this.sliderValue,
     required this.disabled,
     required this.spaceController,
     required this.setDisabled,
@@ -54,6 +56,7 @@ class _FilterPageState extends State<FilterPage> {
               ),
             ),
             Filters(
+              sliderValue: widget.sliderValue,
               disabled: widget.disabled,
               spaceController: widget.spaceController,
               setPrice: widget.setPrice,

@@ -25,9 +25,10 @@ class _MapScreenState extends State<MapScreen> {
   Location location = Location();
   double lat = 0.0;
   double lng = 0.0;
-  int price = 10000;
+  int price = 5000;
   int space = 10000;
   String disabled = 'N';
+  String search = '';
 
   @override
   void initState() {
@@ -43,7 +44,38 @@ class _MapScreenState extends State<MapScreen> {
     });
   }
 
+  void makeMap(String addr) async {
+    markers = [];
+    String url = 'http://localhost:3000/map/addr?addr=$addr';
+
+    Uri uri = Uri.parse(url);
+
+    await http.get(uri).then((value) {
+      http.Response response = value;
+      var json = jsonDecode(response.body);
+
+      print("12312312123: ${json['y']}");
+      setState(() {
+        lat = double.parse(json['y']);
+        lng = double.parse(json['x']);
+      });
+    });
+    // 위치 정보를 가져오는 작업이 완료되면 getPark()를 호출
+    getPark().then((parkData) {
+      setState(() {
+        markers = makeMarkers(parkData);
+      });
+    });
+  }
+
+  void setSearch(String value) {
+    setState(() {
+      search = value;
+    });
+  }
+
   void setPrice(double value) {
+    markers = [];
     setState(() {
       price = value.toInt();
     });
@@ -55,6 +87,7 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   void setSpace(String value) {
+    markers = [];
     setState(() {
       space = int.parse(value);
     });
@@ -66,6 +99,7 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   void setDisabled(String value) {
+    markers = [];
     setState(() {
       disabled = value;
     });
@@ -170,7 +204,11 @@ class _MapScreenState extends State<MapScreen> {
                 ),
                 MySearchBar(
                   disabled: disabled,
+                  sliderValue: price.toDouble(),
                   spaceController: spaceController,
+                  search: search,
+                  makeMap: makeMap,
+                  setSearch: setSearch,
                   setPrice: setPrice,
                   setSpace: setSpace,
                   setDisabled: setDisabled,
