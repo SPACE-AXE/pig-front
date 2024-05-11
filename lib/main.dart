@@ -1,17 +1,18 @@
 import 'dart:math';
+import 'package:appfront/Screen/map/map_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:appfront/Screen/Auth/Login/login_screen.dart';
 import 'package:desktop_window/desktop_window.dart';
 import 'package:appfront/QRScreen.dart';
 import 'package:appfront/PrePaymentScreen.dart';
+import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
-  //WidgetsFlutterBinding.ensureInitialized();
-  //await DesktopWindow.setWindowSize(const Size(360, 800));
-  //await DesktopWindow.setMinWindowSize(const Size(360, 800));
-  //await DesktopWindow.setMaxWindowSize(const Size(360, 800));
-  runApp(const MainApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  await NaverMapSdk.instance.initialize(clientId: "etuftq1yhk");
+  runApp(const ProviderScope(child: MainApp()));
 }
 
 class MainApp extends StatelessWidget {
@@ -23,9 +24,8 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: _buildAppBar(),
-        body: _buildBody(context),
-        floatingActionButton: DraggableFloatingActionButton(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        body: MyBody(context: context),
+        floatingActionButton: const DraggableFloatingActionButton(),
       ),
     );
   }
@@ -58,139 +58,168 @@ class MainApp extends StatelessWidget {
   }
 }
 
-Widget _buildBody(BuildContext context) {
-  //버튼 요소들
-  double buttonSize = MediaQuery.of(context).size.width * 0.45;
+class MyBody extends StatefulWidget {
+  final BuildContext context;
+  const MyBody({super.key, required this.context});
 
-  return Padding(
-    padding: const EdgeInsets.all(10),
-    child: Column(
-      // 유저 정보 버튼
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Builder(
-          builder: (BuildContext newContext) {
-            return ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                    newContext,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginScreen()));
-              },
-              style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  backgroundColor: Color(0xFF39c5bb),
-                  minimumSize: Size(double.infinity, 100)),
-              child: const Text('로그인 해주세요.'),
-            );
-          },
-        ),
-        SizedBox(height: 15),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: buttonSize,
-              height: buttonSize,
-              margin: const EdgeInsets.only(right: 10),
-              child: ElevatedButton(
-                // 주차장 버튼
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  backgroundColor: Color(0xFF39c5bb),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.asset(
-                    'lib/assets/images/park icon.png',
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(width: 5),
-            Container(
-              width: buttonSize,
-              height: buttonSize,
-              child: ElevatedButton(
-                // 이용 내역 버튼
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  backgroundColor: Color(0xFF39c5bb),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.asset(
-                    'lib/assets/images/logo.png',
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 10),
-        ElevatedButton(
-          //설명 버튼
-          onPressed: () {},
-          child: const Text('박차고에 대해 알고 싶어요!'),
-          style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.zero,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            backgroundColor: Color(0xFF39c5bb),
-            minimumSize: Size(double.infinity, 100),
+  @override
+  State<MyBody> createState() => _MyBodyState();
+}
+
+class _MyBodyState extends State<MyBody> {
+  String name = '';
+
+  void setResult(e) {
+    setState(() {
+      name = e;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        // 유저 정보 버튼
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Builder(
+            builder: (BuildContext newContext) {
+              return ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      newContext,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginScreen(),
+                      ),
+                    ).then((value) => setResult(value['name']));
+                  },
+                  style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      backgroundColor: const Color(0xFF39c5bb),
+                      minimumSize: const Size(double.infinity, 100)),
+                  child: name == ''
+                      ? const Text('로그인 해주세요.')
+                      : Text('$name 님 어서오세요.'));
+            },
           ),
-        ),
-        SizedBox(height: 10),
-        Row(
-          children: [
-            Expanded(
-              child: ElevatedButton(
-                // QR 버튼
-                onPressed: () {},
-                child: const Text('Button 2'),
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  backgroundColor: Color(0xFF39c5bb),
-                  minimumSize: Size(double.infinity, 100),
+          const SizedBox(height: 15),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                  width: MediaQuery.of(widget.context).size.width * 0.45,
+                  height: MediaQuery.of(widget.context).size.width * 0.45,
+                  margin: const EdgeInsets.only(right: 10),
+                  child: Builder(
+                    builder: (BuildContext newContext) {
+                      return ElevatedButton(
+                        // 주차장 버튼
+                        onPressed: () {
+                          Navigator.push(
+                              newContext,
+                              MaterialPageRoute(
+                                  builder: (context) => const MapScreen()));
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          backgroundColor: const Color(0xFF39c5bb),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.asset(
+                            'lib/assets/images/park icon.png',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      );
+                    },
+                  )),
+              const SizedBox(width: 5),
+              SizedBox(
+                width: MediaQuery.of(widget.context).size.width * 0.45,
+                height: MediaQuery.of(widget.context).size.width * 0.45,
+                child: ElevatedButton(
+                  // 이용 내역 버튼
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    backgroundColor: const Color(0xFF39c5bb),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.asset(
+                      'lib/assets/images/logo.png',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          ElevatedButton(
+            //설명 버튼
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.zero,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              backgroundColor: const Color(0xFF39c5bb),
+              minimumSize: const Size(double.infinity, 100),
             ),
-            SizedBox(width: 10),
-            Expanded(
-              child: ElevatedButton(
-                // 사전 결제 버튼
-                onPressed: () {},
-                child: const Text('Button 3'),
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  backgroundColor: Color(0xFF39c5bb),
-                  minimumSize: Size(double.infinity, 100),
+            child: const Text('박차고에 대해 알고 싶어요!'),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  // QR 버튼
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    backgroundColor: const Color(0xFF39c5bb),
+                    minimumSize: const Size(double.infinity, 100),
+                  ),
+                  child: const Text('Button 2'),
                 ),
               ),
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
+              const SizedBox(width: 10),
+              Expanded(
+                child: ElevatedButton(
+                  // 사전 결제 버튼
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    backgroundColor: const Color(0xFF39c5bb),
+                    minimumSize: const Size(double.infinity, 100),
+                  ),
+                  child: const Text('Button 3'),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class DraggableFloatingActionButton extends StatefulWidget {
+  const DraggableFloatingActionButton({super.key});
+
   @override
   _DraggableFloatingActionButtonState createState() =>
       _DraggableFloatingActionButtonState();
@@ -198,7 +227,7 @@ class DraggableFloatingActionButton extends StatefulWidget {
 
 class _DraggableFloatingActionButtonState
     extends State<DraggableFloatingActionButton> {
-  Offset position = Offset(0, 0);
+  Offset position = const Offset(0, 0);
 
   @override
   void initState() {
@@ -208,7 +237,7 @@ class _DraggableFloatingActionButtonState
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final double fabSize = 56;
+    const double fabSize = 56;
     final double initialLeft = (screenSize.width / 2) - (fabSize / 2);
     final double initialTop = screenSize.height - fabSize - 20;
     position = Offset(initialLeft, initialTop);
@@ -219,22 +248,22 @@ class _DraggableFloatingActionButtonState
           top: position.dy,
           child: Draggable(
             axis: Axis.horizontal,
-            child: FloatingActionButton(
-              onPressed: () {},
-              child: Icon(Icons.local_atm),
-            ),
             feedback: FloatingActionButton(
               onPressed: () {},
-              child: Icon(Icons.local_atm),
-              backgroundColor: Color(0xFF39c5bb),
+              backgroundColor: const Color(0xFF39c5bb),
+              child: const Icon(Icons.local_atm),
             ),
             childWhenDragging: Container(),
             onDragEnd: (details) {
               setState(() {
-                position = Offset(details.offset.dx, initialTop);;
+                position = Offset(details.offset.dx, initialTop);
                 checkDragDirection(details.offset);
               });
             },
+            child: FloatingActionButton(
+              onPressed: () {},
+              child: const Icon(Icons.local_atm),
+            ),
           ),
         )
       ],

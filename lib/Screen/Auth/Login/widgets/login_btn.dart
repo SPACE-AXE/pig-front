@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -18,6 +20,7 @@ class LoginBtn extends StatefulWidget {
 }
 
 class _LoginBtnState extends State<LoginBtn> {
+  String name = '';
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -63,7 +66,8 @@ class _LoginBtnState extends State<LoginBtn> {
         textColor: Colors.white,
         fontSize: 16,
       );
-      Navigator.pop(context);
+      var json = jsonDecode(response.body);
+      Navigator.pop(context, json);
     } else {
       print(uri);
       Fluttertoast.showToast(
