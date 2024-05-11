@@ -20,7 +20,7 @@ class _ParkInfoState extends State<ParkInfo> {
   @override
   void initState() {
     super.initState();
-    String url = 'http://localhost:3000/map/park?name=${widget.name}';
+    String url = 'https://api.parkchargego.link/map/park?name=${widget.name}';
     print(url);
     Uri uri = Uri.parse(url);
 

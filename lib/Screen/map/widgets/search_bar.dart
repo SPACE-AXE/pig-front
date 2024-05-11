@@ -7,7 +7,6 @@ class MySearchBar extends StatefulWidget {
   final double sliderValue;
   final String search;
   final Function(String) makeMap;
-  final Function(String) setSearch;
   final Function(double) setPrice;
   final Function(String) setSpace;
   final Function(String) setDisabled;
@@ -18,7 +17,6 @@ class MySearchBar extends StatefulWidget {
     required this.spaceController,
     required this.search,
     required this.makeMap,
-    required this.setSearch,
     required this.setDisabled,
     required this.setPrice,
     required this.setSpace,
@@ -63,9 +61,6 @@ class _MySearchBarState extends State<MySearchBar> {
             trailing: const [
               Icon(Icons.search),
             ],
-            onChanged: (value) {
-              widget.setSearch(value);
-            },
             onSubmitted: (value) {
               widget.makeMap(value);
             },
