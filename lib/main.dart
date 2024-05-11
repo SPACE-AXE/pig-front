@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:appfront/Screen/Auth/Login/login_screen.dart';
 import 'package:desktop_window/desktop_window.dart';
 import 'package:appfront/QRScreen.dart';
-import 'package:appfront/PrePaymentScreen.dart';
+import 'package:appfront/Screen/prePayment/PrePaymentScreen.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
