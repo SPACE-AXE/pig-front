@@ -16,7 +16,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _id = TextEditingController();
   final TextEditingController _nickname = TextEditingController();
   final TextEditingController _email = TextEditingController();
-  final TextEditingController _username = TextEditingController();
+  final TextEditingController _name = TextEditingController();
   final TextEditingController _password = TextEditingController();
   final TextEditingController _phone = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -29,10 +29,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool emailCheck = true;
   bool pwdCheckFlag = false;
 
-  String name = '';
+  String username = '';
   String nickname = '';
   String email = '';
-  String username = '';
+  String name = '';
   String password = '';
   String birth = '';
   String phone = '';
@@ -101,10 +101,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
               _pwdKey.currentState!.validate();
             } else if (idDuplicateFlag) {
               setState(() {
-                name = _id.text;
+                username = _id.text;
                 nickname = _nickname.text;
                 email = _email.text;
-                username = _username.text;
+                name = _name.text;
                 password = _password.text;
                 phone = _phone.text;
               });
@@ -285,7 +285,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: CustomFormField(
           obscureText: false,
           text: "이름",
-          controller: _username,
+          controller: _name,
         ));
   }
 
@@ -372,9 +372,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: ElevatedButton(
               onPressed: () {
                 setState(() {
-                  name = _id.text;
+                  username = _id.text;
                 });
-                idDuplicateFlag ? null : checkUserIdDuplicate(name);
+                idDuplicateFlag ? null : checkUserIdDuplicate(username);
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.all(1),
@@ -393,10 +393,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  void checkUserIdDuplicate(String inputData) async {
+  void checkUserIdDuplicate(String username) async {
     String url = 'https://api.parkchargego.link/auth/check-username-duplicate/';
     // URL을 올바르게 형성하기 위해 Uri 클래스를 사용합니다.
-    Uri uri = Uri.parse('$url$inputData');
+    Uri uri = Uri.parse('$url$username');
     http.Response response = await http.get(uri);
 
     if (response.statusCode == 200) {

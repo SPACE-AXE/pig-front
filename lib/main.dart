@@ -2,10 +2,12 @@ import 'dart:math';
 import 'package:appfront/Screen/map/map_screen.dart';
 import 'package:flutter/material.dart';
 
+import 'package:appfront/userData.dart';
 import 'package:appfront/Screen/Auth/Login/login_screen.dart';
 import 'package:desktop_window/desktop_window.dart';
 import 'package:appfront/QRScreen.dart';
 import 'package:appfront/Screen/prePayment/PrePaymentScreen.dart';
+import 'package:appfront/Screen/Card/card_screen.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -24,7 +26,7 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: _buildAppBar(),
-        body: MyBody(context: context),
+        body: MainBody(context: context),
         floatingActionButton: const DraggableFloatingActionButton(),
       ),
     );
@@ -58,15 +60,15 @@ class MainApp extends StatelessWidget {
   }
 }
 
-class MyBody extends StatefulWidget {
+class MainBody extends StatefulWidget {
   final BuildContext context;
-  const MyBody({super.key, required this.context});
+  const MainBody({super.key, required this.context});
 
   @override
-  State<MyBody> createState() => _MyBodyState();
+  State<MainBody> createState() => _MainBodyState();
 }
 
-class _MyBodyState extends State<MyBody> {
+class _MainBodyState extends State<MainBody> {
   String name = '';
 
   void setResult(e) {
@@ -180,10 +182,13 @@ class _MyBodyState extends State<MyBody> {
           const SizedBox(height: 10),
           Row(
             children: [
-              Expanded(
-                child: ElevatedButton(
-                  // QR 버튼
-                  onPressed: () {},
+              Expanded(child: Builder(builder: (BuildContext newContext) {
+                return ElevatedButton(
+                  // 카드 관리
+                  onPressed: () {
+                    Navigator.push(newContext,
+                        MaterialPageRoute(builder: (context) => CardScreen()));
+                  },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,
                     shape: RoundedRectangleBorder(
@@ -191,9 +196,9 @@ class _MyBodyState extends State<MyBody> {
                     backgroundColor: const Color(0xFF39c5bb),
                     minimumSize: const Size(double.infinity, 100),
                   ),
-                  child: const Text('Button 2'),
-                ),
-              ),
+                  child: const Text('카드 관리'),
+                );
+              })),
               const SizedBox(width: 10),
               Expanded(
                 child: ElevatedButton(
@@ -237,9 +242,9 @@ class _DraggableFloatingActionButtonState
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    const double fabSize = 56;
-    final double initialLeft = (screenSize.width / 2) - (fabSize / 2);
-    final double initialTop = screenSize.height - fabSize - 20;
+    const double FabSize = 30;
+    final double initialLeft = (screenSize.width / 2 - FabSize / 2);
+    final double initialTop = screenSize.height - FabSize * 2;
     position = Offset(initialLeft, initialTop);
     return Stack(
       children: [
@@ -251,6 +256,8 @@ class _DraggableFloatingActionButtonState
             feedback: FloatingActionButton(
               onPressed: () {},
               backgroundColor: const Color(0xFF39c5bb),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(FabSize)),
               child: const Icon(Icons.local_atm),
             ),
             childWhenDragging: Container(),
@@ -273,13 +280,12 @@ class _DraggableFloatingActionButtonState
   void checkDragDirection(Offset offset) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final Top = MediaQuery.of(context).size.height - 76;
     debugPrint("x, y ${offset.dx}, ${offset.dy}"); // 버튼 옮겼을 때 위치 출력
     debugPrint(// 가로 중앙값, 좌, 우 적용값
         "${MediaQuery.of(context).size.width / 2}, ${MediaQuery.of(context).size.width / 2 + 150}, ${MediaQuery.of(context).size.width / 2 - 150}");
     if (offset.dx > MediaQuery.of(context).size.width / 2 + 150) {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => PrePaymentScreen()));
+      Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => const PrePaymentScreen()));
     } else if (offset.dx < MediaQuery.of(context).size.width / 2 - 150) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => QRScreen()));
