@@ -24,6 +24,7 @@ class _PrePaymentScreenState extends State<PrePaymentScreen> {
 
     http.get(uri).then((value) {
       var response = json.decode(value.body);
+      debugPrint("123: ${value.headers}");
       if (response['statusCode'] == 403) {
         Fluttertoast.showToast(
           msg: '로그인이 필요한 기능입니다.',
@@ -36,7 +37,7 @@ class _PrePaymentScreenState extends State<PrePaymentScreen> {
             builder: (context) => const LoginScreen(),
           ),
         );
-      }
+      } else {}
     });
   }
 

@@ -61,8 +61,8 @@ class _LoginBtnState extends ConsumerState<LoginBtn> {
     String url = 'https://api.parkchargego.link/auth/login';
     Uri uri = Uri.parse(url);
     http.Response response = await http.post(uri, body: userData);
-    debugPrint("${userData}");
-    debugPrint("${response.statusCode}");
+    debugPrint("쿠키: ${response.headers}");
+    debugPrint("쿠키: $userDataProvider");
     if (response.statusCode == 200) {
       var json = jsonDecode(response.body);
       UserData userData = UserData.fromJson(json);
