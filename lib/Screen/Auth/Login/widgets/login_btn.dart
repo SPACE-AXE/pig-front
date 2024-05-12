@@ -61,13 +61,13 @@ class _LoginBtnState extends ConsumerState<LoginBtn> {
     String url = 'https://api.parkchargego.link/auth/login';
     Uri uri = Uri.parse(url);
     http.Response response = await http.post(uri, body: userData);
-    debugPrint("쿠키: ${response.headers}");
-    debugPrint("쿠키: $userDataProvider");
+    debugPrint("${response.statusCode}");
     if (response.statusCode == 200) {
       var json = jsonDecode(response.body);
+      debugPrint(response.body);
       UserData userData = UserData.fromJson(json);
       ref.read(userDataProvider.notifier).updateUserData(userData);
-      Navigator.pop(context, json);
+      Navigator.pop(context, userData);
       Fluttertoast.showToast(
         msg: "로그인이 완료되었습니다.",
         toastLength: Toast.LENGTH_SHORT,

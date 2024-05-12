@@ -17,6 +17,8 @@ void main() async {
   runApp(const ProviderScope(child: MainApp()));
 }
 
+UserData userData = UserData();
+
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
@@ -69,14 +71,6 @@ class MainBody extends StatefulWidget {
 }
 
 class _MainBodyState extends State<MainBody> {
-  String name = '';
-
-  void setResult(e) {
-    setState(() {
-      name = e;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -95,7 +89,11 @@ class _MainBodyState extends State<MainBody> {
                       MaterialPageRoute(
                         builder: (context) => const LoginScreen(),
                       ),
-                    ).then((value) => setResult(value['name']));
+                    ).then((returnedUserData) {
+                      setState(() {
+                        userData = returnedUserData;
+                      });
+                    });
                   },
                   style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.zero,
@@ -103,9 +101,9 @@ class _MainBodyState extends State<MainBody> {
                           borderRadius: BorderRadius.circular(10)),
                       backgroundColor: const Color(0xFF39c5bb),
                       minimumSize: const Size(double.infinity, 100)),
-                  child: name == ''
+                  child: userData.name == null
                       ? const Text('로그인 해주세요.')
-                      : Text('$name 님 어서오세요.'));
+                      : Text('${userData.name} 님 어서오세요.'));
             },
           ),
           const SizedBox(height: 15),
@@ -202,8 +200,12 @@ class _MainBodyState extends State<MainBody> {
               const SizedBox(width: 10),
               Expanded(
                 child: ElevatedButton(
-                  // 사전 결제 버튼
-                  onPressed: () {},
+                  // 임시 userData test 버튼
+                  onPressed: () {
+                    debugPrint(
+                        "${userData.id}, ${userData.username}, ${userData.nickname}, ${userData.name}");
+                  },
+                  child: const Text('userData test'),
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,
                     shape: RoundedRectangleBorder(
