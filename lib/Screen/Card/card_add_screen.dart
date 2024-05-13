@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import 'package:appfront/main.dart';
+import 'package:appfront/userData.dart';
 
 class CardAddScreen extends StatefulWidget {
   @override
@@ -7,6 +12,7 @@ class CardAddScreen extends StatefulWidget {
 }
 
 class _CardAddScreenState extends State<CardAddScreen> {
+  TextEditingController cardNumberController = TextEditingController();
   DateTime? expiryDate;
 
   Future<void> _selectDate(BuildContext context) async {
@@ -23,6 +29,61 @@ class _CardAddScreenState extends State<CardAddScreen> {
     }
   }
 
+  Future<void> registerCard() async {
+    String apiUrl = "https://api.parkchargego.link/payment/card";
+    try {
+      var response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({
+          "number": cardNumberController.text,
+          "expiryYear": expiryDate?.year.toString().substring(2),
+          "expiryMonth": expiryDate?.month.toString().padLeft(2, '0')
+        }),
+      );
+
+      if (response.statusCode == 201) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Success"),
+              content: Text("Card registered successfully."),
+              actions: [
+                TextButton(
+                  child: Text("OK"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Error"),
+              content: Text("Failed to register card: ${response.body}"),
+              actions: [
+                TextButton(
+                  child: Text("OK"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } catch (e) {
+      print("카드 등록 실패: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +95,7 @@ class _CardAddScreenState extends State<CardAddScreen> {
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: TextFormField(
+                  controller: cardNumberController,
                   keyboardType: TextInputType.number,
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
@@ -41,7 +103,7 @@ class _CardAddScreenState extends State<CardAddScreen> {
                   ],
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "필수 입력값입니다.";
+                      return "카드 번호는 필수 요소 입니다.";
                     } else if (value.length != 16) {
                       return "카드 번호는 16자리여야 합니다.";
                     }
@@ -59,36 +121,11 @@ class _CardAddScreenState extends State<CardAddScreen> {
               ),
               Padding(
                 padding: EdgeInsets.all(8.0),
-                child: TextFormField(
-                  obscureText: true,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(3)
-                  ],
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "필수 입력값입니다.";
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                    hintText: "CVC 번호",
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xff39c5bb),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
                 child: ListTile(
                   title: Text(
                     expiryDate == null
-                        ? "유효 기간 선택"
-                        : "유효 기간: ${expiryDate!.year.toString().padLeft(4, '0')}-${expiryDate!.month.toString().padLeft(2, '0')}-${expiryDate!.day.toString().padLeft(2, '0')}",
+                        ? "유효 기간"
+                        : "유효기간: ${expiryDate!.year.toString().padLeft(4, '0')}-${expiryDate!.month.toString().padLeft(2, '0')}-${expiryDate!.day.toString().padLeft(2, '0')}",
                   ),
                   trailing: Icon(Icons.calendar_today),
                   onTap: () => _selectDate(context),
@@ -96,14 +133,11 @@ class _CardAddScreenState extends State<CardAddScreen> {
               ),
               SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
-                  // API 호출 또는 다음 화면으로 이동하는 로직 추가
-                },
+                onPressed: registerCard,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      Color(0xff39c5bb), // 'primary' 대신 'backgroundColor' 사용
+                  backgroundColor: Color(0xff39c5bb),
                 ),
-                child: Text('확인'),
+                child: Text('등록 완료'),
               ),
             ],
           ),

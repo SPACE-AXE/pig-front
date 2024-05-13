@@ -184,8 +184,16 @@ class _MainBodyState extends State<MainBody> {
                 return ElevatedButton(
                   // 카드 관리
                   onPressed: () {
-                    Navigator.push(newContext,
-                        MaterialPageRoute(builder: (context) => CardScreen()));
+                    Navigator.push(
+                      newContext,
+                      MaterialPageRoute(
+                        builder: (context) => CardScreen(),
+                      ),
+                    ).then((returnedUserData) {
+                      setState(() {
+                        userData = returnedUserData;
+                      });
+                    });
                   },
                   child: const Text('카드 관리'),
                   style: ElevatedButton.styleFrom(
