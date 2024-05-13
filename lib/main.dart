@@ -6,7 +6,7 @@ import 'package:appfront/userData.dart';
 import 'package:appfront/Screen/Auth/Login/login_screen.dart';
 import 'package:desktop_window/desktop_window.dart';
 import 'package:appfront/QRScreen.dart';
-import 'package:appfront/PrePaymentScreen.dart';
+import 'package:appfront/Screen/prePayment/prepay_screen.dart';
 import 'package:appfront/Screen/Card/card_screen.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -84,16 +84,18 @@ class _MainBodyState extends State<MainBody> {
             builder: (BuildContext newContext) {
               return ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      newContext,
-                      MaterialPageRoute(
-                        builder: (context) => const LoginScreen(),
-                      ),
-                    ).then((returnedUserData) {
-                      setState(() {
-                        userData = returnedUserData;
-                      });
-                    });
+                    userData.name == null
+                        ? Navigator.push(
+                            newContext,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
+                          ).then((returnedUserData) {
+                            setState(() {
+                              userData = returnedUserData;
+                            });
+                          })
+                        : null;
                   },
                   style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.zero,
@@ -177,7 +179,7 @@ class _MainBodyState extends State<MainBody> {
             ),
             child: const Text('박차고에 대해 알고 싶어요!'),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Row(
             children: [
               Expanded(child: Builder(builder: (BuildContext newContext) {
@@ -195,17 +197,17 @@ class _MainBodyState extends State<MainBody> {
                       });
                     });
                   },
-                  child: const Text('카드 관리'),
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
-                    backgroundColor: Color(0xFF39c5bb),
-                    minimumSize: Size(double.infinity, 100),
+                    backgroundColor: const Color(0xFF39c5bb),
+                    minimumSize: const Size(double.infinity, 100),
                   ),
+                  child: const Text('카드 관리'),
                 );
               })),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Expanded(
                 child: ElevatedButton(
                   // 임시 userData test 버튼
@@ -213,14 +215,14 @@ class _MainBodyState extends State<MainBody> {
                     debugPrint(
                         "${userData.id}, ${userData.username}, ${userData.nickname}, ${userData.name}");
                   },
-                  child: const Text('userData test'),
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
-                    backgroundColor: Color(0xFF39c5bb),
-                    minimumSize: Size(double.infinity, 100),
+                    backgroundColor: const Color(0xFF39c5bb),
+                    minimumSize: const Size(double.infinity, 100),
                   ),
+                  child: const Text('userData test'),
                 ),
               ),
             ],
@@ -265,9 +267,9 @@ class _DraggableFloatingActionButtonState
             feedback: FloatingActionButton(
               onPressed: () {},
               backgroundColor: const Color(0xFF39c5bb),
-              child: const Icon(Icons.local_atm),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(FabSize)),
+              child: const Icon(Icons.local_atm),
             ),
             childWhenDragging: Container(),
             onDragEnd: (details) {
@@ -293,8 +295,8 @@ class _DraggableFloatingActionButtonState
     debugPrint(// 가로 중앙값, 좌, 우 적용값
         "${MediaQuery.of(context).size.width / 2}, ${MediaQuery.of(context).size.width / 2 + 150}, ${MediaQuery.of(context).size.width / 2 - 150}");
     if (offset.dx > MediaQuery.of(context).size.width / 2 + 150) {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => PrePaymentScreen()));
+      Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => const PrePaymentScreen()));
     } else if (offset.dx < MediaQuery.of(context).size.width / 2 - 150) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => QRScreen()));
