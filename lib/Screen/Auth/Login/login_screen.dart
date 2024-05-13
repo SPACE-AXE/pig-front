@@ -3,6 +3,7 @@
 import 'package:appfront/Screen/Auth/login/widgets/id_pwd.dart';
 import 'package:appfront/Screen/Auth/login/widgets/login_btn.dart';
 import 'package:appfront/Screen/Auth/login/widgets/three_btn.dart';
+import 'package:appfront/main.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -37,7 +38,11 @@ class _LoginScreenState extends State<LoginScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const MainApp()),
+              (route) => false,
+            );
           },
         ),
       ),
