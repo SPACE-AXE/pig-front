@@ -6,7 +6,7 @@ import 'package:appfront/userData.dart';
 import 'package:appfront/Screen/Auth/Login/login_screen.dart';
 import 'package:desktop_window/desktop_window.dart';
 import 'package:appfront/QRScreen.dart';
-import 'package:appfront/Screen/prePayment/PrePaymentScreen.dart';
+import 'package:appfront/Screen/prePayment/prepay_screen.dart';
 import 'package:appfront/Screen/Card/card_screen.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -84,16 +84,18 @@ class _MainBodyState extends State<MainBody> {
             builder: (BuildContext newContext) {
               return ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      newContext,
-                      MaterialPageRoute(
-                        builder: (context) => const LoginScreen(),
-                      ),
-                    ).then((returnedUserData) {
-                      setState(() {
-                        userData = returnedUserData;
-                      });
-                    });
+                    userData.name == null
+                        ? Navigator.push(
+                            newContext,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
+                          ).then((returnedUserData) {
+                            setState(() {
+                              userData = returnedUserData;
+                            });
+                          })
+                        : null;
                   },
                   style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.zero,
@@ -205,7 +207,6 @@ class _MainBodyState extends State<MainBody> {
                     debugPrint(
                         "${userData.id}, ${userData.username}, ${userData.nickname}, ${userData.name}");
                   },
-                  child: const Text('userData test'),
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,
                     shape: RoundedRectangleBorder(
@@ -213,7 +214,7 @@ class _MainBodyState extends State<MainBody> {
                     backgroundColor: const Color(0xFF39c5bb),
                     minimumSize: const Size(double.infinity, 100),
                   ),
-                  child: const Text('Button 3'),
+                  child: const Text('userData test'),
                 ),
               ),
             ],

@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 
 class UserData extends ChangeNotifier {
-  int? id = null;
-  String? name = null;
-  String? nickname = null;
-  String? email = null;
-  String? username = null;
-  String? password = null;
-  String? birth = null;
-  String? createdAt = null;
-  String? deletedAt = null;
-  String? emailToken = null;
-  String? card = null;
+  int? id;
+  String? name;
+  String? nickname;
+  String? email;
+  String? username;
+  String? password;
+  String? birth;
+  String? createdAt;
+  String? deletedAt;
+  String? emailToken;
+  String? card;
+  String? accessToken;
+  String? refreshToken;
 
   UserData({
     this.id,
@@ -25,6 +27,8 @@ class UserData extends ChangeNotifier {
     this.deletedAt,
     this.emailToken,
     this.card,
+    this.accessToken,
+    this.refreshToken,
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) {
@@ -40,6 +44,8 @@ class UserData extends ChangeNotifier {
       deletedAt: json['deletedAt'],
       emailToken: json['emailToken'],
       card: json['card'],
+      accessToken: json['accessToken'],
+      refreshToken: json['refreshToken'],
     );
   }
 
@@ -56,6 +62,8 @@ class UserData extends ChangeNotifier {
       'deletedAt': deletedAt,
       'emailToken': emailToken,
       'card': card,
+      'accessToken': accessToken,
+      'refreshToken': refreshToken,
     };
   }
 
@@ -71,7 +79,9 @@ class UserData extends ChangeNotifier {
     deletedAt = data.deletedAt;
     emailToken = data.emailToken;
     card = data.card;
+    accessToken = data.accessToken;
+    refreshToken = data.refreshToken;
     debugPrint(
-        "$id, $name, $nickname, $email, $username, $password, $birth, $createdAt, $deletedAt, $emailToken, $card");
+        "$id, $name, $nickname, $email, $username, $password, $birth, $createdAt, $deletedAt, $emailToken, $card, $accessToken, $refreshToken");
   }
 }
