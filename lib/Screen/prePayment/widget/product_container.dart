@@ -36,7 +36,7 @@ class _ProductContainerState extends State<ProductContainer> {
                   children: [
                     Container(
                       decoration: BoxDecoration(border: Border.all()),
-                      child: const Text("!@#"),
+                      child: Text("${widget.data['id']}"),
                     ),
                     Container(
                       decoration: BoxDecoration(border: Border.all()),

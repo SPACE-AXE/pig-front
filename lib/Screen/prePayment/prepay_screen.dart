@@ -5,6 +5,7 @@ import 'package:appfront/Screen/prePayment/widget/product_container.dart';
 import 'package:appfront/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
@@ -32,8 +33,24 @@ class _PrePaymentScreenState extends State<PrePaymentScreen> {
           'access-token=${userData.accessToken}; refresh-token=${userData.refreshToken}',
     }).then((value) {
       dynamic response = json.decode(value.body);
-
-      if (response.runtimeType == Map<String, dynamic>) {
+      if (response.runtimeType == List) {
+        setState(() {
+          isLoading = false;
+        });
+        List<dynamic> tmp = response;
+        if (tmp.isEmpty) {
+          debugPrint("tmp: $tmp");
+          setState(() {
+            isEmpty = true;
+          });
+        } else {
+          setState(() {
+            data = tmp;
+            debugPrint("12321312321321312: $data");
+            debugPrint("data: $data");
+          });
+        }
+      } else {
         if (response['statusCode'] == 403 || response['statusCode'] == 401) {
           Fluttertoast.showToast(
             msg: '로그인이 필요한 기능입니다.',
@@ -58,23 +75,6 @@ class _PrePaymentScreenState extends State<PrePaymentScreen> {
           );
           Navigator.pop(context);
         }
-      } else if (response.runtimeType == List) {
-        setState(() {
-          isLoading = false;
-        });
-        List<dynamic> tmp = response;
-        if (tmp.isEmpty) {
-          debugPrint("tmp: $tmp");
-          setState(() {
-            isEmpty = true;
-          });
-        } else {
-          setState(() {
-            data = tmp;
-            debugPrint("12321312321321312: $data");
-            debugPrint("data: $data");
-          });
-        }
       }
     });
   }
@@ -82,32 +82,54 @@ class _PrePaymentScreenState extends State<PrePaymentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("사전결제 스크린")),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : isEmpty
-              ? const Center(
-                  child: Text("결제가 필요한 데이터가 없습니다"),
-                )
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: makeProductList(data),
-                ),
-    );
+        appBar: AppBar(title: const Text("사전결제 스크린")),
+        body: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : isEmpty
+                ? const Center(
+                    child: Text("결제가 필요한 데이터가 없습니다"),
+                  )
+                : makeProductList(data));
   }
 
-  List<Widget> makeProductList(List<dynamic> data) {
+  Column makeProductList(List<dynamic> data) {
     List<Widget> containers = [];
     for (var product in data) {
-      containers.add(Container(
-          decoration: BoxDecoration(border: Border.all()),
-          child: ProductContainer(data: product)));
+      containers.add(Row(
+        children: [
+          const Expanded(
+            flex: 1,
+            child: SizedBox(),
+          ),
+          ProductContainer(data: product),
+          const Expanded(
+            flex: 1,
+            child: SizedBox(),
+          ),
+        ],
+      ));
       containers.add(
-        const SizedBox(height: 40),
+        SizedBox(height: 40, width: MediaQuery.of(context).size.width * 0.9),
       );
     }
-    containers.add(ProductContainer(data: data[0]));
-    return containers;
+    containers.add(Row(
+      children: [
+        const Expanded(
+          flex: 1,
+          child: SizedBox(),
+        ),
+        ProductContainer(data: data[0]),
+        const Expanded(
+          flex: 1,
+          child: SizedBox(),
+        ),
+      ],
+    ));
+    print("$data");
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: containers,
+    );
   }
 }
