@@ -1,10 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 
 class ProductContainer extends StatefulWidget {
+  int selectedId;
+  final Function(int) updateId;
   Map<String, dynamic> data;
-  ProductContainer({super.key, required this.data});
+  ProductContainer(
+      {super.key,
+      required this.data,
+      required this.selectedId,
+      required this.updateId});
 
   @override
   State<ProductContainer> createState() => _ProductContainerState();
@@ -12,6 +19,16 @@ class ProductContainer extends StatefulWidget {
 
 class _ProductContainerState extends State<ProductContainer> {
   String? selectedValue;
+  String date = '';
+  @override
+  void initState() {
+    super.initState();
+    DateTime original = DateTime.parse(widget.data['entryTime']);
+    setState(() {
+      date = DateFormat('yyyy.MM.dd. HH:MM').format(original);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,27 +52,33 @@ class _ProductContainerState extends State<ProductContainer> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      decoration: BoxDecoration(border: Border.all()),
-                      child: Text("${widget.data['id']}"),
+                      child: Text(
+                        "${widget.data['park']['name']}",
+                        style: const TextStyle(fontSize: 20),
+                      ),
                     ),
                     Container(
-                      decoration: BoxDecoration(border: Border.all()),
-                      child: const Text("!@#"),
+                      child: Text(
+                        "${widget.data['car']['carNum']}",
+                        style: const TextStyle(fontSize: 20),
+                      ),
                     ),
                     Container(
-                      decoration: BoxDecoration(border: Border.all()),
-                      child: const Text("!@#"),
+                      child: Text(
+                        date,
+                        style: const TextStyle(fontSize: 10),
+                      ),
                     ),
                   ],
                 ),
               ),
-              const Expanded(flex: 1, child: Text("data")),
+              const Expanded(flex: 2, child: Text("5,400 ₩")),
             ],
           ),
-          value: 1,
-          groupValue: 'groupValue',
+          value: widget.data['id'],
+          groupValue: widget.selectedId,
           onChanged: (value) {
-            debugPrint("$value");
+            widget.updateId(value);
           }),
     );
   }
