@@ -30,18 +30,34 @@ class _CardAddScreenState extends State<CardAddScreen> {
   }
 
   Future<void> registerCard() async {
+    debugPrint(
+        "${cardNumberController.text}\n${expiryDate?.year.toString().substring(2)}\n${expiryDate?.month.toString().padLeft(2, '0')}");
     String apiUrl = "https://api.parkchargego.link/payment/card";
+
+    var requestBody = jsonEncode({
+      "number": cardNumberController.text,
+      "expiryYear": expiryDate?.year.toString().substring(2),
+      "expiryMonth": expiryDate?.month.toString().padLeft(2, '0')
+    });
+
+    // JSON 요청 본문 출력
+    debugPrint("Request Body: $requestBody");
     try {
       var response = await http.post(
         Uri.parse(apiUrl),
-        headers: {"Content-Type": "application/json"},
+        headers: {
+          'Content-Type': 'application/json',
+          'Cookie':
+              'access-token=${userData.accessToken}; refresh-token=${userData.refreshToken}',
+        },
         body: jsonEncode({
           "number": cardNumberController.text,
           "expiryYear": expiryDate?.year.toString().substring(2),
           "expiryMonth": expiryDate?.month.toString().padLeft(2, '0')
         }),
       );
-
+      debugPrint("Response status: ${response.statusCode}");
+      debugPrint("Response body: ${response.body}");
       if (response.statusCode == 201) {
         showDialog(
           context: context,
