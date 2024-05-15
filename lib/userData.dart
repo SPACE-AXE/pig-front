@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class UserData extends ChangeNotifier {
   int? id;
@@ -81,7 +82,12 @@ class UserData extends ChangeNotifier {
     card = data.card;
     accessToken = data.accessToken;
     refreshToken = data.refreshToken;
+    notifyListeners();
     debugPrint(
         "$id, $name, $nickname, $email, $username, $password, $birth, $createdAt, $deletedAt, $emailToken, $card, $accessToken, $refreshToken");
   }
 }
+
+final userDataProvider = ChangeNotifierProvider<UserData>((ref) {
+  return UserData();
+});
