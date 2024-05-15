@@ -8,6 +8,7 @@ import 'package:desktop_window/desktop_window.dart';
 import 'package:appfront/QRScreen.dart';
 import 'package:appfront/Screen/prePayment/prepay_screen.dart';
 import 'package:appfront/Screen/Card/card_screen.dart';
+import 'package:appfront/Screen/Car/car_screen.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -208,23 +209,29 @@ class _MainBodyState extends State<MainBody> {
                 );
               })),
               const SizedBox(width: 10),
-              Expanded(
-                child: ElevatedButton(
-                  // 임시 userData test 버튼
-                  onPressed: () {
-                    debugPrint(
-                        "${userData.id}, ${userData.username}, ${userData.nickname}, ${userData.name}");
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    backgroundColor: const Color(0xFF39c5bb),
-                    minimumSize: const Size(double.infinity, 100),
+              Expanded(child: Builder(builder: (BuildContext newContext) {
+                return Expanded(
+                  child: ElevatedButton(
+                    // 차량 관리
+                    onPressed: () {
+                      Navigator.push(
+                        newContext,
+                        MaterialPageRoute(
+                          builder: (context) => CarScreen(),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      backgroundColor: const Color(0xFF39c5bb),
+                      minimumSize: const Size(double.infinity, 100),
+                    ),
+                    child: const Text('차량 관리'),
                   ),
-                  child: const Text('userData test'),
-                ),
-              ),
+                );
+              })),
             ],
           ),
         ],

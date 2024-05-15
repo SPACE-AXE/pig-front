@@ -6,41 +6,40 @@ import 'dart:convert';
 import 'package:appfront/main.dart';
 import 'package:appfront/userData.dart';
 
-class CardAddScreen extends StatefulWidget {
+class CarAddScreen extends StatefulWidget {
   @override
-  _CardAddScreenState createState() => _CardAddScreenState();
+  _CarAddScreenState createState() => _CarAddScreenState();
 }
 
-class _CardAddScreenState extends State<CardAddScreen> {
-  TextEditingController cardNumberController = TextEditingController();
-  DateTime? expiryDate;
+class _CarAddScreenState extends State<CarAddScreen> {
+  TextEditingController carNumberController = TextEditingController();
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: expiryDate ?? DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2100),
-    );
-    if (picked != null && picked != expiryDate) {
-      setState(() {
-        expiryDate = picked;
-      });
+  Future<void> registerCar() async {
+    String apiUrl = "https://api.parkchargego.link/car";
+    String carNum = carNumberController.text;
+
+    if (carNum.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Error"),
+            content: Text("차량 번호는 필수 요소입니다."),
+            actions: [
+              TextButton(
+                child: Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+      return;
     }
-  }
 
-  Future<void> registerCard() async {
-    debugPrint(
-        "${cardNumberController.text}\n${expiryDate?.year.toString().substring(2)}\n${expiryDate?.month.toString().padLeft(2, '0')}");
-    String apiUrl = "https://api.parkchargego.link/payment/card";
-
-    var requestBody = jsonEncode({
-      "number": cardNumberController.text,
-      "expiryYear": expiryDate?.year.toString().substring(2),
-      "expiryMonth": expiryDate?.month.toString().padLeft(2, '0')
-    });
-
-    debugPrint("Request Body: $requestBody");
+    debugPrint("Request Body: $carNum");
     try {
       var response = await http.post(
         Uri.parse(apiUrl),
@@ -49,25 +48,24 @@ class _CardAddScreenState extends State<CardAddScreen> {
           'Cookie':
               'access-token=${userData.accessToken}; refresh-token=${userData.refreshToken}',
         },
-        body: jsonEncode({
-          "number": cardNumberController.text,
-          "expiryYear": expiryDate?.year.toString().substring(2),
-          "expiryMonth": expiryDate?.month.toString().padLeft(2, '0')
-        }),
+        body: jsonEncode({"carNum": carNum}),
       );
+
       debugPrint("Response status: ${response.statusCode}");
       debugPrint("Response body: ${response.body}");
+
       if (response.statusCode == 201) {
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
               title: Text("Success"),
-              content: Text("Card registered successfully."),
+              content: Text("차량 등록 성공."),
               actions: [
                 TextButton(
                   child: Text("OK"),
                   onPressed: () {
+                    Navigator.of(context).pop();
                     Navigator.of(context).pop();
                   },
                 ),
@@ -81,7 +79,7 @@ class _CardAddScreenState extends State<CardAddScreen> {
           builder: (BuildContext context) {
             return AlertDialog(
               title: Text("Error"),
-              content: Text("Failed to register card: ${response.body}"),
+              content: Text("차량 등록 실패: ${response.body}"),
               actions: [
                 TextButton(
                   child: Text("OK"),
@@ -95,14 +93,31 @@ class _CardAddScreenState extends State<CardAddScreen> {
         );
       }
     } catch (e) {
-      print("카드 등록 실패: $e");
+      print("차량 등록 실패: $e");
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Error"),
+            content: Text("차량 등록 실패: $e"),
+            actions: [
+              TextButton(
+                child: Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Card Add Screen")),
+        appBar: AppBar(title: Text("Car Add Screen")),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -110,22 +125,19 @@ class _CardAddScreenState extends State<CardAddScreen> {
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: TextFormField(
-                  controller: cardNumberController,
-                  keyboardType: TextInputType.number,
+                  controller: carNumberController,
+                  keyboardType: TextInputType.text,
                   inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(16)
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9가-힣]+')),
                   ],
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "카드 번호는 필수 요소 입니다.";
-                    } else if (value.length != 16) {
-                      return "카드 번호는 16자리여야 합니다.";
+                      return "차량 번호는 필수 요소입니다.";
                     }
                     return null;
                   },
                   decoration: const InputDecoration(
-                    hintText: "카드 번호",
+                    hintText: "차량 번호 입력 (예: 25머2452)",
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                         color: Color(0xff39c5bb),
@@ -134,21 +146,9 @@ class _CardAddScreenState extends State<CardAddScreen> {
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: ListTile(
-                  title: Text(
-                    expiryDate == null
-                        ? "유효 기간"
-                        : "유효기간: ${expiryDate!.year.toString().padLeft(4, '0')}-${expiryDate!.month.toString().padLeft(2, '0')}-${expiryDate!.day.toString().padLeft(2, '0')}",
-                  ),
-                  trailing: Icon(Icons.calendar_today),
-                  onTap: () => _selectDate(context),
-                ),
-              ),
               SizedBox(height: 20),
               ElevatedButton(
-                onPressed: registerCard,
+                onPressed: registerCar,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xff39c5bb),
                 ),
