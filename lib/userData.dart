@@ -86,6 +86,23 @@ class UserData extends ChangeNotifier {
     debugPrint(
         "$id, $name, $nickname, $email, $username, $password, $birth, $createdAt, $deletedAt, $emailToken, $card, $accessToken, $refreshToken");
   }
+
+  void deleteUserData() {
+    id = null;
+    name = null;
+    nickname = null;
+    email = null;
+    username = null;
+    password = null;
+    birth = null;
+    createdAt = null;
+    deletedAt = null;
+    emailToken = null;
+    card = null;
+    accessToken = null;
+    refreshToken = null;
+    notifyListeners();
+  }
 }
 
 final userDataProvider = ChangeNotifierProvider<UserData>((ref) {
