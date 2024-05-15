@@ -68,27 +68,33 @@ class _SelectScreenState extends State<SelectScreen> {
 
   Column makeProductList(List<dynamic> data) {
     List<Widget> containers = [];
+    debugPrint("$data");
     for (var product in data) {
-      containers.add(Row(
-        children: [
-          const Expanded(
-            flex: 1,
-            child: SizedBox(),
-          ),
-          ProductContainer(
-            data: product,
-            selectedId: selectedId,
-            updateId: updateId,
-          ),
-          const Expanded(
-            flex: 1,
-            child: SizedBox(),
-          ),
-        ],
-      ));
-      containers.add(
-        SizedBox(height: 40, width: MediaQuery.of(context).size.width * 0.9),
-      );
+      product['paymentTime'] == null
+          ? {
+              containers.add(Row(
+                children: [
+                  const Expanded(
+                    flex: 1,
+                    child: SizedBox(),
+                  ),
+                  ProductContainer(
+                    data: product,
+                    selectedId: selectedId,
+                    updateId: updateId,
+                  ),
+                  const Expanded(
+                    flex: 1,
+                    child: SizedBox(),
+                  ),
+                ],
+              )),
+              containers.add(
+                SizedBox(
+                    height: 40, width: MediaQuery.of(context).size.width * 0.9),
+              )
+            }
+          : null;
     }
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
