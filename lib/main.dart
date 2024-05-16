@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:appfront/Screen/map/map_screen.dart';
+import 'package:appfront/widget/drawer.dart';
 import 'package:flutter/material.dart';
 
 import 'package:appfront/userData.dart';
@@ -26,6 +27,7 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: _buildAppBar(),
+        endDrawer: const MyDrawer(),
         body: MainBody(context: context),
         floatingActionButton: const DraggableFloatingActionButton(),
       ),
@@ -50,7 +52,9 @@ class MainApp extends StatelessWidget {
           builder: (BuildContext context) {
             return IconButton(
               icon: const Icon(Icons.menu),
-              onPressed: () {},
+              onPressed: () {
+                const MyDrawer();
+              },
             );
           },
         ),
