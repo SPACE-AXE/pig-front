@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:appfront/Screen/Card/card_add_screen.dart';
 import 'package:appfront/userData.dart';
 import 'package:appfront/main.dart';
 
-class CardScreen extends StatefulWidget {
+class CardScreen extends ConsumerStatefulWidget {
   @override
   _CardScreenState createState() => _CardScreenState();
 }
 
-class _CardScreenState extends State<CardScreen> {
+class _CardScreenState extends ConsumerState<CardScreen> {
   bool isLoading = true;
   String? cardNumber;
 
@@ -25,10 +26,13 @@ class _CardScreenState extends State<CardScreen> {
   Future<void> fetchCard() async {
     String apiUrl = "https://api.parkchargego.link/payment/card";
     try {
+      final data = ref.read(userDataProvider);
       var response = await http.get(
         Uri.parse(apiUrl),
         headers: {
-          'Cookie': 'access-token=${userData.accessToken}; refresh-token=${userData.refreshToken}'
+          'Content-Type': 'application/json',
+          'Cookie':
+              'access-token=${data.accessToken}; refresh-token=${data.refreshToken}'
         },
       );
       if (response.statusCode == 200) {
@@ -53,10 +57,12 @@ class _CardScreenState extends State<CardScreen> {
   Future<void> deleteCard() async {
     String apiUrl = "https://api.parkchargego.link/payment/card";
     try {
+      final data = ref.read(userDataProvider);
       var response = await http.delete(
         Uri.parse(apiUrl),
         headers: {
-          'Cookie': 'access-token=${userData.accessToken}; refresh-token=${userData.refreshToken}'
+          'Cookie':
+              'access-token=${data.accessToken}; refresh-token=${data.refreshToken}'
         },
       );
       if (response.statusCode == 200) {
@@ -84,7 +90,8 @@ class _CardScreenState extends State<CardScreen> {
                     onPressed: () async {
                       await Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => CardAddScreen()),
+                        MaterialPageRoute(
+                            builder: (context) => CardAddScreen()),
                       );
                       fetchCard();
                     },

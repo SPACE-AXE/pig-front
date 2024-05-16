@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:appfront/main.dart';
 import 'package:appfront/userData.dart';
 
-class CarAddScreen extends StatefulWidget {
+class CarAddScreen extends ConsumerStatefulWidget {
   @override
   _CarAddScreenState createState() => _CarAddScreenState();
 }
 
-class _CarAddScreenState extends State<CarAddScreen> {
+class _CarAddScreenState extends ConsumerState<CarAddScreen> {
   TextEditingController carNumberController = TextEditingController();
 
   Future<void> registerCar() async {
@@ -41,12 +42,13 @@ class _CarAddScreenState extends State<CarAddScreen> {
 
     debugPrint("Request Body: $carNum");
     try {
+      final data = ref.read(userDataProvider);
       var response = await http.post(
         Uri.parse(apiUrl),
         headers: {
           'Content-Type': 'application/json',
           'Cookie':
-              'access-token=${userData.accessToken}; refresh-token=${userData.refreshToken}',
+              'access-token=${data.accessToken}; refresh-token=${data.refreshToken}'
         },
         body: jsonEncode({"carNum": carNum}),
       );
@@ -117,45 +119,46 @@ class _CarAddScreenState extends State<CarAddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Car Add Screen")),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: TextFormField(
-                  controller: carNumberController,
-                  keyboardType: TextInputType.text,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9가-힣]+')),
-                  ],
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "차량 번호는 필수 요소입니다.";
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                    hintText: "차량 번호 입력 (예: 25머2452)",
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xff39c5bb),
-                      ),
+      appBar: AppBar(title: Text("Car Add Screen")),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: TextFormField(
+                controller: carNumberController,
+                keyboardType: TextInputType.text,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'[0-9가-힣]+')),
+                ],
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "차량 번호는 필수 요소입니다.";
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(
+                  hintText: "차량 번호 입력 (예: 25머2452)",
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0xff39c5bb),
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: registerCar,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xff39c5bb),
-                ),
-                child: Text('등록 완료'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: registerCar,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xff39c5bb),
               ),
-            ],
-          ),
-        ));
+              child: Text('등록 완료'),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

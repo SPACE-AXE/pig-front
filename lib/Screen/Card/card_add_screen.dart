@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:appfront/main.dart';
 import 'package:appfront/userData.dart';
 
-class CardAddScreen extends StatefulWidget {
+class CardAddScreen extends ConsumerStatefulWidget {
   @override
   _CardAddScreenState createState() => _CardAddScreenState();
 }
 
-class _CardAddScreenState extends State<CardAddScreen> {
+class _CardAddScreenState extends ConsumerState<CardAddScreen> {
   TextEditingController cardNumberController = TextEditingController();
   DateTime? expiryDate;
 
@@ -41,13 +42,14 @@ class _CardAddScreenState extends State<CardAddScreen> {
     });
 
     debugPrint("Request Body: $requestBody");
+    final data = ref.read(userDataProvider);
     try {
       var response = await http.post(
         Uri.parse(apiUrl),
         headers: {
           'Content-Type': 'application/json',
           'Cookie':
-              'access-token=${userData.accessToken}; refresh-token=${userData.refreshToken}',
+              'access-token=${data.accessToken}; refresh-token=${data.refreshToken}'
         },
         body: jsonEncode({
           "number": cardNumberController.text,
