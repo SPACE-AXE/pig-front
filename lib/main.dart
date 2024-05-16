@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:appfront/Screen/Auth/login/widgets/login_btn.dart';
 import 'package:appfront/Screen/map/map_screen.dart';
 import 'package:appfront/widget/drawer.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +8,7 @@ import 'package:appfront/Screen/Auth/Login/login_screen.dart';
 import 'package:appfront/QRScreen.dart';
 import 'package:appfront/Screen/prePayment/select_screen/select_screen.dart';
 import 'package:appfront/Screen/Card/card_screen.dart';
+import 'package:appfront/Screen/Car/car_screen.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -189,8 +189,12 @@ class _MainBodyState extends State<MainBody> {
                 return ElevatedButton(
                   // 카드 관리
                   onPressed: () {
-                    Navigator.push(newContext,
-                        MaterialPageRoute(builder: (context) => CardScreen()));
+                    Navigator.push(
+                      newContext,
+                      MaterialPageRoute(
+                        builder: (context) => CardScreen(),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,
@@ -203,14 +207,17 @@ class _MainBodyState extends State<MainBody> {
                 );
               })),
               const SizedBox(width: 10),
-              Expanded(
-                child: Consumer(builder: (context, ref, child) {
-                  final userData = ref.watch(userDataProvider);
-                  return ElevatedButton(
-                    // 임시 userData test 버튼
+              Expanded(child: Builder(builder: (BuildContext newContext) {
+                return Expanded(
+                  child: ElevatedButton(
+                    // 차량 관리
                     onPressed: () {
-                      debugPrint(
-                          "${userData.id}, ${userData.username}, ${userData.nickname}, ${userData.name}");
+                      Navigator.push(
+                        newContext,
+                        MaterialPageRoute(
+                          builder: (context) => CarScreen(),
+                        ),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.zero,
@@ -219,10 +226,10 @@ class _MainBodyState extends State<MainBody> {
                       backgroundColor: const Color(0xFF39c5bb),
                       minimumSize: const Size(double.infinity, 100),
                     ),
-                    child: const Text('userData test'),
-                  );
-                }),
-              ),
+                    child: const Text('차량 관리'),
+                  ),
+                );
+              })),
             ],
           ),
         ],
