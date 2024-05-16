@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:appfront/main.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -21,10 +22,6 @@ class LoginBtn extends ConsumerStatefulWidget {
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _LoginBtnState();
 }
-
-final userDataProvider = ChangeNotifierProvider<UserData>((ref) {
-  return UserData();
-});
 
 class _LoginBtnState extends ConsumerState<LoginBtn> {
   @override
@@ -81,9 +78,8 @@ class _LoginBtnState extends ConsumerState<LoginBtn> {
         "accessToken": accessToken,
         "refreshToken": refreshToken,
       };
-      UserData userData = UserData.fromJson(json);
-      ref.read(userDataProvider.notifier).updateUserData(userData);
-      Navigator.pop(context, userData);
+      ref.read(userDataProvider).updateUserData(UserData.fromJson(json));
+      Navigator.pop(context);
       Fluttertoast.showToast(
         msg: "로그인이 완료되었습니다.",
         toastLength: Toast.LENGTH_SHORT,

@@ -1,12 +1,12 @@
 import 'dart:math';
+import 'package:appfront/Screen/Auth/login/widgets/login_btn.dart';
 import 'package:appfront/Screen/map/map_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:appfront/userData.dart';
 import 'package:appfront/Screen/Auth/Login/login_screen.dart';
-import 'package:desktop_window/desktop_window.dart';
 import 'package:appfront/QRScreen.dart';
-import 'package:appfront/Screen/prePayment/prepay_screen.dart';
+import 'package:appfront/Screen/prePayment/select_screen/select_screen.dart';
 import 'package:appfront/Screen/Card/card_screen.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,8 +16,6 @@ void main() async {
   await NaverMapSdk.instance.initialize(clientId: "etuftq1yhk");
   runApp(const ProviderScope(child: MainApp()));
 }
-
-UserData userData = UserData();
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
@@ -82,30 +80,31 @@ class _MainBodyState extends State<MainBody> {
         children: [
           Builder(
             builder: (BuildContext newContext) {
-              return ElevatedButton(
-                  onPressed: () {
-                    userData.name == null
-                        ? Navigator.push(
-                            newContext,
-                            MaterialPageRoute(
-                              builder: (context) => const LoginScreen(),
-                            ),
-                          ).then((returnedUserData) {
-                            setState(() {
-                              userData = returnedUserData;
-                            });
-                          })
-                        : null;
-                  },
-                  style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      backgroundColor: const Color(0xFF39c5bb),
-                      minimumSize: const Size(double.infinity, 100)),
-                  child: userData.name == null
-                      ? const Text('로그인 해주세요.')
-                      : Text('${userData.name} 님 어서오세요.'));
+              return Consumer(
+                builder: (_, ref, __) {
+                  final data = ref.watch(userDataProvider);
+                  return ElevatedButton(
+                      onPressed: () {
+                        data.name == null
+                            ? Navigator.push(
+                                newContext,
+                                MaterialPageRoute(
+                                  builder: (context) => const LoginScreen(),
+                                ),
+                              ).then((value) => debugPrint("${data.id}"))
+                            : null;
+                      },
+                      style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          backgroundColor: const Color(0xFF39c5bb),
+                          minimumSize: const Size(double.infinity, 100)),
+                      child: data.name == null
+                          ? const Text('로그인 해주세요.')
+                          : Text('${data.name} 님 어서오세요.'));
+                },
+              );
             },
           ),
           const SizedBox(height: 15),
@@ -209,21 +208,24 @@ class _MainBodyState extends State<MainBody> {
               })),
               const SizedBox(width: 10),
               Expanded(
-                child: ElevatedButton(
-                  // 임시 userData test 버튼
-                  onPressed: () {
-                    debugPrint(
-                        "${userData.id}, ${userData.username}, ${userData.nickname}, ${userData.name}");
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    backgroundColor: const Color(0xFF39c5bb),
-                    minimumSize: const Size(double.infinity, 100),
-                  ),
-                  child: const Text('userData test'),
-                ),
+                child: Consumer(builder: (context, ref, child) {
+                  final userData = ref.watch(userDataProvider);
+                  return ElevatedButton(
+                    // 임시 userData test 버튼
+                    onPressed: () {
+                      debugPrint(
+                          "${userData.id}, ${userData.username}, ${userData.nickname}, ${userData.name}");
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      backgroundColor: const Color(0xFF39c5bb),
+                      minimumSize: const Size(double.infinity, 100),
+                    ),
+                    child: const Text('userData test'),
+                  );
+                }),
               ),
             ],
           ),
@@ -296,7 +298,18 @@ class _DraggableFloatingActionButtonState
         "${MediaQuery.of(context).size.width / 2}, ${MediaQuery.of(context).size.width / 2 + 150}, ${MediaQuery.of(context).size.width / 2 - 150}");
     if (offset.dx > MediaQuery.of(context).size.width / 2 + 150) {
       Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const PrePaymentScreen()));
+        MaterialPageRoute(
+          builder: (context) => Consumer(
+            builder: (context, ref, child) {
+              final data = ref.watch(userDataProvider);
+              debugPrint("실행");
+              return SelectScreen(
+                userData: data,
+              );
+            },
+          ),
+        ),
+      );
     } else if (offset.dx < MediaQuery.of(context).size.width / 2 - 150) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => QRScreen()));
