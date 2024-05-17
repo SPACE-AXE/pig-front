@@ -1,3 +1,6 @@
+import 'package:appfront/Screen/Car/car_screen.dart';
+import 'package:appfront/Screen/Card/card_screen.dart';
+import 'package:appfront/Screen/user/user_info_screen.dart';
 import 'package:appfront/userData.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,17 +34,41 @@ class _MyDrawerState extends State<MyDrawer> {
                   ),
                 ),
               ),
-              const ListTile(
-                title: Text('나의 정보'),
+              ListTile(
+                title: const Text('나의 정보'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MyInfoScreen(),
+                    ),
+                  );
+                },
               ),
               const ListTile(
                 title: Text('이용 기록'),
               ),
-              const ListTile(
-                title: Text('차량 등록'),
+              ListTile(
+                title: const Text('차량 등록'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CarScreen(),
+                    ),
+                  );
+                },
               ),
-              const ListTile(
-                title: Text('카드 등록'),
+              ListTile(
+                title: const Text('카드 등록'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CardScreen(),
+                    ),
+                  );
+                },
               ),
               const ListTile(
                 title: Text('고객 문의'),

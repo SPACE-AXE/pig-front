@@ -53,7 +53,7 @@ class MainApp extends StatelessWidget {
             return IconButton(
               icon: const Icon(Icons.menu),
               onPressed: () {
-                const MyDrawer();
+                Scaffold.of(context).openEndDrawer();
               },
             );
           },
