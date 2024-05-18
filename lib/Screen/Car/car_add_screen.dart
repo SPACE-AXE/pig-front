@@ -119,7 +119,10 @@ class _CarAddScreenState extends ConsumerState<CarAddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Car Add Screen")),
+      appBar: AppBar(
+        title: Text("차량 등록"),
+        centerTitle: true,
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

@@ -37,7 +37,10 @@ class _PayScreenState extends State<PayScreen> {
   Widget build(BuildContext context) {
     debugPrint(date);
     return Scaffold(
-      appBar: AppBar(title: const Text("사전결제")),
+      appBar: AppBar(
+        title: const Text("사전결제"),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: Center(
           child: Container(
