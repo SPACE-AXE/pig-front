@@ -65,9 +65,27 @@ class _MyCarouselSliderState extends State<MyCarouselSlider> {
                                     ),
                                   ),
                                 ),
-                                child: const Text(
-                                  "이용기록",
-                                  style: TextStyle(fontSize: 20),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      "이용기록",
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.add),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const Text("!23"),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ],
                                 ),
                               ),
                               const SizedBox(height: 10),
