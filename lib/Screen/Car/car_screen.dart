@@ -82,48 +82,61 @@ class _CarScreenState extends ConsumerState<CarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Car Management")),
-      body: Center(
-        child: isLoading
-            ? CircularProgressIndicator()
-            : cars.isEmpty
-                ? ElevatedButton(
-                    onPressed: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => CarAddScreen()),
-                      );
-                      final data = ref.read(userDataProvider);
-                      fetchCars(data.accessToken!, data.refreshToken!);
-                    },
-                    child: Text('차량 추가'),
-                  )
-                : ListView.builder(
-                    itemCount: cars.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text('차량 번호: ${cars[index]['carNum']}'),
-                        trailing: IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () async {
-                            await deleteCar(cars[index]['id']!);
-                          },
-                        ),
-                      );
-                    },
-                  ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CarAddScreen()),
-          );
-          final data = ref.read(userDataProvider);
-          fetchCars(data.accessToken!, data.refreshToken!);
-        },
-        child: Icon(Icons.add),
-      ),
-    );
+        appBar: AppBar(
+          title: Text("차량 관리"),
+          centerTitle: true,
+        ),
+        body: Center(
+          child: isLoading
+              ? CircularProgressIndicator()
+              : cars.isEmpty
+                  ? null
+                  : ListView.builder(
+                      itemCount: cars.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          alignment: Alignment.center,
+                          margin:
+                              EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                              color: Color(0xFF39c5bb),
+                              width: 3,
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '차량 번호: ${cars[index]['carNum']}',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              IconButton(
+                                icon:
+                                    Icon(Icons.delete, color: Colors.blueGrey),
+                                onPressed: () async {
+                                  await deleteCar(cars[index]['id']!);
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CarAddScreen()),
+            );
+            final data = ref.read(userDataProvider);
+            fetchCars(data.accessToken!, data.refreshToken!);
+          },
+          child: Icon(Icons.add),
+        ));
   }
 }

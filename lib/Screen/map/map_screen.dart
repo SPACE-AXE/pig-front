@@ -185,6 +185,7 @@ class _MapScreenState extends State<MapScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("주차장 찾기"),
+        centerTitle: true,
       ),
       body: lat != 0.0 && lng != 0.0 && markers.isNotEmpty
           ? Stack(

@@ -50,7 +50,10 @@ class _SelectScreenState extends State<SelectScreen> {
       ref.watch(userDataProvider);
       getData();
       return Scaffold(
-        appBar: AppBar(title: const Text("사전결제")),
+        appBar: AppBar(
+          title: const Text("사전결제"),
+          centerTitle: true,
+        ),
         body: isLoading
             ? const Center(child: CircularProgressIndicator())
             : isEmpty

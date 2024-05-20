@@ -38,7 +38,7 @@ class _CardScreenState extends ConsumerState<CardScreen> {
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         setState(() {
-          cardNumber = data['number']; // 예시로 카드 번호를 받는다고 가정
+          cardNumber = data['number'];
           isLoading = false;
         });
       } else {
@@ -47,7 +47,7 @@ class _CardScreenState extends ConsumerState<CardScreen> {
         });
       }
     } catch (e) {
-      print('카드 조회 실패: $e');
+      print('Card fetch failed: $e');
       setState(() {
         isLoading = false;
       });
@@ -66,22 +66,25 @@ class _CardScreenState extends ConsumerState<CardScreen> {
         },
       );
       if (response.statusCode == 200) {
-        print("카드 삭제 성공");
+        print("카드를 삭제했습니다.");
         setState(() {
           cardNumber = null;
         });
       } else {
-        print("카드 삭제 실패: ${response.body}");
+        print("카드 삭제에 실패하였습니다. : ${response.body}");
       }
     } catch (e) {
-      print('카드 삭제 실패: $e');
+      print('카드 삭제에 실패하였습니다. : $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Card Management")),
+      appBar: AppBar(
+        title: Text("카드 관리"),
+        centerTitle: true,
+      ),
       body: Center(
         child: isLoading
             ? CircularProgressIndicator()
@@ -95,20 +98,44 @@ class _CardScreenState extends ConsumerState<CardScreen> {
                       );
                       fetchCard();
                     },
-                    child: Text('카드 추가'),
+                    child: Text('카드 등록'),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF39c5bb),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18))),
                   )
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('카드 번호: $cardNumber'),
-                      ElevatedButton(
-                        onPressed: deleteCard,
-                        child: Text('카드 삭제'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF39c5bb),
+                : Container(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    height: MediaQuery.of(context).size.height * 0.25,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                          color: Color(0xFF39c5bb),
+                          width: 5,
                         ),
-                      ),
-                    ],
+                        borderRadius: BorderRadius.circular(12)),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('등록된 카드\n$cardNumber',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.05,
+                            )),
+                        SizedBox(height: 20),
+                        const SizedBox(width: 10),
+                        ElevatedButton(
+                          onPressed: deleteCard,
+                          child: Text('카드 삭제'),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFF39c5bb),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18))),
+                        ),
+                      ],
+                    ),
                   ),
       ),
     );
