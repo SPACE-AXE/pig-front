@@ -174,7 +174,7 @@ class _MainBodyState extends State<MainBody> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Image.asset(
-                      'lib/assets/images/logo.png',
+                      'lib/assets/images/list.png',
                       fit: BoxFit.cover,
                     ),
                   ),
