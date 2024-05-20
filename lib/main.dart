@@ -31,6 +31,7 @@ class MainApp extends StatelessWidget {
         body: MainBody(context: context),
         floatingActionButton: const DraggableFloatingActionButton(),
       ),
+      theme: ThemeData(fontFamily: 'BMJUA'),
     );
   }
 
@@ -100,6 +101,10 @@ class _MainBodyState extends State<MainBody> {
                       },
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.zero,
+                          foregroundColor: Color.fromARGB(255, 243, 149, 223),
+                          textStyle: const TextStyle(
+                            fontSize: 20,
+                          ),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
                           backgroundColor: const Color(0xFF39c5bb),
@@ -130,6 +135,10 @@ class _MainBodyState extends State<MainBody> {
                                   builder: (context) => const MapScreen()));
                         },
                         style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          textStyle: const TextStyle(
+                            fontSize: 20,
+                          ),
                           padding: EdgeInsets.zero,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
@@ -153,6 +162,10 @@ class _MainBodyState extends State<MainBody> {
                   // 이용 내역 버튼
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    textStyle: const TextStyle(
+                      fontSize: 20,
+                    ),
                     padding: EdgeInsets.zero,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
@@ -174,6 +187,10 @@ class _MainBodyState extends State<MainBody> {
             //설명 버튼
             onPressed: () {},
             style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.white,
+              textStyle: const TextStyle(
+                fontSize: 20,
+              ),
               padding: EdgeInsets.zero,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
@@ -197,6 +214,10 @@ class _MainBodyState extends State<MainBody> {
                     );
                   },
                   style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    textStyle: const TextStyle(
+                      fontSize: 20,
+                    ),
                     padding: EdgeInsets.zero,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
@@ -220,6 +241,10 @@ class _MainBodyState extends State<MainBody> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      textStyle: const TextStyle(
+                        fontSize: 20,
+                      ),
                       padding: EdgeInsets.zero,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
