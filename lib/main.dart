@@ -323,8 +323,8 @@ class _DraggableFloatingActionButtonState
     final screenHeight = MediaQuery.of(context).size.height;
     debugPrint("x, y ${offset.dx}, ${offset.dy}"); // 버튼 옮겼을 때 위치 출력
     debugPrint(// 가로 중앙값, 좌, 우 적용값
-        "${MediaQuery.of(context).size.width / 2}, ${MediaQuery.of(context).size.width / 2 + 150}, ${MediaQuery.of(context).size.width / 2 - 150}");
-    if (offset.dx > MediaQuery.of(context).size.width / 2 + 150) {
+        "${MediaQuery.of(context).size.width / 2 - 30}, ${MediaQuery.of(context).size.width / 2 + 75 - 30}, ${MediaQuery.of(context).size.width / 2 - 75 - 30}");
+    if (offset.dx > MediaQuery.of(context).size.width / 2 + 75 - 30) {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => Consumer(
@@ -338,7 +338,7 @@ class _DraggableFloatingActionButtonState
           ),
         ),
       );
-    } else if (offset.dx < MediaQuery.of(context).size.width / 2 - 150) {
+    } else if (offset.dx < MediaQuery.of(context).size.width / 2 - 75 - 30) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => QRScreen()));
     }
