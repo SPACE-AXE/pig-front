@@ -18,7 +18,7 @@ class TermContainer extends StatelessWidget {
       child: Column(
         children: [
           ExpansionTile(
-            title: const Text("대충약관"),
+            title: const Text("결제 약관"),
             children: [
               Container(
                 decoration: BoxDecoration(color: Colors.grey.withOpacity(0.3)),
@@ -28,7 +28,7 @@ class TermContainer extends StatelessWidget {
             ],
           ),
           ExpansionTile(
-            title: const Text("대충약관"),
+            title: const Text("개인정보 제 3자 제공 동의"),
             children: [
               Container(
                 decoration: BoxDecoration(color: Colors.grey.withOpacity(0.3)),
