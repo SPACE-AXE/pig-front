@@ -133,7 +133,8 @@ class _CarAddScreenState extends ConsumerState<CarAddScreen> {
                 controller: carNumberController,
                 keyboardType: TextInputType.text,
                 inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9가-힣]+')),
+                  FilteringTextInputFormatter.allow(
+                      RegExp(r'[ㄱ-ㅎㅏ-ㅣ0-9a-zA-Z가-힣]+')),
                 ],
                 validator: (value) {
                   if (value == null || value.isEmpty) {
