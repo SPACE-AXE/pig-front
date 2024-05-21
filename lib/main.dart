@@ -31,6 +31,7 @@ class MainApp extends StatelessWidget {
         body: MainBody(context: context),
         floatingActionButton: const DraggableFloatingActionButton(),
       ),
+      theme: ThemeData(fontFamily: 'BMJUA'),
     );
   }
 
@@ -100,6 +101,10 @@ class _MainBodyState extends State<MainBody> {
                       },
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.zero,
+                          foregroundColor: Color.fromARGB(255, 243, 149, 223),
+                          textStyle: const TextStyle(
+                            fontSize: 20,
+                          ),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
                           backgroundColor: const Color(0xFF39c5bb),
@@ -130,6 +135,10 @@ class _MainBodyState extends State<MainBody> {
                                   builder: (context) => const MapScreen()));
                         },
                         style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          textStyle: const TextStyle(
+                            fontSize: 20,
+                          ),
                           padding: EdgeInsets.zero,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
@@ -153,6 +162,10 @@ class _MainBodyState extends State<MainBody> {
                   // 이용 내역 버튼
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    textStyle: const TextStyle(
+                      fontSize: 20,
+                    ),
                     padding: EdgeInsets.zero,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
@@ -161,7 +174,7 @@ class _MainBodyState extends State<MainBody> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Image.asset(
-                      'lib/assets/images/logo.png',
+                      'lib/assets/images/list.png',
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -174,6 +187,10 @@ class _MainBodyState extends State<MainBody> {
             //설명 버튼
             onPressed: () {},
             style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.white,
+              textStyle: const TextStyle(
+                fontSize: 20,
+              ),
               padding: EdgeInsets.zero,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
@@ -197,6 +214,10 @@ class _MainBodyState extends State<MainBody> {
                     );
                   },
                   style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    textStyle: const TextStyle(
+                      fontSize: 20,
+                    ),
                     padding: EdgeInsets.zero,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
@@ -220,6 +241,10 @@ class _MainBodyState extends State<MainBody> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      textStyle: const TextStyle(
+                        fontSize: 20,
+                      ),
                       padding: EdgeInsets.zero,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
@@ -298,8 +323,8 @@ class _DraggableFloatingActionButtonState
     final screenHeight = MediaQuery.of(context).size.height;
     debugPrint("x, y ${offset.dx}, ${offset.dy}"); // 버튼 옮겼을 때 위치 출력
     debugPrint(// 가로 중앙값, 좌, 우 적용값
-        "${MediaQuery.of(context).size.width / 2}, ${MediaQuery.of(context).size.width / 2 + 150}, ${MediaQuery.of(context).size.width / 2 - 150}");
-    if (offset.dx > MediaQuery.of(context).size.width / 2 + 150) {
+        "${MediaQuery.of(context).size.width / 2 - 30}, ${MediaQuery.of(context).size.width / 2 + 75 - 30}, ${MediaQuery.of(context).size.width / 2 - 75 - 30}");
+    if (offset.dx > MediaQuery.of(context).size.width / 2 + 75 - 30) {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => Consumer(
@@ -313,7 +338,7 @@ class _DraggableFloatingActionButtonState
           ),
         ),
       );
-    } else if (offset.dx < MediaQuery.of(context).size.width / 2 - 150) {
+    } else if (offset.dx < MediaQuery.of(context).size.width / 2 - 75 - 30) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => QRScreen()));
     }
