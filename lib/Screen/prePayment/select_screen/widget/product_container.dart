@@ -26,6 +26,7 @@ class _ProductContainerState extends State<ProductContainer> {
     DateTime original = DateTime.parse(widget.data['entryTime']);
     setState(() {
       date = DateFormat('yyyy.MM.dd. HH:MM').format(original);
+      debugPrint("widget: ${widget.data}");
     });
   }
 
@@ -51,15 +52,15 @@ class _ProductContainerState extends State<ProductContainer> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Container(
+                    //   child: Text(
+                    //     "${widget.data['carNum']}",
+                    //     style: const TextStyle(fontSize: 20),
+                    //   ),
+                    // ),
                     Container(
                       child: Text(
-                        "${widget.data['park']['name']}",
-                        style: const TextStyle(fontSize: 20),
-                      ),
-                    ),
-                    Container(
-                      child: Text(
-                        "${widget.data['car']['carNum']}",
+                        "${widget.data['carNum']}",
                         style: const TextStyle(fontSize: 20),
                       ),
                     ),

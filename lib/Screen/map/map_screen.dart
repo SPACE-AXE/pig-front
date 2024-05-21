@@ -26,7 +26,7 @@ class _MapScreenState extends State<MapScreen> {
   double lat = 0.0;
   double lng = 0.0;
   int price = 5000;
-  int space = 10000;
+  int space = 0;
   String disabled = 'N';
   String search = '';
 

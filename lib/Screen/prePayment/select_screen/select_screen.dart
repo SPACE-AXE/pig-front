@@ -97,7 +97,7 @@ class _SelectScreenState extends State<SelectScreen> {
                     height: 40, width: MediaQuery.of(context).size.width * 0.9),
               )
             }
-          : null;
+          : debugPrint("widget.data: ${product['paymentTime']}");
     }
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -107,7 +107,7 @@ class _SelectScreenState extends State<SelectScreen> {
   }
 
   void getData() async {
-    String url = 'http://localhost:3000/parking-transaction';
+    String url = 'https://api.parkchargego.link/parking-transaction';
     Uri uri = Uri.parse(url);
     await http.get(uri, headers: {
       'Cookie':
@@ -127,6 +127,7 @@ class _SelectScreenState extends State<SelectScreen> {
           } else {
             setState(() {
               data = tmp;
+              debugPrint("data:$data");
             });
           }
         } else {
