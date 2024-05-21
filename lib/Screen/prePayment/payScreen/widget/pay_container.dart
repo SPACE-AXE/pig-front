@@ -50,21 +50,21 @@ class _PayContainerState extends State<PayContainer> {
           InfoRow(title: "입차 시간", value: entryDate),
           InfoRow(title: "주차 시간", value: timeDiff.toString()),
           InfoRow(
-              title: "주차 금액", value: widget.data['parkingAmount'] ?? "null"),
+              title: "주차 금액",
+              value: widget.data['parkingAmount'] == null
+                  ? "회차 차량입니다."
+                  : "widget.data['parkingAmount']"),
           // InfoRow(title: "충전량", value: widget.data['chargeAmount'] ?? "null"),
           InfoRow(
               title: "충전 금액",
               value: widget.data['chargeAmount'] == null
-                  ? "null"
-                  : {int.parse(widget.data['chargeAmount']) * 1000}.toString()),
+                  ? "0"
+                  : (widget.data['chargeAmount'] * 1000).toString()),
           InfoRow(
               title: "총액",
               value: widget.data['totalAmount'] == null
-                  ? "null"
-                  : {
-                      int.parse(widget.data['chargeAmount']) * 1000 +
-                          int.parse(widget.data['Amount'])
-                    }.toString()),
+                  ? "0"
+                  : widget.data['totalAmount'].toString()),
         ],
       ),
     );
