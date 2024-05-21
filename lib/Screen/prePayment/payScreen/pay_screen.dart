@@ -28,6 +28,7 @@ class _PayScreenState extends State<PayScreen> {
     super.initState();
 
     DateTime original = DateTime.parse(widget.data['entryTime']);
+    debugPrint("data: ${widget.data}");
     setState(() {
       date = DateFormat('yyyy.MM.dd. HH:MM').format(original);
     });
@@ -37,10 +38,6 @@ class _PayScreenState extends State<PayScreen> {
   Widget build(BuildContext context) {
     debugPrint(date);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("사전결제"),
-        centerTitle: true,
-      ),
       body: SingleChildScrollView(
         child: Center(
           child: Container(

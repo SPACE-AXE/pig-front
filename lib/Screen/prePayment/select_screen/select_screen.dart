@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:appfront/Screen/Auth/Login/login_screen.dart';
+import 'package:appfront/Screen/prePayment/payScreen/pay_screen.dart';
 import 'package:appfront/Screen/prePayment/select_screen/widget/enter_btn.dart';
 import 'package:appfront/Screen/prePayment/select_screen/widget/product_container.dart';
 import 'package:appfront/main.dart';
@@ -21,7 +22,7 @@ class SelectScreen extends StatefulWidget {
 }
 
 class _SelectScreenState extends State<SelectScreen> {
-  late List<dynamic> data;
+  late Map<String, dynamic> data;
   int selectedId = 0;
   bool isLoading = true;
   bool isEmpty = false;
@@ -29,20 +30,19 @@ class _SelectScreenState extends State<SelectScreen> {
   @override
   void initState() {
     super.initState();
+    getData();
   }
 
   void updateId(int value) {
     setState(() {
       selectedId = value;
     });
-    debugPrint("$selectedId");
   }
 
-  dynamic dataGetter(int value) {
-    final tmp = data.where((element) => element['id'] == value).toList();
-    debugPrint("tmp: $tmp");
-    return tmp[0];
-  }
+  // dynamic dataGetter(int value) {
+  //   final tmp = data.where((element) => element['id'] == value).toList();
+  //   return tmp[0];
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -60,18 +60,13 @@ class _SelectScreenState extends State<SelectScreen> {
                 ? const Center(
                     child: Text("결제가 필요한 데이터가 없습니다"),
                   )
-                : makeProductList(data),
-        floatingActionButton: EnterBtn(
-          dataGetter: dataGetter,
-          selectedId: selectedId,
-        ),
+                : PayScreen(data: data),
       );
     });
   }
 
   Column makeProductList(List<dynamic> data) {
     List<Widget> containers = [];
-    debugPrint("$data");
     for (var product in data) {
       product['paymentTime'] == null
           ? {
@@ -81,11 +76,12 @@ class _SelectScreenState extends State<SelectScreen> {
                     flex: 1,
                     child: SizedBox(),
                   ),
-                  ProductContainer(
-                    data: product,
-                    selectedId: selectedId,
-                    updateId: updateId,
-                  ),
+                  PayScreen(data: product),
+                  // ProductContainer(
+                  //   data: product,
+                  //   selectedId: selectedId,
+                  //   updateId: updateId,
+                  // ),
                   const Expanded(
                     flex: 1,
                     child: SizedBox(),
@@ -119,15 +115,22 @@ class _SelectScreenState extends State<SelectScreen> {
           setState(() {
             isLoading = false;
           });
-          List<dynamic> tmp = response;
+          List<dynamic> tmp = [];
+          response.map((e) {
+            if (e['isPaid'] == 0) {
+              tmp.add(e);
+            }
+          }).toList();
           if (tmp.isEmpty) {
+            debugPrint("$tmp");
             setState(() {
               isEmpty = true;
             });
           } else {
             setState(() {
-              data = tmp;
-              debugPrint("data:$data");
+              debugPrint("$tmp");
+              data = tmp[0];
+              debugPrint("$data");
             });
           }
         } else {
