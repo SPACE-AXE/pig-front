@@ -110,7 +110,7 @@ class _FiltersState extends State<Filters> {
                   flex: 1,
                   child: TextField(
                     controller: spaceController,
-                    onChanged: (value) {
+                    onSubmitted: (value) {
                       widget.setSpace(value);
                     },
                     decoration: const InputDecoration(

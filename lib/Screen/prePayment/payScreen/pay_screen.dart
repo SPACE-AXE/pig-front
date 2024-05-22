@@ -28,6 +28,7 @@ class _PayScreenState extends State<PayScreen> {
     super.initState();
 
     DateTime original = DateTime.parse(widget.data['entryTime']);
+    debugPrint("data: ${widget.data}");
     setState(() {
       date = DateFormat('yyyy.MM.dd. HH:MM').format(original);
     });
@@ -37,10 +38,6 @@ class _PayScreenState extends State<PayScreen> {
   Widget build(BuildContext context) {
     debugPrint(date);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("사전결제"),
-        centerTitle: true,
-      ),
       body: SingleChildScrollView(
         child: Center(
           child: Container(
@@ -48,8 +45,8 @@ class _PayScreenState extends State<PayScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(date),
-                const SizedBox(height: 15),
-                ParkContainer(data: widget.data),
+                // const SizedBox(height: 15),
+                // ParkContainer(data: widget.data),
                 const SizedBox(height: 15),
                 PayContainer(data: widget.data),
                 const SizedBox(height: 15),
@@ -71,7 +68,8 @@ class _PayScreenState extends State<PayScreen> {
                       return ElevatedButton(
                           onPressed: () async {
                             final data = ref.read(userDataProvider);
-                            payment(data.accessToken!, data.refreshToken!);
+                            payment(data.accessToken!, data.refreshToken!,
+                                widget.data['paymentId']);
                           },
                           child: const Text("결제하기"));
                     },
@@ -85,12 +83,15 @@ class _PayScreenState extends State<PayScreen> {
     );
   }
 
-  void payment(String accessToken, String refreshToken) async {
-    String url = 'http://localhost:3000/payment';
+  void payment(
+      String accessToken, String refreshToken, String paymentId) async {
+    String url = 'https://api.parkchargego.link/payment';
     Uri uri = Uri.parse(url);
 
     http.Response response = await http.post(uri, headers: {
       'Cookie': 'access-token=$accessToken; refresh-token=$refreshToken',
+    }, body: {
+      "paymentId": paymentId
     });
     final res = json.decode(response.body);
     debugPrint("123$res");

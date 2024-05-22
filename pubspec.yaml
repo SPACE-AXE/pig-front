@@ -29,3 +29,9 @@ flutter:
   uses-material-design: true
   assets:
     - lib/assets/images/
+
+fonts:
+  - family: Pretendard
+    fonts:
+      - asset: lib/assets/fonts/BMJUA.TTF
+        weight: 100
