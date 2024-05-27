@@ -39,9 +39,9 @@ class _MyCarouselSliderState extends State<MyCarouselSlider> {
               CarouselSlider(
                 carouselController: _controller,
                 items: data.map(
-                  (e) {
+                  (value) {
                     final time = DateFormat('yyyy.MM.dd. HH:MM')
-                        .format(DateTime.parse(e['entryTime']));
+                        .format(DateTime.parse(value['entryTime']));
                     return Builder(
                       builder: (context) {
                         return Container(
@@ -93,12 +93,13 @@ class _MyCarouselSliderState extends State<MyCarouselSlider> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    "${e['park']['name']}",
-                                    style: const TextStyle(fontSize: 20),
+                                  const Text(
+                                    "결제 시간",
+                                    style: TextStyle(fontSize: 20),
                                   ),
                                   Text(
-                                    time,
+                                    DateFormat('yyyy.MM.dd. HH:MM').format(
+                                        DateTime.parse(value['paymentTime'])),
                                     style: TextStyle(
                                       fontSize: 10,
                                       color: Colors.black.withOpacity(0.5),
@@ -106,45 +107,45 @@ class _MyCarouselSliderState extends State<MyCarouselSlider> {
                                   ),
                                 ],
                               ),
-                              const Row(
+                              Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "주차 비용",
                                     style: TextStyle(fontSize: 20),
                                   ),
                                   Text(
-                                    "123",
-                                    style: TextStyle(fontSize: 20),
+                                    "${value['parkingAmount']}",
+                                    style: const TextStyle(fontSize: 20),
                                   ),
                                 ],
                               ),
-                              const Row(
+                              Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    "충전비용",
+                                  const Text(
+                                    "충전 비용",
                                     style: TextStyle(fontSize: 20),
                                   ),
                                   Text(
-                                    "123",
-                                    style: TextStyle(fontSize: 20),
+                                    "${value['chargeAmount'] ?? "0"}",
+                                    style: const TextStyle(fontSize: 20),
                                   ),
                                 ],
                               ),
-                              const Row(
+                              Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "총액",
                                     style: TextStyle(fontSize: 20),
                                   ),
                                   Text(
-                                    "123",
-                                    style: TextStyle(fontSize: 20),
+                                    "${value['totalAmount']}",
+                                    style: const TextStyle(fontSize: 20),
                                   ),
                                 ],
                               ),
@@ -197,7 +198,7 @@ class _MyCarouselSliderState extends State<MyCarouselSlider> {
   }
 
   void getData() async {
-    String url = 'http://localhost:3000/parking-transaction';
+    String url = 'https://api.parkchargego.link/parking-transaction';
     Uri uri = Uri.parse(url);
     await http.get(uri, headers: {
       'Cookie':
