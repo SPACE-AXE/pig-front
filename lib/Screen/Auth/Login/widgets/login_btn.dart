@@ -55,7 +55,7 @@ class _LoginBtnState extends ConsumerState<LoginBtn> {
   }
 
   void logIn(Map<String, dynamic> userData) async {
-    String url = 'https://api.parkchargego.link/auth/login';
+    String url = 'https://api.parkchargego.link/api/v1/auth/login';
     Uri uri = Uri.parse(url);
     http.Response response = await http.post(uri, body: userData);
 

@@ -18,7 +18,7 @@ class _CardAddScreenState extends ConsumerState<CardAddScreen> {
   TextEditingController yearController = TextEditingController();
 
   Future<void> registerCard() async {
-    String apiUrl = "https://api.parkchargego.link/payment/card";
+    String apiUrl = "https://api.parkchargego.link/api/v1/payment/card";
     try {
       final data = ref.read(userDataProvider);
       var response = await http.post(

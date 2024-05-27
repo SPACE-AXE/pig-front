@@ -16,7 +16,7 @@ class _CarAddScreenState extends ConsumerState<CarAddScreen> {
   TextEditingController carNumberController = TextEditingController();
 
   Future<void> registerCar() async {
-    String apiUrl = "https://api.parkchargego.link/car";
+    String apiUrl = "https://api.parkchargego.link/api/v1/car";
     String carNum = carNumberController.text;
 
     if (carNum.isEmpty) {
