@@ -85,7 +85,7 @@ class _PayScreenState extends State<PayScreen> {
 
   void payment(
       String accessToken, String refreshToken, String paymentId) async {
-    String url = 'https://api.parkchargego.link/payment';
+    String url = 'https://api.parkchargego.link/api/v1/payment';
     Uri uri = Uri.parse(url);
 
     http.Response response = await http.post(uri, headers: {
