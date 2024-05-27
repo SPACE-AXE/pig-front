@@ -103,7 +103,7 @@ class _SelectScreenState extends State<SelectScreen> {
   }
 
   void getData() async {
-    String url = 'https://api.parkchargego.link/parking-transaction';
+    String url = 'https://api.parkchargego.link/api/v1/parking-transaction';
     Uri uri = Uri.parse(url);
     await http.get(uri, headers: {
       'Cookie':

@@ -46,7 +46,7 @@ class _MapScreenState extends State<MapScreen> {
 
   void makeMap(String place) async {
     markers = [];
-    String url = 'https://api.parkchargego.link/map/place?place=$place';
+    String url = 'https://api.parkchargego.link/api/v1/map/place?place=$place';
 
     Uri uri = Uri.parse(url);
 
@@ -123,7 +123,7 @@ class _MapScreenState extends State<MapScreen> {
 
   Future<Map<String, dynamic>> getPark() async {
     String url =
-        'https://api.parkchargego.link/map?lat=$lat&lng=$lng&price=$price&space=$space&disabled=$disabled';
+        'https://api.parkchargego.link/api/v1/map?lat=$lat&lng=$lng&price=$price&space=$space&disabled=$disabled';
     print(
         "lat:$lat, lng: $lng, price: $price, space: $space, disabled: $disabled");
     Uri uri = Uri.parse(url);
@@ -151,7 +151,7 @@ class _MapScreenState extends State<MapScreen> {
       if (latitude == '') {
         var addr = park['rdnmadr'] != "" ? park['rdnmadr'] : park['lnmadr'];
 
-        String url = 'https://api.parkchargego.link/map/addr?addr=$addr';
+        String url = 'https://api.parkchargego.link/api/v1/map/addr?addr=$addr';
         Uri uri = Uri.parse(url);
 
         await http.get(uri).then((value) {
