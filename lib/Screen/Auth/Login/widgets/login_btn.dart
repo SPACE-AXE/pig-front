@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:appfront/main.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -24,6 +26,8 @@ class LoginBtn extends ConsumerStatefulWidget {
 }
 
 class _LoginBtnState extends ConsumerState<LoginBtn> {
+  bool easterEgg = false;
+  int counter = 10;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -34,6 +38,25 @@ class _LoginBtnState extends ConsumerState<LoginBtn> {
           elevation: 5,
         ),
         onPressed: () {
+          if (easterEgg) {
+            setState(() {
+              counter--;
+              Fluttertoast.showToast(
+                msg: '$counter',
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: const Color(0xff39c5bb),
+                timeInSecForIosWeb: 3,
+              );
+            });
+          }
+          if (counter == 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const zz(),
+              ),
+            );
+          }
           if (widget.idPwdFormKey.currentState!.validate()) {
             Map<String, dynamic> userData = {
               'username': widget.id,
@@ -41,6 +64,11 @@ class _LoginBtnState extends ConsumerState<LoginBtn> {
             };
             logIn(userData);
           }
+        },
+        onLongPress: () {
+          setState(() {
+            easterEgg = true;
+          });
         },
         child: const Text(
           "로그인",
@@ -96,5 +124,45 @@ class _LoginBtnState extends ConsumerState<LoginBtn> {
         backgroundColor: const Color(0xff39c5bb),
       );
     }
+  }
+}
+
+class zz extends StatefulWidget {
+  const zz({super.key});
+
+  @override
+  State<zz> createState() => _zzState();
+}
+
+class _zzState extends State<zz> {
+  int imgnum = 1 + Random().nextInt(317);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.8,
+                child: Image.asset(
+                    'lib/Screen/Auth/Login/widgets/img/$imgnum.jpg'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    imgnum = 1 + Random().nextInt(317);
+                  });
+                },
+                child: const Text(
+                  "다음 랜덤 이미지",
+                  style: TextStyle(fontSize: 15),
+                ),
+              )
+            ],
+          ),
+        ));
   }
 }
