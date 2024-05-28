@@ -395,7 +395,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void checkUserIdDuplicate(String username) async {
-    String url = 'https://api.parkchargego.link/auth/check-username-duplicate/';
+    String url = 'https://api.parkchargego.link/api/v1/auth/check-username-duplicate/';
     // URL을 올바르게 형성하기 위해 Uri 클래스를 사용합니다.
     Uri uri = Uri.parse('$url$username');
     http.Response response = await http.get(uri);
@@ -426,7 +426,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 }
 
 void register(Map<String, dynamic> userData) async {
-  String url = 'https://api.parkchargego.link/auth/register';
+  String url = 'https://api.parkchargego.link/api/v1/auth/register';
   Uri uri = Uri.parse(url);
   http.Response response = await http.post(uri, body: userData);
 

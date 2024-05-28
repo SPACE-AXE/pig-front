@@ -24,7 +24,7 @@ class _CardScreenState extends ConsumerState<CardScreen> {
   }
 
   Future<void> fetchCard() async {
-    String apiUrl = "https://api.parkchargego.link/payment/card";
+    String apiUrl = "https://api.parkchargego.link/api/v1/payment/card";
     try {
       final data = ref.read(userDataProvider);
       var response = await http.get(

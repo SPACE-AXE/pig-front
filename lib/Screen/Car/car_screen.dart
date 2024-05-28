@@ -27,7 +27,7 @@ class _CarScreenState extends ConsumerState<CarScreen> {
   }
 
   Future<void> fetchCars(String accessToken, String refreshToken) async {
-    String apiUrl = "https://api.parkchargego.link/car";
+    String apiUrl = "https://api.parkchargego.link/api/v1/car";
     try {
       var response = await http.get(Uri.parse(apiUrl), headers: {
         'Cookie': 'access-token=$accessToken; refresh-token=$refreshToken'
