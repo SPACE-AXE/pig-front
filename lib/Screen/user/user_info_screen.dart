@@ -1,6 +1,7 @@
 import 'package:appfront/Screen/Car/car_screen.dart';
 import 'package:appfront/Screen/user/widget/slider_widget.dart';
 import 'package:appfront/userData.dart';
+import 'package:appfront/Screen/usedDetail/used_detail_screen.dart';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

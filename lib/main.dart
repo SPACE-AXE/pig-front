@@ -10,6 +10,7 @@ import 'package:appfront/QRScreen.dart';
 import 'package:appfront/Screen/prePayment/select_screen/select_screen.dart';
 import 'package:appfront/Screen/Card/card_screen.dart';
 import 'package:appfront/Screen/Car/car_screen.dart';
+import 'package:appfront/Screen/usedDetail/used_detail_screen.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -162,30 +163,40 @@ class _MainBodyState extends State<MainBody> {
                   )),
               const SizedBox(width: 5),
               SizedBox(
-                width: MediaQuery.of(widget.context).size.width * 0.45,
-                height: MediaQuery.of(widget.context).size.width * 0.45,
-                child: ElevatedButton(
-                  // 이용 내역 버튼
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    textStyle: const TextStyle(
-                      fontSize: 20,
-                    ),
-                    padding: EdgeInsets.zero,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    backgroundColor: const Color(0xFF39c5bb),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(
-                      'lib/assets/images/list.png',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              ),
+                  width: MediaQuery.of(widget.context).size.width * 0.45,
+                  height: MediaQuery.of(widget.context).size.width * 0.45,
+                  child: Builder(
+                    builder: (BuildContext newContext) {
+                      return ElevatedButton(
+                        // 이용 내역 버튼
+                        onPressed: () {
+                          Navigator.push(
+                            newContext,
+                            MaterialPageRoute(
+                              builder: (context) => UsedScreen(),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          textStyle: const TextStyle(
+                            fontSize: 20,
+                          ),
+                          padding: EdgeInsets.zero,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          backgroundColor: const Color(0xFF39c5bb),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.asset(
+                            'lib/assets/images/list.png',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      );
+                    },
+                  ))
             ],
           ),
           const SizedBox(height: 10),

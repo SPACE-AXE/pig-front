@@ -5,6 +5,7 @@ import 'package:appfront/userData.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:appfront/Screen/usedDetail/used_detail_screen.dart';
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({super.key});
@@ -59,8 +60,16 @@ class _MyDrawerState extends State<MyDrawer> {
                   );
                 },
               ),
-              const ListTile(
+              ListTile(
                 title: Text('이용 기록'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UsedScreen(),
+                    ),
+                  );
+                },
               ),
               ListTile(
                 title: const Text('차량 등록'),
