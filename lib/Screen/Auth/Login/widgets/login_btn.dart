@@ -135,7 +135,7 @@ class zz extends StatefulWidget {
 }
 
 class _zzState extends State<zz> {
-  int imgnum = 1 + Random().nextInt(317);
+  int imgnum = 1 + Random().nextInt(120);
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +153,7 @@ class _zzState extends State<zz> {
               ElevatedButton(
                 onPressed: () {
                   setState(() {
-                    imgnum = 1 + Random().nextInt(317);
+                    imgnum = 1 + Random().nextInt(120);
                   });
                 },
                 child: const Text(
