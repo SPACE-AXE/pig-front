@@ -34,14 +34,28 @@ class _MyDrawerState extends State<MyDrawer> {
                   ),
                 ),
               ),
-              ListTile(
-                title: const Text('나의 정보'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MyInfoScreen(),
-                    ),
+              Consumer(
+                builder: (context, ref, child) {
+                  return ListTile(
+                    title: const Text('나의 정보'),
+                    onTap: () {
+                      ref.read(userDataProvider).name == null
+                          ? Fluttertoast.showToast(
+                              msg: "로그인이 필요한 기능입니다.",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: const Color(0xff39c5bb),
+                              textColor: Colors.white,
+                              fontSize: 16,
+                            )
+                          : Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const UserInfoScreen(),
+                              ),
+                            );
+                    },
                   );
                 },
               ),

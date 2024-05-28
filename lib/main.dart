@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:appfront/Screen/map/map_screen.dart';
+import 'package:appfront/Screen/user/user_info_screen.dart';
 import 'package:appfront/widget/drawer.dart';
 import 'package:flutter/material.dart';
 
@@ -97,7 +98,12 @@ class _MainBodyState extends State<MainBody> {
                                   builder: (context) => const LoginScreen(),
                                 ),
                               ).then((value) => debugPrint("${data.id}"))
-                            : null;
+                            : Navigator.push(
+                                newContext,
+                                MaterialPageRoute(
+                                  builder: (context) => const UserInfoScreen(),
+                                ),
+                              );
                       },
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.zero,
