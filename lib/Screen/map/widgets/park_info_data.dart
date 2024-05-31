@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class InfoData extends StatefulWidget {
   final dynamic info;
@@ -30,7 +31,9 @@ class _InfoDataState extends State<InfoData> {
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Clipboard.setData(ClipboardData(text: widget.info['addr']));
+                },
                 icon: const Icon(Icons.copy),
                 color: Colors.black.withOpacity(0.5),
               )

@@ -9,9 +9,11 @@ class MyNaverMap extends StatefulWidget {
   final int space;
   final String disabled;
   final List<NMarker> markers;
+  final List<NMarker> pcg;
   const MyNaverMap({
     super.key,
     required this.markers,
+    required this.pcg,
     required this.lat,
     required this.lng,
     required this.price,
@@ -42,6 +44,13 @@ class _MyNaverMapState extends State<MyNaverMap> {
       forceGesture: false, // 지도에 전달되는 제스처 이벤트의 우선순위를 가장 높게 설정할지 여부를 지정합니다.
       onMapReady: (controller) {
         for (var marker in widget.markers) {
+          controller.addOverlay(marker);
+          marker.setOnTapListener((overlay) {
+            print(overlay.info.id);
+            parkInfo(context, overlay.info.id);
+          });
+        }
+        for (var marker in widget.pcg) {
           controller.addOverlay(marker);
           marker.setOnTapListener((overlay) {
             print(overlay.info.id);
