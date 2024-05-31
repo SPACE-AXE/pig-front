@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 import 'package:appfront/Screen/map/map_screen.dart';
 import 'package:appfront/Screen/user/user_info_screen.dart';
@@ -107,7 +108,8 @@ class _MainBodyState extends State<MainBody> {
                       },
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.zero,
-                          foregroundColor: Color.fromARGB(255, 243, 149, 223),
+                          foregroundColor:
+                              const Color.fromARGB(255, 243, 149, 223),
                           textStyle: const TextStyle(
                             fontSize: 20,
                           ),
@@ -335,8 +337,8 @@ class _DraggableFloatingActionButtonState
         MaterialPageRoute(
           builder: (context) => Consumer(
             builder: (context, ref, child) {
-              final data = ref.watch(userDataProvider);
-              debugPrint("실행");
+              final data = ref.read(userDataProvider);
+
               return SelectScreen(
                 userData: data,
               );

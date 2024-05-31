@@ -12,15 +12,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
-class PayScreen extends StatefulWidget {
+class PayScreen extends ConsumerStatefulWidget {
   final Map<String, dynamic> data;
   const PayScreen({super.key, required this.data});
 
   @override
-  State<PayScreen> createState() => _PayScreenState();
+  _PayScreenState createState() => _PayScreenState();
 }
 
-class _PayScreenState extends State<PayScreen> {
+class _PayScreenState extends ConsumerState<PayScreen> {
   String date = '';
 
   @override
