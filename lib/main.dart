@@ -28,7 +28,23 @@ class MainApp extends StatelessWidget {
       home: Scaffold(
         appBar: _buildAppBar(),
         endDrawer: const MyDrawer(),
-        body: MainBody(context: context),
+        body: Stack(
+          children: [
+            MainBody(context: context),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 20,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Image.asset(
+                  'lib/assets/images/indicator.png',
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+          ],
+        ),
         floatingActionButton: const DraggableFloatingActionButton(),
       ),
       theme: ThemeData(fontFamily: 'BMJUA'),
@@ -284,7 +300,7 @@ class _DraggableFloatingActionButtonState
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     const double FabSize = 30;
-    final double initialLeft = (screenSize.width / 2 - FabSize / 2);
+    final double initialLeft = (screenSize.width / 2 - FabSize / 2+5);
     final double initialTop = screenSize.height - FabSize * 2;
     position = Offset(initialLeft, initialTop);
     return Stack(
