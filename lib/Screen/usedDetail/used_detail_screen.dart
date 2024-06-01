@@ -95,59 +95,86 @@ class _UsedScreenState extends ConsumerState<UsedScreen> {
                           ),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '차량 번호: ${formatValue(item['carNum'])}',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            Text(
-                              '결제 여부: ${item['isPaid'] == true ? '결제 완료' : '결제 미완료'}',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            Text(
-                              '총 주차 시간: ${formatValue(item['currentParkingTime'])}',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            Text(
-                              '입차 시간: ${formatDateTime(item['entryTime'])}',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            Text(
-                              '출차 시간: ${formatDateTime(item['exitTime'])}',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            if (item['chargeStartTime'] != null &&
-                                item['chargeStartTime'].toString().isNotEmpty)
-                              Text(
-                                '충전 시작 시간: ${formatDateTime(item['chargeStartTime'])}',
+                        child: item['currentParkingTime'] == null
+                            ? 
+                            Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                const Text(
+                                '회차 처리됨',
                                 style: TextStyle(fontSize: 14),
+                                ),
+                                Text(
+                                    '차량 번호: ${formatValue(item['carNum'])}',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                Text(
+                                  '입차 시간: ${formatDateTime(item['entryTime'])}',
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                                Text(
+                                  '출차 시간: ${formatDateTime(item['exitTime'])}',
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                                ]
+                              )
+                            : Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '차량 번호: ${formatValue(item['carNum'])}',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                  Text(
+                                    '결제 여부: ${item['isPaid'] == true ? '결제 완료' : '결제 미완료'}',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                  Text(
+                                    '총 주차 시간: ${formatValue(item['currentParkingTime'])}',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                  Text(
+                                    '입차 시간: ${formatDateTime(item['entryTime'])}',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                  Text(
+                                    '출차 시간: ${formatDateTime(item['exitTime'])}',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                  if (item['chargeStartTime'] != null &&
+                                      item['chargeStartTime']
+                                          .toString()
+                                          .isNotEmpty)
+                                    Text(
+                                      '충전 시작 시간: ${formatDateTime(item['chargeStartTime'])}',
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                  if (item['chargeTime'] != null &&
+                                      item['chargeTime']
+                                          .toInt()
+                                          .isNotEmpty)
+                                    Text(
+                                      '충전 시간: ${(item['chargeTime'] / 1000).toString()}',
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                  Text(
+                                    '결제 시간: ${formatDateTime(item['paymentTime'])}',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                  Text(
+                                    '충전 요금: ${formatValue(item['chargeAmount'])}원',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                  Text(
+                                    '주차 요금: ${formatValue(item['parkingAmount'])}원',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                  Text(
+                                    '합계: ${formatValue(item['totalAmount'])}원',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ],
                               ),
-                            if (item['chargeTime'] != null &&
-                                item['chargeTime'].toString().isNotEmpty)
-                              Text(
-                                '충전 시간: ${formatDateTime(item['chargeTime'])}',
-                                style: TextStyle(fontSize: 14),
-                              ),
-                            Text(
-                              '결제 시간: ${formatDateTime(item['paymentTime'])}',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            Text(
-                              '충전 요금: ${formatValue(item['chargeAmount'])}',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            Text(
-                              '주차 요금: ${formatValue(item['parkingAmount'])}',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            Text(
-                              '합계: ${formatValue(item['totalAmount'])}',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                          ],
-                        ),
                       );
                     },
                   ),

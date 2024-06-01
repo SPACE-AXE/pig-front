@@ -126,8 +126,9 @@ class _MainBodyState extends State<MainBody> {
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.zero,
                           foregroundColor:
-                              const Color.fromARGB(255, 243, 149, 223),
+                              const Color(0xFFFFFFFF),
                           textStyle: const TextStyle(
+                            fontFamily:'BMJUA',
                             fontSize: 20,
                           ),
                           shape: RoundedRectangleBorder(
@@ -162,6 +163,7 @@ class _MainBodyState extends State<MainBody> {
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
                           textStyle: const TextStyle(
+                            fontFamily:'BMJUA',
                             fontSize: 20,
                           ),
                           padding: EdgeInsets.zero,
@@ -215,6 +217,7 @@ class _MainBodyState extends State<MainBody> {
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
                           textStyle: const TextStyle(
+                            fontFamily:'BMJUA',
                             fontSize: 20,
                           ),
                           padding: EdgeInsets.zero,
@@ -241,6 +244,7 @@ class _MainBodyState extends State<MainBody> {
             style: ElevatedButton.styleFrom(
               foregroundColor: Colors.white,
               textStyle: const TextStyle(
+                fontFamily:'BMJUA',
                 fontSize: 20,
               ),
               padding: EdgeInsets.zero,
@@ -286,6 +290,7 @@ class _MainBodyState extends State<MainBody> {
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     textStyle: const TextStyle(
+                      fontFamily:'BMJUA',
                       fontSize: 20,
                     ),
                     padding: EdgeInsets.zero,
@@ -330,6 +335,7 @@ class _MainBodyState extends State<MainBody> {
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       textStyle: const TextStyle(
+                        fontFamily:'BMJUA',
                         fontSize: 20,
                       ),
                       padding: EdgeInsets.zero,
@@ -388,6 +394,7 @@ class _DraggableFloatingActionButtonState
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(FabSize)),
               child: const Icon(Icons.local_atm),
+              
             ),
             childWhenDragging: Container(),
             onDragEnd: (details) {
@@ -398,6 +405,9 @@ class _DraggableFloatingActionButtonState
             },
             child: FloatingActionButton(
               onPressed: () {},
+              backgroundColor: const Color(0xFF39c5bb),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(FabSize)),
               child: const Icon(Icons.local_atm),
             ),
           ),

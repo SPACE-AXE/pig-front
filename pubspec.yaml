@@ -29,10 +29,13 @@ flutter:
   uses-material-design: true
   assets:
     - lib/assets/images/
+    - lib/assets/fonts/
     - lib/Screen/Auth/Login/widgets/img/
-
-fonts:
-  - family: Pretendard
+  fonts:
+  - family: BMJUA
     fonts:
-      - asset: lib/assets/fonts/BMJUA.TTF
-        weight: 100
+      - asset: lib/assets/fonts/BMJUA.ttf
+  - family: Maple
+    fonts:
+      - asset: lib/assets/fonts/Maplestory Bold.ttf
+
