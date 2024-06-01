@@ -32,10 +32,9 @@ flutter:
     - lib/assets/fonts/
     - lib/Screen/Auth/Login/widgets/img/
   fonts:
-  - family: BMJUA
-    fonts:
-      - asset: lib/assets/fonts/BMJUA.ttf
-  - family: Maple
-    fonts:
-      - asset: lib/assets/fonts/Maplestory Bold.ttf
-
+    - family: BMJUA
+      fonts:
+        - asset: lib/assets/fonts/BMJUA.ttf
+    - family: Maple
+      fonts:
+        - asset: lib/assets/fonts/Maplestory Bold.ttf
