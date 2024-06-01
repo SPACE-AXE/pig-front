@@ -129,7 +129,7 @@ class _MainBodyState extends State<MainBody> {
                               const Color(0xFFFFFFFF),
                           textStyle: const TextStyle(
                             fontFamily:'BMJUA',
-                            fontSize: 20,
+                            fontSize: 30,
                           ),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
