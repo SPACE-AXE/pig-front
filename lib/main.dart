@@ -13,6 +13,7 @@ import 'package:appfront/Screen/Car/car_screen.dart';
 import 'package:appfront/Screen/usedDetail/used_detail_screen.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -179,20 +180,37 @@ class _MainBodyState extends State<MainBody> {
                     },
                   )),
               const SizedBox(width: 5),
-              SizedBox(
+              Container(
                   width: MediaQuery.of(widget.context).size.width * 0.45,
                   height: MediaQuery.of(widget.context).size.width * 0.45,
-                  child: Builder(
-                    builder: (BuildContext newContext) {
+                  child: Consumer(
+                    builder: (context, ref, _) {
                       return ElevatedButton(
                         // 이용 내역 버튼
                         onPressed: () {
-                          Navigator.push(
-                            newContext,
-                            MaterialPageRoute(
-                              builder: (context) => UsedScreen(),
-                            ),
-                          );
+                          final data = ref.watch(userDataProvider);
+                          if(data.id == null){
+                            Fluttertoast.showToast(
+                              msg: '로그인이 필요한 기능입니다.',
+                              gravity: ToastGravity.BOTTOM,
+                              backgroundColor: const Color(0xff39c5bb),
+                            );
+                             Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LoginScreen(),
+                              ),
+                            );
+                          }
+                          else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UsedScreen(),
+                              ),
+                            );
+                          }
+
                         },
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
@@ -236,16 +254,34 @@ class _MainBodyState extends State<MainBody> {
           const SizedBox(height: 10),
           Row(
             children: [
-              Expanded(child: Builder(builder: (BuildContext newContext) {
-                return ElevatedButton(
+              Expanded(
+                child: Consumer(
+                  builder: (context, ref, _) {
+                    return ElevatedButton(
                   // 카드 관리
                   onPressed: () {
-                    Navigator.push(
-                      newContext,
-                      MaterialPageRoute(
-                        builder: (context) => CardScreen(),
-                      ),
-                    );
+                    final data = ref.watch(userDataProvider);
+                      if(data.id == null){
+                        Fluttertoast.showToast(
+                          msg: '로그인이 필요한 기능입니다.',
+                          gravity: ToastGravity.BOTTOM,
+                          backgroundColor: const Color(0xff39c5bb),
+                        );
+                          Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginScreen(),
+                          ),
+                        );
+                      }
+                      else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CardScreen(),
+                          ),
+                        );
+                      }
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -262,17 +298,34 @@ class _MainBodyState extends State<MainBody> {
                 );
               })),
               const SizedBox(width: 10),
-              Expanded(child: Builder(builder: (BuildContext newContext) {
-                return Expanded(
-                  child: ElevatedButton(
+              Expanded(
+                child: Consumer(
+                  builder: (context, ref, _) {
+                    return ElevatedButton(
                     // 차량 관리
                     onPressed: () {
-                      Navigator.push(
-                        newContext,
-                        MaterialPageRoute(
-                          builder: (context) => CarScreen(),
-                        ),
-                      );
+                      final data = ref.watch(userDataProvider);
+                        if(data.id == null){
+                          Fluttertoast.showToast(
+                            msg: '로그인이 필요한 기능입니다.',
+                            gravity: ToastGravity.BOTTOM,
+                            backgroundColor: const Color(0xff39c5bb),
+                          );
+                            Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
+                          );
+                        }
+                        else{
+                          Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CarScreen(),
+                          ),
+                        );
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
@@ -286,9 +339,10 @@ class _MainBodyState extends State<MainBody> {
                       minimumSize: const Size(double.infinity, 100),
                     ),
                     child: const Text('차량 관리'),
-                  ),
-                );
-              })),
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ],
@@ -297,7 +351,7 @@ class _MainBodyState extends State<MainBody> {
   }
 }
 
-class DraggableFloatingActionButton extends StatefulWidget {
+class DraggableFloatingActionButton extends ConsumerStatefulWidget {
   const DraggableFloatingActionButton({super.key});
 
   @override
@@ -306,7 +360,7 @@ class DraggableFloatingActionButton extends StatefulWidget {
 }
 
 class _DraggableFloatingActionButtonState
-    extends State<DraggableFloatingActionButton> {
+    extends ConsumerState<DraggableFloatingActionButton> {
   Offset position = const Offset(0, 0);
 
   @override
@@ -376,8 +430,23 @@ class _DraggableFloatingActionButtonState
         ),
       );
     } else if (offset.dx < MediaQuery.of(context).size.width / 2 - 75 - 30) {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => QRScreen()));
+      final data = ref.watch(userDataProvider);
+      if (data.id == null) {
+        Fluttertoast.showToast(
+          msg: '로그인이 필요한 기능입니다.',
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: const Color(0xff39c5bb),
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const LoginScreen(),
+          ),
+        );
+      } else {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => QRScreen()));
+      }
     }
     position = Offset(screenWidth / 2 - 24, screenHeight - 56);
   }
