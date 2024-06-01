@@ -132,6 +132,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
             Consumer(
               builder: (context, ref, child) {
                 final data = ref.read(userDataProvider);
+                debugPrint("${data.accessToken}");
                 return MyCarouselSlider(
                   userData: data,
                 );
