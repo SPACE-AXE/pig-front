@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:appfront/userData.dart';
+import 'package:appfront/Screen/usedDetail/used_detail_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -80,7 +81,7 @@ class _MyCarouselSliderState extends State<MyCarouselSlider> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                const Text("!23"),
+                                                UsedScreen(), // UsedScreen으로 이동
                                           ),
                                         );
                                       },
