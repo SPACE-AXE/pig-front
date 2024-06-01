@@ -12,7 +12,7 @@ class PayContainer extends StatefulWidget {
 
 class _PayContainerState extends State<PayContainer> {
   int timeDiff = 0;
-
+  num total = 0;
   String entryDate = '';
 
   @override
@@ -20,11 +20,14 @@ class _PayContainerState extends State<PayContainer> {
     super.initState();
     DateTime dataTime = DateTime.parse(widget.data['entryTime']);
     DateTime now = DateTime.now();
-
     Duration difference = now.difference(dataTime);
+
     setState(() {
-      entryDate = DateFormat('yyyy.MM.dd. HH:MM').format(dataTime);
+      entryDate = DateFormat('yyyy.MM.dd. HH:mm').format(dataTime);
       timeDiff = difference.inMinutes;
+      total = widget.data['chargeTime'] == null
+          ? (timeDiff * 100)
+          : (timeDiff * 100) + (widget.data['chargeTime'] * 100);
     });
   }
 
@@ -51,20 +54,17 @@ class _PayContainerState extends State<PayContainer> {
           InfoRow(title: "주차 시간", value: timeDiff.toString()),
           InfoRow(
               title: "주차 금액",
-              value: widget.data['parkingAmount'] == null
-                  ? "회차 차량입니다."
-                  : "widget.data['parkingAmount']"),
+              value: timeDiff < 1 ? "회차입니다" : (timeDiff * 100).toString()),
           // InfoRow(title: "충전량", value: widget.data['chargeAmount'] ?? "null"),
           InfoRow(
               title: "충전 금액",
-              value: widget.data['chargeAmount'] == null
+              value: widget.data['chargeTime'] == null
                   ? "0"
-                  : (widget.data['chargeAmount'] * 1000).toString()),
+                  : (widget.data['chargeTime'] * 100).toString()),
           InfoRow(
-              title: "총액",
-              value: widget.data['totalAmount'] == null
-                  ? "0"
-                  : widget.data['totalAmount'].toString()),
+            title: "총액",
+            value: total.toString(),
+          ),
         ],
       ),
     );

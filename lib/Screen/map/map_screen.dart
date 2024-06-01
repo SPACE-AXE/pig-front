@@ -213,6 +213,7 @@ class _MapScreenState extends State<MapScreen> {
                 MyNaverMap(
                   markers: markers,
                   pcg: pcg,
+                  pcgData: pcgData,
                   lat: lat,
                   lng: lng,
                   price: price,
