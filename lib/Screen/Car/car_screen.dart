@@ -61,7 +61,7 @@ class _CarScreenState extends ConsumerState<CarScreen> {
 
   Future<void> deleteCar(String carId) async {
     final data = ref.read(userDataProvider);
-    String apiUrl = "https://api.parkchargego.link/car/$carId";
+    String apiUrl = "https://api.parkchargego.link/api/v1/car/$carId";
     try {
       var response = await http.delete(Uri.parse(apiUrl), headers: {
         'Content-Type': 'application/json',
