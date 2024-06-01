@@ -124,7 +124,8 @@ class _MainBodyState extends State<MainBody> {
                       },
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.zero,
-                          foregroundColor: Color.fromARGB(255, 243, 149, 223),
+                          foregroundColor:
+                              const Color.fromARGB(255, 243, 149, 223),
                           textStyle: const TextStyle(
                             fontSize: 20,
                           ),
@@ -317,7 +318,7 @@ class _DraggableFloatingActionButtonState
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     const double FabSize = 30;
-    final double initialLeft = (screenSize.width / 2 - FabSize / 2+5);
+    final double initialLeft = (screenSize.width / 2 - FabSize / 2 + 5);
     final double initialTop = screenSize.height - FabSize * 2;
     position = Offset(initialLeft, initialTop);
     return Stack(
@@ -362,11 +363,14 @@ class _DraggableFloatingActionButtonState
         MaterialPageRoute(
           builder: (context) => Consumer(
             builder: (context, ref, child) {
-              final data = ref.watch(userDataProvider);
-              debugPrint("실행");
-              return SelectScreen(
-                userData: data,
-              );
+              final data = ref.read(userDataProvider);
+              if (data.accessToken == null) {
+                return const LoginScreen();
+              } else {
+                return SelectScreen(
+                  userData: data,
+                );
+              }
             },
           ),
         ),
