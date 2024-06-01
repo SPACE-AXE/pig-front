@@ -1,4 +1,5 @@
 import 'package:appfront/Screen/map/widgets/park_info.dart';
+import 'package:appfront/Screen/map/widgets/pcg_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 
@@ -8,10 +9,14 @@ class MyNaverMap extends StatefulWidget {
   final int price;
   final int space;
   final String disabled;
+  final List pcgData;
   final List<NMarker> markers;
+  final List<NMarker> pcg;
   const MyNaverMap({
     super.key,
     required this.markers,
+    required this.pcg,
+    required this.pcgData,
     required this.lat,
     required this.lng,
     required this.price,
@@ -48,6 +53,15 @@ class _MyNaverMapState extends State<MyNaverMap> {
             parkInfo(context, overlay.info.id);
           });
         }
+        for (var marker in widget.pcg) {
+          controller.addOverlay(marker);
+          marker.setOnTapListener((overlay) {
+            final tmp = widget.pcgData
+                .where((item) => item['name'] == overlay.info.id)
+                .toList()[0];
+            pcgInfo(context, overlay.info.id, tmp);
+          });
+        }
       },
       onMapTapped: (point, latLng) {},
       onSymbolTapped: (symbol) {},
@@ -65,6 +79,17 @@ void parkInfo(BuildContext context, String name) {
     context: context,
     builder: (BuildContext context) {
       return ParkInfo(name: name);
+    },
+  );
+}
+
+void pcgInfo(BuildContext context, String name, dynamic tmp) {
+  showModalBottomSheet(
+    isScrollControlled: true,
+    enableDrag: true,
+    context: context,
+    builder: (BuildContext context) {
+      return PcgInfo(name: name, tmp: tmp);
     },
   );
 }

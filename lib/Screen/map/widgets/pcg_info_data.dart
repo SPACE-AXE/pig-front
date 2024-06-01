@@ -2,15 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class ParkInfoData extends StatefulWidget {
+class PcgInfoData extends StatefulWidget {
   final dynamic info;
-  const ParkInfoData({super.key, required this.info});
+  const PcgInfoData({super.key, required this.info});
 
   @override
-  State<ParkInfoData> createState() => _ParkInfoDataState();
+  State<PcgInfoData> createState() => _PcgInfoDataState();
 }
 
-class _ParkInfoDataState extends State<ParkInfoData> {
+class _PcgInfoDataState extends State<PcgInfoData> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -25,7 +30,7 @@ class _ParkInfoDataState extends State<ParkInfoData> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                widget.info['addr'],
+                widget.info['address'],
                 style: TextStyle(
                   color: Colors.black.withOpacity(0.5),
                 ),
@@ -43,27 +48,11 @@ class _ParkInfoDataState extends State<ParkInfoData> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                "주차 구획 수",
+                "연락처",
                 style: TextStyle(fontSize: 20),
               ),
               Text(
-                widget.info['space'],
-                style: const TextStyle(fontSize: 20),
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                "장애인 주차 구역 여부",
-                style: TextStyle(fontSize: 20),
-              ),
-              Text(
-                widget.info['disabled'],
+                widget.info['phone'].toString(),
                 style: const TextStyle(fontSize: 20),
               )
             ],
@@ -72,7 +61,7 @@ class _ParkInfoDataState extends State<ParkInfoData> {
             height: 20,
           ),
           const Text(
-            "시간",
+            "주차 구획 수",
             style: TextStyle(fontSize: 20),
           ),
           const SizedBox(
@@ -91,25 +80,16 @@ class _ParkInfoDataState extends State<ParkInfoData> {
                     ),
                   ),
                   columns: const [
-                    DataColumn(label: Text('평일')),
-                    DataColumn(label: Text('토요일')),
-                    DataColumn(label: Text('주말,공휴일')),
+                    DataColumn(label: Text('일반 구역')),
+                    DataColumn(label: Text('장애인 구역')),
+                    DataColumn(label: Text('총계')),
                   ],
                   rows: [
                     DataRow(cells: [
-                      DataCell(
-                          Text("${widget.info['time']['weekdayOpenAt']} ~")),
-                      DataCell(Text("${widget.info['time']['satOpenAt']} ~")),
-                      DataCell(
-                          Text("${widget.info['time']['holidayOpenAt']} ~")),
+                      DataCell(Text("${widget.info['disabilitySpace']}")),
+                      DataCell(Text("${widget.info['carSpace']}")),
+                      DataCell(Text("${widget.info['totalSpace']}")),
                     ]),
-                    DataRow(cells: [
-                      DataCell(
-                          Text("${widget.info['time']['weekdayCloseAt']}")),
-                      DataCell(Text("${widget.info['time']['satCloseAt']}")),
-                      DataCell(
-                          Text("${widget.info['time']['holidayCloseAt']}")),
-                    ])
                   ],
                 ),
               ],
@@ -137,33 +117,20 @@ class _ParkInfoDataState extends State<ParkInfoData> {
                       Radius.circular(10.0),
                     ),
                   ),
-                  columns: [
+                  columns: const [
                     DataColumn(
-                      label: widget.info['price']['baseTime'] == '0' ||
-                              widget.info['price']['baseTime'] == ''
-                          ? const Text("자료없음")
-                          : Text('기본 ${widget.info['price']['baseTime']}분'),
+                      label: Text('기본 1분'),
                     ),
-                    DataColumn(
-                        label: widget.info['price']['unitTime'] == '0' ||
-                                widget.info['price']['unitTime'] == ''
-                            ? const Text("자료없음")
-                            : Text('추가 ${widget.info['price']['unitTime']}분')),
-                    const DataColumn(label: Text('1일 주차')),
+                    DataColumn(label: Text('추가 1분')),
+                    DataColumn(label: Text('1일 주차')),
                   ],
-                  rows: [
+                  rows: const [
                     DataRow(cells: [
                       DataCell(
-                        widget.info['price']['basePrice'] != ''
-                            ? Text('${widget.info['price']['basePrice']}원')
-                            : const Text("자료없음"),
+                        Text("0 원"),
                       ),
-                      DataCell(widget.info['price']['unitPrice'] != ''
-                          ? Text('${widget.info['price']['unitPrice']}원')
-                          : const Text("자료없음")),
-                      DataCell(widget.info['price']['dayPrice'] != ''
-                          ? Text('${widget.info['price']['dayPrice']}원')
-                          : const Text("자료없음")),
+                      DataCell(Text("100 원")),
+                      DataCell(Text("10,000 원")),
                     ]),
                   ],
                 ),
