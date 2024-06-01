@@ -19,7 +19,9 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   final marker =
       NMarker(id: "test", position: const NLatLng(36.144786, 128.39281));
+  List pcgData = [];
   List<NMarker> markers = [];
+  List<NMarker> pcg = [];
   final TextEditingController spaceController = TextEditingController();
 
   Location location = Location();
@@ -110,7 +112,14 @@ class _MapScreenState extends State<MapScreen> {
       await location._determinePosition();
       // 위치 정보를 가져와 변수에 저장
       Map<String, dynamic> position = await location._getPosition();
+      String url =
+          'https://api.parkchargego.link/api/v1/park/location?x=${position['lat']}&y=${position['lng']}';
+      Uri uri = Uri.parse(url);
+
+      http.Response response = await http.get(uri);
+      debugPrint("res: ${response.body}");
       setState(() {
+        pcgData = jsonDecode(response.body);
         lat = position['lat'];
         lng = position['lng'];
       });
@@ -124,12 +133,9 @@ class _MapScreenState extends State<MapScreen> {
   Future<Map<String, dynamic>> getPark() async {
     String url =
         'https://api.parkchargego.link/api/v1/map?lat=$lat&lng=$lng&price=$price&space=$space&disabled=$disabled';
-    print(
-        "lat:$lat, lng: $lng, price: $price, space: $space, disabled: $disabled");
     Uri uri = Uri.parse(url);
 
     http.Response response = await http.get(uri);
-    print(response.body);
     if (response.statusCode == 200) {
       var json = jsonDecode(response.body);
       return json;
@@ -139,7 +145,6 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   List<NMarker> makeMarkers(Map<String, dynamic> parkData) {
-    List<dynamic> pcg = parkData['pcg'];
     List<dynamic> public = parkData['public'];
     List<NMarker> markers = [];
 
@@ -176,6 +181,21 @@ class _MapScreenState extends State<MapScreen> {
       }
     }).toList();
 
+    pcgData.map((data) async {
+      setState(() {
+        pcg.add(
+          NMarker(
+            id: data['name'],
+            position: NLatLng(
+              data['location']['x'],
+              data['location']['y'],
+            ),
+            iconTintColor: Colors.blue,
+          ),
+        );
+      });
+    }).toList();
+
     return markers;
   }
 
@@ -192,6 +212,8 @@ class _MapScreenState extends State<MapScreen> {
               children: [
                 MyNaverMap(
                   markers: markers,
+                  pcg: pcg,
+                  pcgData: pcgData,
                   lat: lat,
                   lng: lng,
                   price: price,

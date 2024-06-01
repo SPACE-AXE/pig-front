@@ -1,36 +1,26 @@
 import 'dart:convert';
 
 import 'package:appfront/Screen/map/widgets/park_info_data.dart';
+import 'package:appfront/Screen/map/widgets/pcg_info_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 
-class ParkInfo extends StatefulWidget {
+class PcgInfo extends StatefulWidget {
   final String name;
-  const ParkInfo({super.key, required this.name});
+  final dynamic tmp;
+  const PcgInfo({super.key, required this.name, required this.tmp});
 
   @override
-  State<ParkInfo> createState() => _ParkInfoState();
+  State<PcgInfo> createState() => _PcgInfoState();
 }
 
-class _ParkInfoState extends State<ParkInfo> {
-  dynamic info;
-
+class _PcgInfoState extends State<PcgInfo> {
   @override
   void initState() {
     super.initState();
-    String url =
-        'https://api.parkchargego.link/api/v1/map/park?name=${widget.name}';
-    print(url);
-    Uri uri = Uri.parse(url);
-
-    http.get(uri).then((response) {
-      setState(() {
-        info = json.decode(response.body);
-        print(info);
-      });
-    });
+    debugPrint("qwe${widget.tmp}");
   }
 
   @override
@@ -45,6 +35,6 @@ class _ParkInfoState extends State<ParkInfo> {
         ),
         width: MediaQuery.of(context).size.width * 0.9,
         height: MediaQuery.of(context).size.height * 0.7,
-        child: info == null ? null : ParkInfoData(info: info));
+        child: widget.tmp == null ? null : PcgInfoData(info: widget.tmp));
   }
 }

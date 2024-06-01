@@ -68,6 +68,7 @@ class _SelectScreenState extends State<SelectScreen> {
   Column makeProductList(List<dynamic> data) {
     List<Widget> containers = [];
     for (var product in data) {
+      debugPrint("123$product");
       product['paymentTime'] == null
           ? {
               containers.add(Row(
@@ -117,20 +118,19 @@ class _SelectScreenState extends State<SelectScreen> {
           });
           List<dynamic> tmp = [];
           response.map((e) {
-            if (e['isPaid'] == 0) {
+            debugPrint('$e');
+            if (e['isPaid'] == false) {
               tmp.add(e);
             }
           }).toList();
           if (tmp.isEmpty) {
-            debugPrint("$tmp");
             setState(() {
               isEmpty = true;
             });
           } else {
+            debugPrint("tmp: ${tmp[0]}");
             setState(() {
-              debugPrint("$tmp");
               data = tmp[0];
-              debugPrint("$data");
             });
           }
         } else {
