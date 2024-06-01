@@ -96,28 +96,26 @@ class _UsedScreenState extends ConsumerState<UsedScreen> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: item['currentParkingTime'] == null
-                            ? 
-                            Column(
+                            ? Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                const Text(
-                                '회차 처리됨',
-                                style: TextStyle(fontSize: 14),
-                                ),
-                                Text(
-                                    '차량 번호: ${formatValue(item['carNum'])}',
-                                    style: TextStyle(fontSize: 14),
-                                  ),
-                                Text(
-                                  '입차 시간: ${formatDateTime(item['entryTime'])}',
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                                Text(
-                                  '출차 시간: ${formatDateTime(item['exitTime'])}',
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                                ]
-                              )
+                                    const Text(
+                                      '회차 처리됨',
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                    Text(
+                                      '차량 번호: ${formatValue(item['carNum'])}',
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                    Text(
+                                      '입차 시간: ${formatDateTime(item['entryTime'])}',
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                    Text(
+                                      '출차 시간: ${formatDateTime(item['exitTime'])}',
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                  ])
                             : Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -150,11 +148,9 @@ class _UsedScreenState extends ConsumerState<UsedScreen> {
                                       style: TextStyle(fontSize: 14),
                                     ),
                                   if (item['chargeTime'] != null &&
-                                      item['chargeTime']
-                                          .toInt()
-                                          .isNotEmpty)
+                                      item['chargeTime'].toInt().isNotEmpty)
                                     Text(
-                                      '충전 시간: ${(item['chargeTime'] / 1000).toString()}',
+                                      '충전 시간: ${(item['chargeTime']).toString()}',
                                       style: TextStyle(fontSize: 14),
                                     ),
                                   Text(
