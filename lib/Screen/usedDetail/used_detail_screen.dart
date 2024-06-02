@@ -162,8 +162,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen> {
                                           '충전 시작 시간: ${formatDateTime(item['chargeStartTime'])}',
                                           style: const TextStyle(fontSize: 14),
                                         ),
-                                      if (item['chargeTime'] != null &&
-                                          item['chargeTime'].toInt().isNotEmpty)
+                                      if (item['chargeTime'] != null)
                                         Text(
                                           '충전 시간: ${(item['chargeTime'] / 1000).toString()}',
                                           style: const TextStyle(fontSize: 14),
