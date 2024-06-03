@@ -21,6 +21,7 @@ class PayScreen extends StatefulWidget {
 }
 
 class _PayScreenState extends State<PayScreen> {
+  int timeDiff = 0;
   String date = '';
 
   @override
@@ -28,9 +29,12 @@ class _PayScreenState extends State<PayScreen> {
     super.initState();
 
     DateTime original = DateTime.parse(widget.data['entryTime']);
+    DateTime now = DateTime.now();
+    Duration difference = now.difference(original);
     debugPrint("data: ${widget.data}");
     setState(() {
       date = DateFormat('yyyy.MM.dd. HH:MM').format(original);
+      timeDiff = difference.inMinutes;
     });
   }
 
@@ -68,8 +72,10 @@ class _PayScreenState extends State<PayScreen> {
                       return ElevatedButton(
                           onPressed: () async {
                             final data = ref.read(userDataProvider);
-                            payment(data.accessToken!, data.refreshToken!,
-                                widget.data['paymentId']);
+                            timeDiff < 1
+                                ? null
+                                : payment(data.accessToken!, data.refreshToken!,
+                                    widget.data['paymentId']);
                           },
                           child: const Text("결제하기"));
                     },
