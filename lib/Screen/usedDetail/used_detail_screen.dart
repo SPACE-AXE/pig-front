@@ -114,7 +114,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen> {
                                       style: const TextStyle(fontSize: 14),
                                     ),
                                   ])
-                            : (item['totalAmount'] < 100) &&
+                            : (item['totalAmount'] == null) &&
                                     (item['exitTime'] != null)
                                 ? Column(
                                     crossAxisAlignment:
@@ -166,7 +166,9 @@ class _UsedScreenState extends ConsumerState<UsedScreen> {
                                           style: const TextStyle(fontSize: 14),
                                         ),
                                       if (item['chargeTime'] != null &&
-                                          item['chargeTime'].toInt().isNotEmpty)
+                                          item['chargeTime']
+                                              .toString()
+                                              .isNotEmpty)
                                         Text(
                                           '충전 시간: ${(item['chargeTime'] / 1000).toString()}',
                                           style: const TextStyle(fontSize: 14),
