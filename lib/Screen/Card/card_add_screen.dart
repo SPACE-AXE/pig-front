@@ -73,7 +73,7 @@ class _CardAddScreenState extends ConsumerState<CardAddScreen> {
         );
       }
     } catch (e) {
-      print("카드 등록에 실패했습니다. : $e");
+      print("카드 등록에 실패했습니다.");
     }
   }
 
@@ -149,8 +149,9 @@ class _CardAddScreenState extends ConsumerState<CardAddScreen> {
             ),
             ElevatedButton(
               onPressed: registerCard,
-              style:
-                  ElevatedButton.styleFrom(backgroundColor: Color(0xff39c5bb)),
+              style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Color(0xff39c5bb)),
               child: Text('등록 완료'),
             ),
           ],
