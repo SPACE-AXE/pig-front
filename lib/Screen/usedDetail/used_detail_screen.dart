@@ -170,7 +170,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen> {
                                               .toString()
                                               .isNotEmpty)
                                         Text(
-                                          '충전 시간: ${(item['chargeTime'] / 1000).toString()}',
+                                          '충전 시간: ${(item['chargeTime'] / 60).toString()} 분',
                                           style: const TextStyle(fontSize: 14),
                                         ),
                                       Text(
