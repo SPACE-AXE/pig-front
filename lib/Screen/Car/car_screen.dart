@@ -138,6 +138,9 @@ class _CarScreenState extends ConsumerState<CarScreen> {
             final data = ref.read(userDataProvider);
             fetchCars(data.accessToken!, data.refreshToken!);
           },
+          backgroundColor: const Color(0xFF39c5bb),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
           child: const Icon(Icons.add),
         ));
   }
