@@ -82,7 +82,7 @@ class _CarAddScreenState extends ConsumerState<CarAddScreen> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: const Text("Success"),
+              title: const Text("Error"),
               content: const Text("이미 등록된 차량 번호입니다."),
               actions: [
                 TextButton(
@@ -101,7 +101,7 @@ class _CarAddScreenState extends ConsumerState<CarAddScreen> {
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text("Error"),
-              content: Text("차량 등록 실패: ${response.body}"),
+              content: Text("차량 등록 실패"),
               actions: [
                 TextButton(
                   child: const Text("OK"),
@@ -115,13 +115,13 @@ class _CarAddScreenState extends ConsumerState<CarAddScreen> {
         );
       }
     } catch (e) {
-      print("차량 등록 실패: $e");
+      print("차량 등록 실패");
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text("Error"),
-            content: Text("차량 등록 실패: $e"),
+            content: Text("차량 등록 실패"),
             actions: [
               TextButton(
                 child: const Text("OK"),
@@ -153,6 +153,7 @@ class _CarAddScreenState extends ConsumerState<CarAddScreen> {
                 controller: carNumberController,
                 keyboardType: TextInputType.text,
                 inputFormatters: [
+                  LengthLimitingTextInputFormatter(8),
                   FilteringTextInputFormatter.allow(
                       RegExp(r'[ㄱ-ㅎㅏ-ㅣ0-9a-zA-Z가-힣]+')),
                 ],
@@ -176,6 +177,7 @@ class _CarAddScreenState extends ConsumerState<CarAddScreen> {
             ElevatedButton(
               onPressed: registerCar,
               style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
                 backgroundColor: const Color(0xff39c5bb),
               ),
               child: const Text('등록 완료'),

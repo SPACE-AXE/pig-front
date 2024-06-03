@@ -54,7 +54,7 @@ class _CarScreenState extends ConsumerState<CarScreen> {
         });
       }
     } catch (e) {
-      print('차량 조회 실패: $e');
+      print('차량 조회 실패');
       setState(() {
         isLoading = false;
       });
@@ -74,10 +74,10 @@ class _CarScreenState extends ConsumerState<CarScreen> {
         print("차량 삭제 성공");
         await fetchCars(data.accessToken!, data.refreshToken!);
       } else {
-        print("차량 삭제 실패: ${response.body}");
+        print("차량 삭제 실패");
       }
     } catch (e) {
-      print('차량 삭제 실패: $e');
+      print('차량 삭제 실패');
     }
   }
 

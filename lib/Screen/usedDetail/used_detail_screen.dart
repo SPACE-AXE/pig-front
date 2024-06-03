@@ -46,7 +46,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen> {
         });
       }
     } catch (e) {
-      print('이용 기록 조회 실패: $e');
+      print('이용 기록 조회 실패');
       setState(() {
         isLoading = false;
       });
