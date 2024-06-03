@@ -86,20 +86,19 @@ class _LoginBtnState extends ConsumerState<LoginBtn> {
     String url = 'https://api.parkchargego.link/api/v1/auth/login';
     Uri uri = Uri.parse(url);
     http.Response response = await http.post(uri, body: userData);
-
     String accessToken = '';
     String refreshToken = '';
 
-    List<String> cookies = response.headers['set-cookie']!.split(',');
-
-    for (String cookie in cookies) {
-      if (cookie.contains('access-token')) {
-        accessToken = cookie.split('=')[1].split(';')[0];
-      } else if (cookie.contains('refresh-token')) {
-        refreshToken = cookie.split('=')[1].split(';')[0];
-      }
-    }
     if (response.statusCode == 200) {
+      List<String> cookies = response.headers['set-cookie']!.split(',');
+
+      for (String cookie in cookies) {
+        if (cookie.contains('access-token')) {
+          accessToken = cookie.split('=')[1].split(';')[0];
+        } else if (cookie.contains('refresh-token')) {
+          refreshToken = cookie.split('=')[1].split(';')[0];
+        }
+      }
       var res = jsonDecode(response.body);
       debugPrint("!23$res");
       Map<String, dynamic> json = {

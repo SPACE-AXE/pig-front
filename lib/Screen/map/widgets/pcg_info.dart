@@ -1,11 +1,7 @@
-import 'dart:convert';
-
-import 'package:appfront/Screen/map/widgets/park_info_data.dart';
 import 'package:appfront/Screen/map/widgets/pcg_info_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:http/http.dart' as http;
 
 class PcgInfo extends StatefulWidget {
   final String name;

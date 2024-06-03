@@ -25,7 +25,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool idDuplicateFlag = false;
   final RegExp _emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
 
-  String _birth = '';
   bool emailCheck = true;
   bool pwdCheckFlag = false;
 
@@ -34,51 +33,57 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String email = '';
   String name = '';
   String password = '';
-  String birth = '';
   String phone = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          title: const Text('회원가입'),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
-        body: Center(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                Expanded(flex: 1, child: idInput(context)),
-                // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                Expanded(flex: 1, child: nicknameInput(context)),
-                // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                Expanded(flex: 1, child: emailInput(context)),
-                // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                Expanded(flex: 1, child: nameInput(context)),
-                // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                Expanded(flex: 1, child: passwordInput(context)),
-                // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                Expanded(flex: 1, child: passwordCheckInput(context)),
-                // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                Expanded(flex: 1, child: birthInput(context)),
-                // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                Expanded(flex: 1, child: phoneInput(context)),
-                // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                enterBtn(context),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-              ],
+        title: const Text(
+          '회원가입',
+          style: TextStyle(fontFamily: 'Maple'),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  //SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                  idInput(context),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                  nicknameInput(context),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                  emailInput(context),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                  nameInput(context),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                  passwordInput(context),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                  passwordCheckInput(context),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                  phoneInput(context),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                  enterBtn(context),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                ],
+              ),
             ),
           ),
-        ));
+        ),
+      ),
+      resizeToAvoidBottomInset: true,
+    );
   }
 
   ElevatedButton enterBtn(BuildContext context) {
@@ -88,17 +93,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            if (_birth == "") {
-              Fluttertoast.showToast(
-                msg: "생일을 입력해주세요.",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIosWeb: 1,
-                backgroundColor: const Color(0xff39c5bb),
-                textColor: Colors.white,
-                fontSize: 16,
-              );
-            } else if (!pwdCheckFlag) {
+            if (!pwdCheckFlag) {
               _pwdKey.currentState!.validate();
             } else if (idDuplicateFlag) {
               setState(() {
@@ -115,7 +110,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 'email': email,
                 'username': username,
                 'password': password,
-                'birth': birth,
               };
               register(userData);
               Navigator.pop(context);
@@ -134,7 +128,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         },
         child: const Text(
           "회원가입",
-          style: TextStyle(fontSize: 20, color: Colors.black),
+          style:
+              TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'Maple'),
         ));
   }
 
@@ -143,6 +138,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       decoration: const BoxDecoration(),
       width: MediaQuery.of(context).size.width * 0.6,
       child: TextFormField(
+        style: const TextStyle(fontFamily: 'Maple'),
         validator: (value) {
           if (value == null || value.isEmpty) {
             return "필수 입력값입니다.";
@@ -176,61 +172,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Container birthInput(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(),
-      width: MediaQuery.of(context).size.width * 0.6,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            flex: 3,
-            child: TextField(
-              readOnly: true,
-              decoration: InputDecoration(
-                counterText: '',
-                hintText: _birth == '' ? "생일" : "생일: $_birth",
-                enabledBorder: const UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Color(0xff39c5bb),
-                  ),
-                ),
-              ),
-              onChanged: (value) {
-                if (_pwdKey.currentState!.validate()) {
-                  pwdCheckFlag = !pwdCheckFlag;
-                }
-              },
-            ),
-          ),
-          Expanded(
-              flex: 1,
-              child: IconButton(
-                  iconSize: 30,
-                  onPressed: () {
-                    showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(1900),
-                            lastDate: DateTime.now())
-                        .then((selectedDate) {
-                      if (selectedDate != null) {
-                        setState(() {
-                          birth = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-                              .format(selectedDate);
-                          _birth =
-                              DateFormat("yyyy-MM-dd").format(selectedDate);
-                        });
-                      }
-                    });
-                  },
-                  icon: const Icon(Icons.date_range))),
-        ],
-      ),
-    );
-  }
-
   Container passwordInput(BuildContext context) {
     return Container(
         decoration: const BoxDecoration(),
@@ -259,7 +200,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             }
             return null;
           },
-          maxLength: 13,
           obscureText: true,
           decoration: const InputDecoration(
             counterText: '',
@@ -304,6 +244,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           }
           return null;
         },
+        style: const TextStyle(fontFamily: 'Maple'),
         controller: _email,
         decoration: InputDecoration(
           errorText: emailCheck ? null : "이메일 형식에 맞지 않습니다",
@@ -334,6 +275,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       decoration: const BoxDecoration(),
       width: MediaQuery.of(context).size.width * 0.6,
       child: TextFormField(
+        style: const TextStyle(fontFamily: 'Maple'),
         validator: (value) {
           if (value == null || value.isEmpty) {
             return "필수 입력값입니다.";
@@ -386,7 +328,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               child: const Text(
                 "중복확인",
-                style: TextStyle(fontSize: 15, color: Colors.black),
+                style: TextStyle(
+                    fontSize: 15, color: Colors.black, fontFamily: 'Maple'),
               ),
             ),
           )
@@ -433,7 +376,9 @@ void register(Map<String, dynamic> userData) async {
   http.Response response = await http.post(uri, body: userData);
 
   if (response.statusCode == 201) {
-    CustomToast.showToast("회원가입이 완료되었습니다.");
+    CustomToast.showToast(
+      "회원가입이 완료되었습니다.",
+    );
   } else {
     print(uri);
     print(response.body);
