@@ -125,10 +125,9 @@ class _MainBodyState extends State<MainBody> {
                       },
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.zero,
-                          foregroundColor:
-                              const Color(0xFFFFFFFF),
+                          foregroundColor: const Color(0xFFFFFFFF),
                           textStyle: const TextStyle(
-                            fontFamily:'BMJUA',
+                            fontFamily: 'BMJUA',
                             fontSize: 30,
                           ),
                           shape: RoundedRectangleBorder(
@@ -163,7 +162,7 @@ class _MainBodyState extends State<MainBody> {
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
                           textStyle: const TextStyle(
-                            fontFamily:'BMJUA',
+                            fontFamily: 'BMJUA',
                             fontSize: 20,
                           ),
                           padding: EdgeInsets.zero,
@@ -182,7 +181,7 @@ class _MainBodyState extends State<MainBody> {
                     },
                   )),
               const SizedBox(width: 5),
-              Container(
+              SizedBox(
                   width: MediaQuery.of(widget.context).size.width * 0.45,
                   height: MediaQuery.of(widget.context).size.width * 0.45,
                   child: Consumer(
@@ -191,33 +190,31 @@ class _MainBodyState extends State<MainBody> {
                         // 이용 내역 버튼
                         onPressed: () {
                           final data = ref.watch(userDataProvider);
-                          if(data.id == null){
+                          if (data.id == null) {
                             Fluttertoast.showToast(
                               msg: '로그인이 필요한 기능입니다.',
                               gravity: ToastGravity.BOTTOM,
                               backgroundColor: const Color(0xff39c5bb),
                             );
-                             Navigator.push(
+                            Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => const LoginScreen(),
                               ),
                             );
-                          }
-                          else {
+                          } else {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => UsedScreen(),
+                                builder: (context) => const UsedScreen(),
                               ),
                             );
                           }
-
                         },
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
                           textStyle: const TextStyle(
-                            fontFamily:'BMJUA',
+                            fontFamily: 'BMJUA',
                             fontSize: 20,
                           ),
                           padding: EdgeInsets.zero,
@@ -244,7 +241,7 @@ class _MainBodyState extends State<MainBody> {
             style: ElevatedButton.styleFrom(
               foregroundColor: Colors.white,
               textStyle: const TextStyle(
-                fontFamily:'BMJUA',
+                fontFamily: 'BMJUA',
                 fontSize: 20,
               ),
               padding: EdgeInsets.zero,
@@ -258,39 +255,36 @@ class _MainBodyState extends State<MainBody> {
           const SizedBox(height: 10),
           Row(
             children: [
-              Expanded(
-                child: Consumer(
-                  builder: (context, ref, _) {
-                    return ElevatedButton(
+              Expanded(child: Consumer(builder: (context, ref, _) {
+                return ElevatedButton(
                   // 카드 관리
                   onPressed: () {
                     final data = ref.watch(userDataProvider);
-                      if(data.id == null){
-                        Fluttertoast.showToast(
-                          msg: '로그인이 필요한 기능입니다.',
-                          gravity: ToastGravity.BOTTOM,
-                          backgroundColor: const Color(0xff39c5bb),
-                        );
-                          Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginScreen(),
-                          ),
-                        );
-                      }
-                      else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CardScreen(),
-                          ),
-                        );
-                      }
+                    if (data.id == null) {
+                      Fluttertoast.showToast(
+                        msg: '로그인이 필요한 기능입니다.',
+                        gravity: ToastGravity.BOTTOM,
+                        backgroundColor: const Color(0xff39c5bb),
+                      );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginScreen(),
+                        ),
+                      );
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CardScreen(),
+                        ),
+                      );
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     textStyle: const TextStyle(
-                      fontFamily:'BMJUA',
+                      fontFamily: 'BMJUA',
                       fontSize: 20,
                     ),
                     padding: EdgeInsets.zero,
@@ -307,44 +301,43 @@ class _MainBodyState extends State<MainBody> {
                 child: Consumer(
                   builder: (context, ref, _) {
                     return ElevatedButton(
-                    // 차량 관리
-                    onPressed: () {
-                      final data = ref.watch(userDataProvider);
-                        if(data.id == null){
+                      // 차량 관리
+                      onPressed: () {
+                        final data = ref.watch(userDataProvider);
+                        if (data.id == null) {
                           Fluttertoast.showToast(
                             msg: '로그인이 필요한 기능입니다.',
                             gravity: ToastGravity.BOTTOM,
                             backgroundColor: const Color(0xff39c5bb),
                           );
-                            Navigator.push(
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => const LoginScreen(),
                             ),
                           );
-                        }
-                        else{
+                        } else {
                           Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CarScreen(),
-                          ),
-                        );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      textStyle: const TextStyle(
-                        fontFamily:'BMJUA',
-                        fontSize: 20,
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const CarScreen(),
+                            ),
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        textStyle: const TextStyle(
+                          fontFamily: 'BMJUA',
+                          fontSize: 20,
+                        ),
+                        padding: EdgeInsets.zero,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        backgroundColor: const Color(0xFF39c5bb),
+                        minimumSize: const Size(double.infinity, 100),
                       ),
-                      padding: EdgeInsets.zero,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      backgroundColor: const Color(0xFF39c5bb),
-                      minimumSize: const Size(double.infinity, 100),
-                    ),
-                    child: const Text('차량 관리'),
+                      child: const Text('차량 관리'),
                     );
                   },
                 ),
@@ -394,7 +387,6 @@ class _DraggableFloatingActionButtonState
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(FabSize)),
               child: const Icon(Icons.local_atm),
-              
             ),
             childWhenDragging: Container(),
             onDragEnd: (details) {
@@ -423,22 +415,28 @@ class _DraggableFloatingActionButtonState
     debugPrint(// 가로 중앙값, 좌, 우 적용값
         "${MediaQuery.of(context).size.width / 2 - 30}, ${MediaQuery.of(context).size.width / 2 + 75 - 30}, ${MediaQuery.of(context).size.width / 2 - 75 - 30}");
     if (offset.dx > MediaQuery.of(context).size.width / 2 + 75 - 30) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => Consumer(
-            builder: (context, ref, child) {
-              final data = ref.read(userDataProvider);
-              if (data.accessToken == null) {
-                return const LoginScreen();
-              } else {
-                return SelectScreen(
-                  userData: data,
-                );
-              }
-            },
+      final data = ref.watch(userDataProvider);
+      if (data.id == null) {
+        Fluttertoast.showToast(
+          msg: '로그인이 필요한 기능입니다.',
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: const Color(0xff39c5bb),
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const LoginScreen(),
           ),
-        ),
-      );
+        );
+      } else {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => SelectScreen(
+              userData: data,
+            ),
+          ),
+        );
+      }
     } else if (offset.dx < MediaQuery.of(context).size.width / 2 - 75 - 30) {
       final data = ref.watch(userDataProvider);
       if (data.id == null) {

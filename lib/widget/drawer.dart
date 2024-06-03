@@ -25,14 +25,9 @@ class _MyDrawerState extends State<MyDrawer> {
               Container(
                 height: 100, // 원하는 높이로 설정합니다.
                 decoration: const BoxDecoration(),
-                child: const Center(
-                  child: Text(
-                    'Custom Header',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 24,
-                    ),
-                  ),
+                child: Center(
+                  child: Image.asset('lib/assets/images/enlogo.png',
+                      fit: BoxFit.cover),
                 ),
               ),
               Consumer(
