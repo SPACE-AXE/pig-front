@@ -58,34 +58,64 @@ class _MyDrawerState extends State<MyDrawer> {
               ListTile(
                 title: Text('이용 기록'),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => UsedScreen(),
-                    ),
-                  );
+                  ref.read(userDataProvider).name == null
+                      ? Fluttertoast.showToast(
+                          msg: "로그인이 필요한 기능입니다.",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: const Color(0xff39c5bb),
+                          textColor: Colors.white,
+                          fontSize: 16,
+                        )
+                      : Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UsedScreen(),
+                          ),
+                        );
                 },
               ),
               ListTile(
                 title: const Text('차량 등록'),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CarScreen(),
-                    ),
-                  );
+                  ref.read(userDataProvider).name == null
+                      ? Fluttertoast.showToast(
+                          msg: "로그인이 필요한 기능입니다.",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: const Color(0xff39c5bb),
+                          textColor: Colors.white,
+                          fontSize: 16,
+                        )
+                      : Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CarScreen(),
+                          ),
+                        );
                 },
               ),
               ListTile(
                 title: const Text('카드 등록'),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CardScreen(),
-                    ),
-                  );
+                  ref.read(userDataProvider).name == null
+                      ? Fluttertoast.showToast(
+                          msg: "로그인이 필요한 기능입니다.",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: const Color(0xff39c5bb),
+                          textColor: Colors.white,
+                          fontSize: 16,
+                        )
+                      : Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CardScreen(),
+                          ),
+                        );
                 },
               ),
               const ListTile(
@@ -97,26 +127,27 @@ class _MyDrawerState extends State<MyDrawer> {
               const ListTile(
                 title: Text('환경 설정'),
               ),
-              ListTile(
-                title: const Text('로그아웃'),
-                onTap: () {
-                  ref.read(userDataProvider).id == null
-                      ? null
-                      : {
-                          Fluttertoast.showToast(
-                            msg: "로그아웃되었습니다.",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: const Color(0xff39c5bb),
-                            textColor: Colors.white,
-                            fontSize: 16,
-                          ),
-                          ref.read(userDataProvider).deleteUserData(),
-                          Navigator.pop(context)
-                        };
-                },
-              ),
+              if (ref.read(userDataProvider).id != null)
+                ListTile(
+                  title: const Text('로그아웃'),
+                  onTap: () {
+                    ref.read(userDataProvider).id == null
+                        ? null
+                        : {
+                            Fluttertoast.showToast(
+                              msg: "로그아웃되었습니다.",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: const Color(0xff39c5bb),
+                              textColor: Colors.white,
+                              fontSize: 16,
+                            ),
+                            ref.read(userDataProvider).deleteUserData(),
+                            Navigator.pop(context)
+                          };
+                  },
+                ),
             ],
           ),
         );
