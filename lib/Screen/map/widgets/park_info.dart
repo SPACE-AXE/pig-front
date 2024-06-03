@@ -35,7 +35,8 @@ class _ParkInfoState extends State<ParkInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SingleChildScrollView(
+      child: Container(
         padding: const EdgeInsets.all(20.0),
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.vertical(
@@ -45,6 +46,8 @@ class _ParkInfoState extends State<ParkInfo> {
         ),
         width: MediaQuery.of(context).size.width * 0.9,
         height: MediaQuery.of(context).size.height * 0.7,
-        child: info == null ? null : ParkInfoData(info: info));
+        child: info == null ? null : ParkInfoData(info: info),
+      ),
+    );
   }
 }

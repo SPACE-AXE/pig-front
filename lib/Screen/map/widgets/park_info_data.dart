@@ -13,7 +13,7 @@ class ParkInfoData extends StatefulWidget {
 class _ParkInfoDataState extends State<ParkInfoData> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -78,43 +78,70 @@ class _ParkInfoDataState extends State<ParkInfoData> {
           const SizedBox(
             height: 20,
           ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.8,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                DataTable(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: const Color(0xff39c5bb)),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(10.0),
-                    ),
+          // SizedBox(
+          //   width: MediaQuery.of(context).size.width * 0.8,
+          //   child:
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              DataTable(
+                decoration: BoxDecoration(
+                  border: Border.all(color: const Color(0xff39c5bb)),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(10.0),
                   ),
-                  columns: const [
-                    DataColumn(label: Text('평일')),
-                    DataColumn(label: Text('토요일')),
-                    DataColumn(label: Text('주말,공휴일')),
-                  ],
-                  rows: [
-                    DataRow(cells: [
-                      DataCell(
-                          Text("${widget.info['time']['weekdayOpenAt']} ~")),
-                      DataCell(Text("${widget.info['time']['satOpenAt']} ~")),
-                      DataCell(
-                          Text("${widget.info['time']['holidayOpenAt']} ~")),
-                    ]),
-                    DataRow(cells: [
-                      DataCell(
-                          Text("${widget.info['time']['weekdayCloseAt']}")),
-                      DataCell(Text("${widget.info['time']['satCloseAt']}")),
-                      DataCell(
-                          Text("${widget.info['time']['holidayCloseAt']}")),
-                    ])
-                  ],
                 ),
-              ],
-            ),
+                columns: const [
+                  DataColumn(label: Text('평일')),
+                  DataColumn(label: Text('토요일')),
+                  DataColumn(label: Text('주말,공휴일')),
+                ],
+                rows: [
+                  DataRow(cells: [
+                    DataCell(Text("${widget.info['time']['weekdayOpenAt']} ~")),
+                    DataCell(Text("${widget.info['time']['satOpenAt']} ~")),
+                    DataCell(Text("${widget.info['time']['holidayOpenAt']} ~")),
+                  ]),
+                  DataRow(cells: [
+                    DataCell(Text("${widget.info['time']['weekdayCloseAt']}")),
+                    DataCell(Text("${widget.info['time']['satCloseAt']}")),
+                    DataCell(Text("${widget.info['time']['holidayCloseAt']}")),
+                  ])
+                ],
+              ),
+            ],
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              DataTable(
+                decoration: BoxDecoration(
+                  border: Border.all(color: const Color(0xff39c5bb)),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(10.0),
+                  ),
+                ),
+                columns: const [
+                  DataColumn(label: Text('평일')),
+                  DataColumn(label: Text('토요일')),
+                  DataColumn(label: Text('주말,공휴일')),
+                ],
+                rows: [
+                  DataRow(cells: [
+                    DataCell(Text("${widget.info['time']['weekdayOpenAt']} ~")),
+                    DataCell(Text("${widget.info['time']['satOpenAt']} ~")),
+                    DataCell(Text("${widget.info['time']['holidayOpenAt']} ~")),
+                  ]),
+                  DataRow(cells: [
+                    DataCell(Text("${widget.info['time']['weekdayCloseAt']}")),
+                    DataCell(Text("${widget.info['time']['satCloseAt']}")),
+                    DataCell(Text("${widget.info['time']['holidayCloseAt']}")),
+                  ])
+                ],
+              ),
+            ],
+          ),
+          // ),
           const SizedBox(
             height: 20,
           ),

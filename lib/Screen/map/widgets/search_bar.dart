@@ -38,8 +38,8 @@ class _MySearchBarState extends State<MySearchBar> {
       child: Column(
         children: [
           SearchBar(
-            backgroundColor: const MaterialStatePropertyAll(Color(0xffffffff)),
-            side: const MaterialStatePropertyAll(
+            backgroundColor: const WidgetStatePropertyAll(Color(0xffffffff)),
+            side: const WidgetStatePropertyAll(
               BorderSide(
                 color: Color(0xff39c5bb),
               ),
