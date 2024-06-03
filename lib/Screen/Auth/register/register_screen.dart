@@ -87,17 +87,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            if (_birth == "") {
-              Fluttertoast.showToast(
-                msg: "생일을 입력해주세요.",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIosWeb: 1,
-                backgroundColor: const Color(0xff39c5bb),
-                textColor: Colors.white,
-                fontSize: 16,
-              );
-            } else if (!pwdCheckFlag) {
+            if (!pwdCheckFlag) {
               _pwdKey.currentState!.validate();
             } else if (idDuplicateFlag) {
               setState(() {
@@ -114,7 +104,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 'email': email,
                 'username': username,
                 'password': password,
-                'birth': birth,
               };
               register(userData);
               Navigator.pop(context);
