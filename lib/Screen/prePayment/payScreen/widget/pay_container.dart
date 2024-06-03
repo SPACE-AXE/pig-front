@@ -28,7 +28,7 @@ class _PayContainerState extends State<PayContainer> {
       timeDiff = difference.inMinutes;
       total = widget.data['chargeTime'] == null
           ? (timeDiff * 100)
-          : (timeDiff * 100) + (widget.data['chargeTime'] * 100);
+          : (timeDiff * 100) + (widget.data['chargeTime'] * 10);
     });
   }
 

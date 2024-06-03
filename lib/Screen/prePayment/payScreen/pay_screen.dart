@@ -21,6 +21,7 @@ class PayScreen extends StatefulWidget {
 }
 
 class _PayScreenState extends State<PayScreen> {
+  int timeDiff = 0;
   String date = '';
 
   @override
@@ -28,9 +29,12 @@ class _PayScreenState extends State<PayScreen> {
     super.initState();
 
     DateTime original = DateTime.parse(widget.data['entryTime']);
+    DateTime now = DateTime.now();
+    Duration difference = now.difference(original);
     debugPrint("data: ${widget.data}");
     setState(() {
       date = DateFormat('yyyy.MM.dd. HH:mm').format(original);
+      timeDiff = difference.inMinutes;
     });
   }
 
@@ -68,8 +72,10 @@ class _PayScreenState extends State<PayScreen> {
                       return ElevatedButton(
                           onPressed: () async {
                             final data = ref.read(userDataProvider);
-                            payment(data.accessToken!, data.refreshToken!,
-                                widget.data['paymentId']);
+                            timeDiff < 1
+                                ? null
+                                : payment(data.accessToken!, data.refreshToken!,
+                                    widget.data['paymentId']);
                           },
                           child: const Text("결제하기"));
                     },
@@ -144,7 +150,13 @@ class _PayScreenState extends State<PayScreen> {
             content: const Text("결제에 실패하였습니다.\n정상적인 카드가 등록되어있는지 확인하여 주십시오."),
             actions: [
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MainApp()),
+                    (route) => false,
+                  );
+                },
                 child: const Text("메인으로"),
               ),
             ],

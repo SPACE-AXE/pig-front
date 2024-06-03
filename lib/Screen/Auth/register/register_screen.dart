@@ -25,7 +25,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool idDuplicateFlag = false;
   final RegExp _emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
 
-  String _birth = '';
+  final String _birth = '';
   bool emailCheck = true;
   bool pwdCheckFlag = false;
 
@@ -69,7 +69,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 Expanded(flex: 1, child: passwordCheckInput(context)),
                 // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                Expanded(flex: 1, child: birthInput(context)),
                 // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 Expanded(flex: 1, child: phoneInput(context)),
                 // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
@@ -88,17 +87,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            if (_birth == "") {
-              Fluttertoast.showToast(
-                msg: "생일을 입력해주세요.",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIosWeb: 1,
-                backgroundColor: const Color(0xff39c5bb),
-                textColor: Colors.white,
-                fontSize: 16,
-              );
-            } else if (!pwdCheckFlag) {
+            if (!pwdCheckFlag) {
               _pwdKey.currentState!.validate();
             } else if (idDuplicateFlag) {
               setState(() {
@@ -115,7 +104,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 'email': email,
                 'username': username,
                 'password': password,
-                'birth': birth,
               };
               register(userData);
               Navigator.pop(context);
@@ -172,61 +160,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             );
           });
         },
-      ),
-    );
-  }
-
-  Container birthInput(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(),
-      width: MediaQuery.of(context).size.width * 0.6,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            flex: 3,
-            child: TextField(
-              readOnly: true,
-              decoration: InputDecoration(
-                counterText: '',
-                hintText: _birth == '' ? "생일" : "생일: $_birth",
-                enabledBorder: const UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Color(0xff39c5bb),
-                  ),
-                ),
-              ),
-              onChanged: (value) {
-                if (_pwdKey.currentState!.validate()) {
-                  pwdCheckFlag = !pwdCheckFlag;
-                }
-              },
-            ),
-          ),
-          Expanded(
-              flex: 1,
-              child: IconButton(
-                  iconSize: 30,
-                  onPressed: () {
-                    showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(1900),
-                            lastDate: DateTime.now())
-                        .then((selectedDate) {
-                      if (selectedDate != null) {
-                        setState(() {
-                          birth = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-                              .format(selectedDate);
-                          _birth =
-                              DateFormat("yyyy-MM-dd").format(selectedDate);
-                        });
-                      }
-                    });
-                  },
-                  icon: const Icon(Icons.date_range))),
-        ],
       ),
     );
   }

@@ -18,7 +18,7 @@ class _PcgInfoDataState extends State<PcgInfoData> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
