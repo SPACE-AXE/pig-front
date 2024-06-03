@@ -100,6 +100,7 @@ class _CardScreenState extends ConsumerState<CardScreen> {
                     },
                     child: Text('카드 등록'),
                     style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
                         backgroundColor: Color(0xFF39c5bb),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18))),
