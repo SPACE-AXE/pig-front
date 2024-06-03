@@ -88,7 +88,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                           ),
                           Text(
                             "${ref.read(userDataProvider).email}",
-                            style: const TextStyle(fontSize: 20),
+                            style: const TextStyle(fontSize: 15),
                           ),
                         ],
                       ),
@@ -108,7 +108,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => CarScreen(),
+                                  builder: (context) => const CarScreen(),
                                 ),
                               );
                             },

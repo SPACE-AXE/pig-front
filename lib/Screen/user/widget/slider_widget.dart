@@ -90,7 +90,7 @@ class _MyCarouselSliderState extends State<MyCarouselSlider> {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      UsedScreen(), // UsedScreen으로 이동
+                                                      const UsedScreen(), // UsedScreen으로 이동
                                                 ),
                                               );
                                             },
@@ -128,7 +128,9 @@ class _MyCarouselSliderState extends State<MyCarouselSlider> {
                                           style: TextStyle(fontSize: 20),
                                         ),
                                         Text(
-                                          "${value['parkingAmount']}",
+                                          value['parkingAmount'] != null
+                                              ? "${value['parkingAmount']}"
+                                              : "0",
                                           style: const TextStyle(fontSize: 20),
                                         ),
                                       ],
@@ -156,7 +158,9 @@ class _MyCarouselSliderState extends State<MyCarouselSlider> {
                                           style: TextStyle(fontSize: 20),
                                         ),
                                         Text(
-                                          "${value['totalAmount']}",
+                                          value['totalAmount'] != null
+                                              ? "${value['totalAmount']}"
+                                              : '0',
                                           style: const TextStyle(fontSize: 20),
                                         ),
                                       ],
