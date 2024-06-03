@@ -249,6 +249,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: Form(
         key: _pwdKey,
         child: TextFormField(
+          style: const TextStyle(fontFamily: 'Maple'),
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "필수 입력값입니다.";
@@ -395,7 +396,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void checkUserIdDuplicate(String username) async {
-    String url = 'https://api.parkchargego.link/api/v1/auth/check-username-duplicate/';
+    String url =
+        'https://api.parkchargego.link/api/v1/auth/check-username-duplicate/';
     // URL을 올바르게 형성하기 위해 Uri 클래스를 사용합니다.
     Uri uri = Uri.parse('$url$username');
     http.Response response = await http.get(uri);
