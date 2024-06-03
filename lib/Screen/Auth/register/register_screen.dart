@@ -182,6 +182,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: Form(
         key: _pwdKey,
         child: TextFormField(
+          style: const TextStyle(fontFamily: 'Maple'),
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "필수 입력값입니다.";

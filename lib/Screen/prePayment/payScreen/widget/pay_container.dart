@@ -18,12 +18,13 @@ class _PayContainerState extends State<PayContainer> {
   @override
   void initState() {
     super.initState();
-    DateTime dataTime = DateTime.parse(widget.data['entryTime']);
+    DateTime time = DateTime.parse(widget.data['entryTime']).toLocal();
+    DateTime entryTime = time.subtract(const Duration(hours: 9));
     DateTime now = DateTime.now();
-    Duration difference = now.difference(dataTime);
+    Duration difference = now.difference(entryTime);
 
     setState(() {
-      entryDate = DateFormat('yyyy.MM.dd. HH:mm').format(dataTime);
+      entryDate = DateFormat('yyyy.MM.dd. HH:mm').format(entryTime);
       timeDiff = difference.inMinutes;
       total = widget.data['chargeTime'] == null
           ? (timeDiff * 100)
@@ -60,7 +61,7 @@ class _PayContainerState extends State<PayContainer> {
               title: "충전 금액",
               value: widget.data['chargeTime'] == null
                   ? "0"
-                  : (widget.data['chargeTime'] * 100).toString()),
+                  : (widget.data['chargeTime'] * 10).toString()),
           InfoRow(
             title: "총액",
             value: total.toString(),

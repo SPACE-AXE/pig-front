@@ -47,7 +47,7 @@ class _CardScreenState extends ConsumerState<CardScreen> {
         });
       }
     } catch (e) {
-      print('Card fetch failed: $e');
+      print('카드 조회에 실패했습니다.');
       setState(() {
         isLoading = false;
       });
@@ -55,7 +55,7 @@ class _CardScreenState extends ConsumerState<CardScreen> {
   }
 
   Future<void> deleteCard() async {
-    String apiUrl = "https://api.parkchargego.link/payment/card";
+    String apiUrl = "https://api.parkchargego.link/api/v1/payment/card";
     try {
       final data = ref.read(userDataProvider);
       var response = await http.delete(
@@ -71,10 +71,10 @@ class _CardScreenState extends ConsumerState<CardScreen> {
           cardNumber = null;
         });
       } else {
-        print("카드 삭제에 실패하였습니다. : ${response.body}");
+        print("카드 삭제에 실패하였습니다.");
       }
     } catch (e) {
-      print('카드 삭제에 실패하였습니다. : $e');
+      print('카드 삭제에 실패하였습니다.');
     }
   }
 
@@ -100,6 +100,7 @@ class _CardScreenState extends ConsumerState<CardScreen> {
                     },
                     child: Text('카드 등록'),
                     style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
                         backgroundColor: Color(0xFF39c5bb),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18))),
@@ -130,6 +131,7 @@ class _CardScreenState extends ConsumerState<CardScreen> {
                           onPressed: deleteCard,
                           child: Text('카드 삭제'),
                           style: ElevatedButton.styleFrom(
+                              foregroundColor: Colors.white,
                               backgroundColor: Color(0xFF39c5bb),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(18))),

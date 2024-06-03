@@ -33,7 +33,7 @@ class _PayScreenState extends State<PayScreen> {
     Duration difference = now.difference(original);
     debugPrint("data: ${widget.data}");
     setState(() {
-      date = DateFormat('yyyy.MM.dd. HH:MM').format(original);
+      date = DateFormat('yyyy.MM.dd. HH:mm').format(original);
       timeDiff = difference.inMinutes;
     });
   }

@@ -9,6 +9,8 @@ import 'package:appfront/userData.dart';
 import 'package:appfront/main.dart';
 
 class UsedScreen extends ConsumerStatefulWidget {
+  const UsedScreen({super.key});
+
   @override
   _UsedScreenState createState() => _UsedScreenState();
 }
@@ -44,7 +46,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen> {
         });
       }
     } catch (e) {
-      print('이용 기록 조회 실패: $e');
+      print('이용 기록 조회 실패');
       setState(() {
         isLoading = false;
       });
@@ -95,7 +97,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen> {
                           ),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: item['totalAmount'] == null
+                        child: item['exitTime'] == null
                             ? Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -112,7 +114,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen> {
                                       style: const TextStyle(fontSize: 14),
                                     ),
                                   ])
-                            : item['totalAmount'] < 100
+                            : (item['totalAmount'] == null) &&
+                                    (item['exitTime'] != null)
                                 ? Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -162,9 +165,12 @@ class _UsedScreenState extends ConsumerState<UsedScreen> {
                                           '충전 시작 시간: ${formatDateTime(item['chargeStartTime'])}',
                                           style: const TextStyle(fontSize: 14),
                                         ),
-                                      if (item['chargeTime'] != null)
+                                      if (item['chargeTime'] != null &&
+                                          item['chargeTime']
+                                              .toString()
+                                              .isNotEmpty)
                                         Text(
-                                          '충전 시간: ${(item['chargeTime'] / 1000).toString()}',
+                                          '충전 시간: ${(item['chargeTime'] / 60).toString()} 분',
                                           style: const TextStyle(fontSize: 14),
                                         ),
                                       Text(
@@ -198,7 +204,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen> {
                                               .isNotEmpty)
                                         Text(
                                           '합계: ${formatValue(item['totalAmount'])}원',
-                                          style: TextStyle(fontSize: 14),
+                                          style: const TextStyle(fontSize: 14),
                                         )
                                       else
                                         const Text(

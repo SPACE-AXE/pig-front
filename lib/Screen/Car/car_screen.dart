@@ -9,6 +9,8 @@ import 'package:appfront/userData.dart';
 import 'package:appfront/main.dart';
 
 class CarScreen extends ConsumerStatefulWidget {
+  const CarScreen({super.key});
+
   @override
   _CarScreenState createState() => _CarScreenState();
 }
@@ -52,7 +54,7 @@ class _CarScreenState extends ConsumerState<CarScreen> {
         });
       }
     } catch (e) {
-      print('차량 조회 실패: $e');
+      print('차량 조회 실패');
       setState(() {
         isLoading = false;
       });
@@ -72,10 +74,10 @@ class _CarScreenState extends ConsumerState<CarScreen> {
         print("차량 삭제 성공");
         await fetchCars(data.accessToken!, data.refreshToken!);
       } else {
-        print("차량 삭제 실패: ${response.body}");
+        print("차량 삭제 실패");
       }
     } catch (e) {
-      print('차량 삭제 실패: $e');
+      print('차량 삭제 실패');
     }
   }
 
@@ -83,12 +85,12 @@ class _CarScreenState extends ConsumerState<CarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("차량 관리"),
+          title: const Text("차량 관리"),
           centerTitle: true,
         ),
         body: Center(
           child: isLoading
-              ? CircularProgressIndicator()
+              ? const CircularProgressIndicator()
               : cars.isEmpty
                   ? null
                   : ListView.builder(
@@ -96,13 +98,13 @@ class _CarScreenState extends ConsumerState<CarScreen> {
                       itemBuilder: (context, index) {
                         return Container(
                           alignment: Alignment.center,
-                          margin:
-                              EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                          padding: EdgeInsets.all(10),
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 10),
+                          padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             border: Border.all(
-                              color: Color(0xFF39c5bb),
+                              color: const Color(0xFF39c5bb),
                               width: 3,
                             ),
                             borderRadius: BorderRadius.circular(12),
@@ -112,11 +114,11 @@ class _CarScreenState extends ConsumerState<CarScreen> {
                             children: [
                               Text(
                                 '차량 번호: ${cars[index]['carNum']}',
-                                style: TextStyle(fontSize: 16),
+                                style: const TextStyle(fontSize: 16),
                               ),
                               IconButton(
-                                icon:
-                                    Icon(Icons.delete, color: Colors.blueGrey),
+                                icon: const Icon(Icons.delete,
+                                    color: Colors.blueGrey),
                                 onPressed: () async {
                                   await deleteCar(cars[index]['id']!);
                                 },
@@ -131,15 +133,16 @@ class _CarScreenState extends ConsumerState<CarScreen> {
           onPressed: () async {
             await Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => CarAddScreen()),
+              MaterialPageRoute(builder: (context) => const CarAddScreen()),
             );
             final data = ref.read(userDataProvider);
             fetchCars(data.accessToken!, data.refreshToken!);
           },
+          foregroundColor: Colors.white,
           backgroundColor: const Color(0xFF39c5bb),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
         ));
   }
 }

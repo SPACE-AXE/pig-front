@@ -8,6 +8,8 @@ import 'package:appfront/main.dart';
 import 'package:appfront/userData.dart';
 
 class CarAddScreen extends ConsumerStatefulWidget {
+  const CarAddScreen({super.key});
+
   @override
   _CarAddScreenState createState() => _CarAddScreenState();
 }
@@ -24,11 +26,11 @@ class _CarAddScreenState extends ConsumerState<CarAddScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Error"),
-            content: Text("차량 번호는 필수 요소입니다."),
+            title: const Text("Error"),
+            content: const Text("차량 번호는 필수 요소입니다."),
             actions: [
               TextButton(
-                child: Text("OK"),
+                child: const Text("OK"),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -61,13 +63,31 @@ class _CarAddScreenState extends ConsumerState<CarAddScreen> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text("Success"),
-              content: Text("차량 등록 성공."),
+              title: const Text("Success"),
+              content: const Text("차량 등록 성공."),
               actions: [
                 TextButton(
-                  child: Text("OK"),
+                  child: const Text("OK"),
                   onPressed: () {
                     Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      } else if (response.statusCode == 409) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("Error"),
+              content: const Text("이미 등록된 차량 번호입니다."),
+              actions: [
+                TextButton(
+                  child: const Text("OK"),
+                  onPressed: () {
                     Navigator.of(context).pop();
                   },
                 ),
@@ -80,11 +100,11 @@ class _CarAddScreenState extends ConsumerState<CarAddScreen> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text("Error"),
-              content: Text("차량 등록 실패: ${response.body}"),
+              title: const Text("Error"),
+              content: Text("차량 등록 실패"),
               actions: [
                 TextButton(
-                  child: Text("OK"),
+                  child: const Text("OK"),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -95,16 +115,16 @@ class _CarAddScreenState extends ConsumerState<CarAddScreen> {
         );
       }
     } catch (e) {
-      print("차량 등록 실패: $e");
+      print("차량 등록 실패");
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Error"),
-            content: Text("차량 등록 실패: $e"),
+            title: const Text("Error"),
+            content: Text("차량 등록 실패"),
             actions: [
               TextButton(
-                child: Text("OK"),
+                child: const Text("OK"),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -120,7 +140,7 @@ class _CarAddScreenState extends ConsumerState<CarAddScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("차량 등록"),
+        title: const Text("차량 등록"),
         centerTitle: true,
       ),
       body: Center(
@@ -128,11 +148,12 @@ class _CarAddScreenState extends ConsumerState<CarAddScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 controller: carNumberController,
                 keyboardType: TextInputType.text,
                 inputFormatters: [
+                  LengthLimitingTextInputFormatter(8),
                   FilteringTextInputFormatter.allow(
                       RegExp(r'[ㄱ-ㅎㅏ-ㅣ0-9a-zA-Z가-힣]+')),
                 ],
@@ -152,13 +173,14 @@ class _CarAddScreenState extends ConsumerState<CarAddScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: registerCar,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xff39c5bb),
+                foregroundColor: Colors.white,
+                backgroundColor: const Color(0xff39c5bb),
               ),
-              child: Text('등록 완료'),
+              child: const Text('등록 완료'),
             ),
           ],
         ),
