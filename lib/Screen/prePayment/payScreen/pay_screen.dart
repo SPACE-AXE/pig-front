@@ -30,7 +30,7 @@ class _PayScreenState extends State<PayScreen> {
     DateTime original = DateTime.parse(widget.data['entryTime']);
     debugPrint("data: ${widget.data}");
     setState(() {
-      date = DateFormat('yyyy.MM.dd. HH:MM').format(original);
+      date = DateFormat('yyyy.MM.dd. HH:mm').format(original);
     });
   }
 
