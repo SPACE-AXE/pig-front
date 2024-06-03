@@ -150,7 +150,13 @@ class _PayScreenState extends State<PayScreen> {
             content: const Text("결제에 실패하였습니다.\n정상적인 카드가 등록되어있는지 확인하여 주십시오."),
             actions: [
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MainApp()),
+                    (route) => false,
+                  );
+                },
                 child: const Text("메인으로"),
               ),
             ],

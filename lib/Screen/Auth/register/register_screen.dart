@@ -25,7 +25,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool idDuplicateFlag = false;
   final RegExp _emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
 
-  String _birth = '';
+  final String _birth = '';
   bool emailCheck = true;
   bool pwdCheckFlag = false;
 
@@ -69,7 +69,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 Expanded(flex: 1, child: passwordCheckInput(context)),
                 // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                Expanded(flex: 1, child: birthInput(context)),
                 // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 Expanded(flex: 1, child: phoneInput(context)),
                 // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
@@ -172,61 +171,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             );
           });
         },
-      ),
-    );
-  }
-
-  Container birthInput(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(),
-      width: MediaQuery.of(context).size.width * 0.6,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            flex: 3,
-            child: TextField(
-              readOnly: true,
-              decoration: InputDecoration(
-                counterText: '',
-                hintText: _birth == '' ? "생일" : "생일: $_birth",
-                enabledBorder: const UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Color(0xff39c5bb),
-                  ),
-                ),
-              ),
-              onChanged: (value) {
-                if (_pwdKey.currentState!.validate()) {
-                  pwdCheckFlag = !pwdCheckFlag;
-                }
-              },
-            ),
-          ),
-          Expanded(
-              flex: 1,
-              child: IconButton(
-                  iconSize: 30,
-                  onPressed: () {
-                    showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(1900),
-                            lastDate: DateTime.now())
-                        .then((selectedDate) {
-                      if (selectedDate != null) {
-                        setState(() {
-                          birth = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-                              .format(selectedDate);
-                          _birth =
-                              DateFormat("yyyy-MM-dd").format(selectedDate);
-                        });
-                      }
-                    });
-                  },
-                  icon: const Icon(Icons.date_range))),
-        ],
       ),
     );
   }
@@ -395,7 +339,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void checkUserIdDuplicate(String username) async {
-    String url = 'https://api.parkchargego.link/api/v1/auth/check-username-duplicate/';
+    String url =
+        'https://api.parkchargego.link/api/v1/auth/check-username-duplicate/';
     // URL을 올바르게 형성하기 위해 Uri 클래스를 사용합니다.
     Uri uri = Uri.parse('$url$username');
     http.Response response = await http.get(uri);
