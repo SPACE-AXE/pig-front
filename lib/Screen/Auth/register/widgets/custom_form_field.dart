@@ -18,6 +18,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      style: const TextStyle(fontFamily: 'Maple'),
       obscureText: widget.obscureText,
       validator: (value) {
         if (value == null || value.isEmpty) {
