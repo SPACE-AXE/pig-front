@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -48,29 +48,40 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.1,
-            ),
-            IdAndPwd(
-              idPwdFormKey: idPwdFormKey,
-              updateId: updateId,
-              updatePwd: updatePwd,
-            ),
-            LoginBtn(
-              idPwdFormKey: idPwdFormKey,
-              id: id,
-              pwd: pwd,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.03,
-            ),
-            const ThreeBtn(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.6,
+                child: Transform.scale(
+                  scale: 0.8,
+                  alignment: Alignment.center,
+                  child: Image.asset('lib/assets/images/title3.png',
+                      fit: BoxFit.cover),
+                ),
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.1,
+              ),
+              IdAndPwd(
+                idPwdFormKey: idPwdFormKey,
+                updateId: updateId,
+                updatePwd: updatePwd,
+              ),
+              LoginBtn(
+                idPwdFormKey: idPwdFormKey,
+                id: id,
+                pwd: pwd,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.03,
+              ),
+              const ThreeBtn(),
+            ],
+          ),
         ),
       ),
     );

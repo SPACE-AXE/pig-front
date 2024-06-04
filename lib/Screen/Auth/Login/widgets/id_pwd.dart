@@ -56,9 +56,7 @@ class _IdAndPwdState extends State<IdAndPwd> {
             Expanded(
               flex: 1,
               child: TextFormField(
-                style: const TextStyle(
-                  fontFamily: 'Maple'
-                ),
+                style: const TextStyle(fontFamily: 'Maple'),
                 obscureText: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {

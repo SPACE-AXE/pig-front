@@ -11,6 +11,7 @@ import 'package:appfront/Screen/prePayment/select_screen/select_screen.dart';
 import 'package:appfront/Screen/Card/card_screen.dart';
 import 'package:appfront/Screen/Car/car_screen.dart';
 import 'package:appfront/Screen/usedDetail/used_detail_screen.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -18,7 +19,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NaverMapSdk.instance.initialize(clientId: "etuftq1yhk");
-  runApp(const ProviderScope(child: MainApp()));
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]).then((_) {
+    runApp(const ProviderScope(child: MainApp()));
+  });
 }
 
 class MainApp extends StatelessWidget {
