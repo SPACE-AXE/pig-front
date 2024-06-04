@@ -1,3 +1,5 @@
+import 'package:appfront/Screen/Auth/reset_pwd/reset_pwd_screen.dart';
+import 'package:appfront/main.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -27,6 +29,7 @@ class _ResetPwdContainerState extends State<ResetPwdContainer> {
               decoration: const BoxDecoration(),
               width: MediaQuery.of(context).size.width * 0.6,
               child: TextFormField(
+                style: const TextStyle(fontFamily: 'Maple'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "필수 입력값입니다.";
@@ -45,10 +48,14 @@ class _ResetPwdContainerState extends State<ResetPwdContainer> {
                 ),
               ),
             ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.05,
+            ),
             Container(
               decoration: const BoxDecoration(),
               width: MediaQuery.of(context).size.width * 0.6,
               child: TextFormField(
+                style: const TextStyle(fontFamily: 'Maple'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "필수 입력값입니다.";
@@ -56,7 +63,6 @@ class _ResetPwdContainerState extends State<ResetPwdContainer> {
                   return null;
                 },
                 controller: _password,
-                maxLength: 13,
                 obscureText: true,
                 decoration: const InputDecoration(
                   counterText: '',
@@ -68,6 +74,9 @@ class _ResetPwdContainerState extends State<ResetPwdContainer> {
                   ),
                 ),
               ),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.05,
             ),
             Container(
               decoration: const BoxDecoration(),
@@ -82,7 +91,7 @@ class _ResetPwdContainerState extends State<ResetPwdContainer> {
                   }
                   return null;
                 },
-                maxLength: 13,
+                style: const TextStyle(fontFamily: 'Maple'),
                 obscureText: true,
                 decoration: const InputDecoration(
                   counterText: '',
@@ -101,6 +110,9 @@ class _ResetPwdContainerState extends State<ResetPwdContainer> {
                   }
                 },
               ),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.05,
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -135,7 +147,11 @@ class _ResetPwdContainerState extends State<ResetPwdContainer> {
               },
               child: const Text(
                 "비밀번호 초기화",
-                style: TextStyle(fontSize: 20, color: Colors.black),
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                  fontFamily: 'Maple',
+                ),
               ),
             ),
           ],
@@ -149,11 +165,33 @@ class _ResetPwdContainerState extends State<ResetPwdContainer> {
     Uri uri = Uri.parse(url);
     http.Response response = await http.patch(uri, body: userData);
     if (response.statusCode == 200) {
-      debugPrint(response.body);
-      debugPrint("${response.statusCode}");
-      Navigator.pop(context);
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const MainApp()),
+        (route) => false,
+      );
     } else {
-      debugPrint(response.body);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("초기화 실패"),
+            content: const Text("초기화에 실패했습니다.\n토큰과 비밀번호를 확인하여 주십시오."),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MainApp()),
+                    (route) => false,
+                  );
+                },
+                child: const Text("메인으로"),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 }

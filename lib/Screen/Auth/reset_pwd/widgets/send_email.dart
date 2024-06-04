@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
 class SendEmailContainer extends StatefulWidget {
@@ -29,6 +30,7 @@ class _SendEmailContainerState extends State<SendEmailContainer> {
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.6,
               child: TextFormField(
+                style: const TextStyle(fontFamily: 'Maple'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "필수 입력값입니다.";
@@ -61,11 +63,12 @@ class _SendEmailContainerState extends State<SendEmailContainer> {
               ),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.03,
+              height: MediaQuery.of(context).size.height * 0.05,
             ),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.6,
               child: TextFormField(
+                style: const TextStyle(fontFamily: 'Maple'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "필수 입력값입니다.";
@@ -105,7 +108,11 @@ class _SendEmailContainerState extends State<SendEmailContainer> {
               },
               child: const Text(
                 "비밀번호 재설정",
-                style: TextStyle(fontSize: 20, color: Colors.black),
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                  fontFamily: 'Maple',
+                ),
               ),
             ),
           ],
@@ -119,8 +126,18 @@ class _SendEmailContainerState extends State<SendEmailContainer> {
         'https://api.parkchargego.link/api/v1/auth/send-password-reset-email';
     Uri uri = Uri.parse(url);
     http.Response response = await http.post(uri, body: userData);
-    debugPrint("${response.statusCode}");
-    debugPrint(response.body);
-    widget.setFlag();
+    if (response.statusCode == 200) {
+      widget.setFlag();
+    } else {
+      Fluttertoast.showToast(
+        msg: "이메일, 아이디가 맞지 않습니다.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: const Color(0xff39c5bb),
+        textColor: Colors.white,
+        fontSize: 16,
+      );
+    }
   }
 }

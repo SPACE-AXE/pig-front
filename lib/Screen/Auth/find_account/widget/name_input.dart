@@ -17,6 +17,7 @@ class _NameInputState extends State<NameInput> {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.6,
       child: TextFormField(
+        style: const TextStyle(fontFamily: 'Maple'),
         validator: (value) {
           if (value == null || value.isEmpty) {
             return "필수 입력값입니다.";

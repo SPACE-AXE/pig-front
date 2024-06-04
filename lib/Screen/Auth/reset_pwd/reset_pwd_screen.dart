@@ -1,5 +1,7 @@
+import 'package:appfront/Screen/Auth/Login/login_screen.dart';
 import 'package:appfront/Screen/Auth/reset_pwd/widgets/reset_pwd.dart';
 import 'package:appfront/Screen/Auth/reset_pwd/widgets/send_email.dart';
+import 'package:appfront/main.dart';
 import 'package:flutter/material.dart';
 
 class ResetPwdScreen extends StatefulWidget {
@@ -22,6 +24,12 @@ class _ResetPwdScreenState extends State<ResetPwdScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: const Text("비밀번호 재설정"),
         centerTitle: true,
       ),

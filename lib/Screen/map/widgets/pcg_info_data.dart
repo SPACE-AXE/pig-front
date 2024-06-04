@@ -22,9 +22,13 @@ class _PcgInfoDataState extends State<PcgInfoData> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            widget.info['name'],
-            style: const TextStyle(fontSize: 30),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.6,
+            child: Text(
+              widget.info['name'],
+              overflow: TextOverflow.visible,
+              style: const TextStyle(fontSize: 30),
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -67,32 +71,29 @@ class _PcgInfoDataState extends State<PcgInfoData> {
           const SizedBox(
             height: 20,
           ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.8,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                DataTable(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: const Color(0xff39c5bb)),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(10.0),
-                    ),
-                  ),
-                  columns: const [
-                    DataColumn(label: Text('일반 구역')),
-                    DataColumn(label: Text('장애인 구역')),
-                    DataColumn(label: Text('총계')),
-                  ],
-                  rows: [
-                    DataRow(cells: [
-                      DataCell(Text("${widget.info['disabilitySpace']}")),
-                      DataCell(Text("${widget.info['carSpace']}")),
-                      DataCell(Text("${widget.info['totalSpace']}")),
-                    ]),
-                  ],
+          Center(
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              decoration: BoxDecoration(
+                border: Border.all(color: const Color(0xff39c5bb)),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(10.0),
                 ),
-              ],
+              ),
+              child: DataTable(
+                columns: const [
+                  DataColumn(label: Text('일반 구역')),
+                  DataColumn(label: Text('장애인 구역')),
+                  DataColumn(label: Text('총계')),
+                ],
+                rows: [
+                  DataRow(cells: [
+                    DataCell(Text("${widget.info['disabilitySpace']}")),
+                    DataCell(Text("${widget.info['carSpace']}")),
+                    DataCell(Text("${widget.info['totalSpace']}")),
+                  ]),
+                ],
+              ),
             ),
           ),
           const SizedBox(
@@ -105,36 +106,38 @@ class _PcgInfoDataState extends State<PcgInfoData> {
           const SizedBox(
             height: 20,
           ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.8,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                DataTable(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: const Color(0xff39c5bb)),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(10.0),
-                    ),
-                  ),
-                  columns: const [
-                    DataColumn(
-                      label: Text('기본 1분'),
-                    ),
-                    DataColumn(label: Text('추가 1분')),
-                    DataColumn(label: Text('1일 주차')),
-                  ],
-                  rows: const [
-                    DataRow(cells: [
-                      DataCell(
-                        Text("0 원"),
-                      ),
-                      DataCell(Text("100 원")),
-                      DataCell(Text("10,000 원")),
-                    ]),
-                  ],
+          Center(
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              decoration: BoxDecoration(
+                border: Border.all(color: const Color(0xff39c5bb)),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(10.0),
                 ),
-              ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  DataTable(
+                    columns: const [
+                      DataColumn(
+                        label: Text('기본 1분'),
+                      ),
+                      DataColumn(label: Text('추가 1분')),
+                      DataColumn(label: Text('1일 주차')),
+                    ],
+                    rows: const [
+                      DataRow(cells: [
+                        DataCell(
+                          Text("0 원"),
+                        ),
+                        DataCell(Text("100 원")),
+                        DataCell(Text("10,000 원")),
+                      ]),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],

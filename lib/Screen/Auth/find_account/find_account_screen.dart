@@ -36,8 +36,11 @@ class _FindAccountScreenState extends State<FindAccountScreen> {
     String url = 'https://api.parkchargego.link/api/v1/auth/find-username';
     Uri uri = Uri.parse(url);
     http.Response response = await http.post(uri, body: userData);
+    debugPrint("${response.statusCode}");
     setState(() {
-      userName = response.body;
+      response.statusCode == 200
+          ? userName = response.body
+          : userName = "아이디가 없습니다.";
     });
   }
 
@@ -45,6 +48,12 @@ class _FindAccountScreenState extends State<FindAccountScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: const Text("아이디 찾기"),
         centerTitle: true,
       ),
@@ -69,7 +78,11 @@ class _FindAccountScreenState extends State<FindAccountScreen> {
                 width: MediaQuery.of(context).size.width * 0.6,
                 child: Text(
                   "아이디: $userName",
-                  style: const TextStyle(fontSize: 17, color: Colors.black),
+                  style: const TextStyle(
+                    fontSize: 17,
+                    color: Colors.black,
+                    fontFamily: 'Maple',
+                  ),
                 ),
               ),
               SizedBox(
@@ -94,7 +107,11 @@ class _FindAccountScreenState extends State<FindAccountScreen> {
                 },
                 child: const Text(
                   "아이디 찾기",
-                  style: TextStyle(fontSize: 20, color: Colors.black),
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black,
+                    fontFamily: 'Maple',
+                  ),
                 ),
               )
             ],

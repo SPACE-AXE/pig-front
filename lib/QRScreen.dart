@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class QRScreen extends ConsumerStatefulWidget {
+  const QRScreen({super.key});
+
   @override
   _QRScreenState createState() => _QRScreenState();
 }
@@ -28,7 +30,7 @@ class _QRScreenState extends ConsumerState<QRScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('QR Scanner'),
+        title: const Text('QR Scanner'),
       ),
       body: Column(
         children: <Widget>[
@@ -38,7 +40,7 @@ class _QRScreenState extends ConsumerState<QRScreen> {
               key: qrKey,
               onQRViewCreated: _onQRViewCreated,
               overlay: QrScannerOverlayShape(
-                borderColor: Color(0xFF39c5bb),
+                borderColor: const Color(0xFF39c5bb),
                 borderRadius: 10,
                 borderLength: 30,
                 borderWidth: 10,
@@ -79,18 +81,21 @@ class _QRScreenState extends ConsumerState<QRScreen> {
         url,
         headers: {
           'Content-Type': 'application/json',
-          'Cookie': 'access-token=${data.accessToken}; refresh-token=${data.refreshToken}'
+          'Cookie':
+              'access-token=${data.accessToken}; refresh-token=${data.refreshToken}'
         },
         body: paymentjson,
       );
 
       debugPrint('\n\n\npaymentID : $paymentjson\n');
-      debugPrint('Cookie : access-token=${data.accessToken}; refresh-token=${data.refreshToken}\n');
+      debugPrint(
+          'Cookie : access-token=${data.accessToken}; refresh-token=${data.refreshToken}\n');
       debugPrint('response.statusCode : ${response.statusCode}\n\n\n');
       debugPrint('response.body : ${response.body}\n\n\n');
 
       if (response.statusCode == 200) {
         _showAlertDialog('결제가 완료되었습니다.');
+        Navigator.pop(context);
       } else {
         _showAlertDialog('결제에 실패했습니다. 다시 시도해 주세요.');
       }
@@ -104,11 +109,11 @@ class _QRScreenState extends ConsumerState<QRScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('알림'),
+          title: const Text('알림'),
           content: Text(message),
           actions: <Widget>[
             TextButton(
-              child: Text('확인'),
+              child: const Text('확인'),
               onPressed: () {
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },

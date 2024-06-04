@@ -17,9 +17,13 @@ class _ParkInfoDataState extends State<ParkInfoData> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            widget.info['name'],
-            style: const TextStyle(fontSize: 30),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.6,
+            child: Text(
+              widget.info['name'],
+              overflow: TextOverflow.visible,
+              style: const TextStyle(fontSize: 30),
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -83,34 +87,39 @@ class _ParkInfoDataState extends State<ParkInfoData> {
           // Row(
           //   mainAxisAlignment: MainAxisAlignment.center,
           //   children: [
-          DataTable(
-            decoration: BoxDecoration(
-              border: Border.all(color: const Color(0xff39c5bb)),
-              borderRadius: const BorderRadius.all(
-                Radius.circular(10.0),
+          Center(
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              decoration: BoxDecoration(
+                border: Border.all(color: const Color(0xff39c5bb)),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(10.0),
+                ),
+              ),
+              child: DataTable(
+                columns: const [
+                  DataColumn(label: Text('평일')),
+                  DataColumn(label: Text('토요일')),
+                  DataColumn(label: Text('주말,공휴일')),
+                ],
+                rows: [
+                  DataRow(cells: [
+                    DataCell(
+                      Text(
+                        "${widget.info['time']['weekdayOpenAt']} ~",
+                      ),
+                    ),
+                    DataCell(Text("${widget.info['time']['satOpenAt']} ~")),
+                    DataCell(Text("${widget.info['time']['holidayOpenAt']} ~")),
+                  ]),
+                  DataRow(cells: [
+                    DataCell(Text("${widget.info['time']['weekdayCloseAt']}")),
+                    DataCell(Text("${widget.info['time']['satCloseAt']}")),
+                    DataCell(Text("${widget.info['time']['holidayCloseAt']}")),
+                  ])
+                ],
               ),
             ),
-            columns: const [
-              DataColumn(label: Text('평일')),
-              DataColumn(label: Text('토요일')),
-              DataColumn(label: Text('주말,공휴일')),
-            ],
-            rows: [
-              DataRow(cells: [
-                DataCell(
-                  Text(
-                    "${widget.info['time']['weekdayOpenAt']} ~",
-                  ),
-                ),
-                DataCell(Text("${widget.info['time']['satOpenAt']} ~")),
-                DataCell(Text("${widget.info['time']['holidayOpenAt']} ~")),
-              ]),
-              DataRow(cells: [
-                DataCell(Text("${widget.info['time']['weekdayCloseAt']}")),
-                DataCell(Text("${widget.info['time']['satCloseAt']}")),
-                DataCell(Text("${widget.info['time']['holidayCloseAt']}")),
-              ])
-            ],
           ),
           //   ],
           // ),
@@ -125,49 +134,46 @@ class _ParkInfoDataState extends State<ParkInfoData> {
           const SizedBox(
             height: 20,
           ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.8,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                DataTable(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: const Color(0xff39c5bb)),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(10.0),
-                    ),
-                  ),
-                  columns: [
-                    DataColumn(
-                      label: widget.info['price']['baseTime'] == '0' ||
-                              widget.info['price']['baseTime'] == ''
-                          ? const Text("자료없음")
-                          : Text('기본 ${widget.info['price']['baseTime']}분'),
-                    ),
-                    DataColumn(
-                        label: widget.info['price']['unitTime'] == '0' ||
-                                widget.info['price']['unitTime'] == ''
-                            ? const Text("자료없음")
-                            : Text('추가 ${widget.info['price']['unitTime']}분')),
-                    const DataColumn(label: Text('1일 주차')),
-                  ],
-                  rows: [
-                    DataRow(cells: [
-                      DataCell(
-                        widget.info['price']['basePrice'] != ''
-                            ? Text('${widget.info['price']['basePrice']}원')
-                            : const Text("자료없음"),
-                      ),
-                      DataCell(widget.info['price']['unitPrice'] != ''
-                          ? Text('${widget.info['price']['unitPrice']}원')
-                          : const Text("자료없음")),
-                      DataCell(widget.info['price']['dayPrice'] != ''
-                          ? Text('${widget.info['price']['dayPrice']}원')
-                          : const Text("자료없음")),
-                    ]),
-                  ],
+          Center(
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              decoration: BoxDecoration(
+                border: Border.all(color: const Color(0xff39c5bb)),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(10.0),
                 ),
-              ],
+              ),
+              child: DataTable(
+                columns: [
+                  DataColumn(
+                    label: widget.info['price']['baseTime'] == '0' ||
+                            widget.info['price']['baseTime'] == ''
+                        ? const Text("자료없음")
+                        : Text('기본 ${widget.info['price']['baseTime']}분'),
+                  ),
+                  DataColumn(
+                      label: widget.info['price']['unitTime'] == '0' ||
+                              widget.info['price']['unitTime'] == ''
+                          ? const Text("자료없음")
+                          : Text('추가 ${widget.info['price']['unitTime']}분')),
+                  const DataColumn(label: Text('1일 주차')),
+                ],
+                rows: [
+                  DataRow(cells: [
+                    DataCell(
+                      widget.info['price']['basePrice'] != ''
+                          ? Text('${widget.info['price']['basePrice']}원')
+                          : const Text("자료없음"),
+                    ),
+                    DataCell(widget.info['price']['unitPrice'] != ''
+                        ? Text('${widget.info['price']['unitPrice']}원')
+                        : const Text("자료없음")),
+                    DataCell(widget.info['price']['dayPrice'] != ''
+                        ? Text('${widget.info['price']['dayPrice']}원')
+                        : const Text("자료없음")),
+                  ]),
+                ],
+              ),
             ),
           ),
         ],
