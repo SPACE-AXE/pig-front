@@ -380,9 +380,7 @@ void register(Map<String, dynamic> userData) async {
       "회원가입이 완료되었습니다.",
     );
   } else {
-    print(uri);
-    print(response.body);
-    CustomToast.showToast("이메일 혹은 전화번호가 중복되었습니다.");
+    CustomToast.showToast("회원가입에 실패했습니다.");
   }
 }
 

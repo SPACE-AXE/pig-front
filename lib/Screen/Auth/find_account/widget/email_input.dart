@@ -21,6 +21,7 @@ class _EmailInputState extends State<EmailInput> {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.6,
       child: TextFormField(
+        style: const TextStyle(fontFamily: 'Maple'),
         validator: (value) {
           if (value == null || value.isEmpty) {
             return "필수 입력값입니다.";

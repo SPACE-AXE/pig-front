@@ -76,6 +76,7 @@ class _LoginBtnState extends ConsumerState<LoginBtn> {
             fontSize: 20,
             color: Colors.white,
             fontWeight: FontWeight.bold,
+            fontFamily: 'maple',
           ),
         ),
       ),

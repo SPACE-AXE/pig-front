@@ -27,53 +27,45 @@ class FilterPage extends StatefulWidget {
 class _FilterPageState extends State<FilterPage> {
   @override
   Widget build(BuildContext context) {
-    return DraggableScrollableSheet(
-      expand: false,
-      builder: (context, scrollController) {
-        return SingleChildScrollView(
-          controller: scrollController,
-          child: Container(
-            padding: const EdgeInsets.all(20.0),
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(25.0), // 상단 모서리를 둥글게 만듭니다.
-              ),
-              border: Border.all(color: const Color(0xff39c5bb), width: 1),
-            ),
-            width: MediaQuery.of(context).size.width * 0.9,
-            child: SizedBox(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+    return Container(
+      padding: const EdgeInsets.all(20.0),
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.vertical(
+          top: Radius.circular(25.0), // 상단 모서리를 둥글게 만듭니다.
+        ),
+        border: Border.all(color: const Color(0xff39c5bb), width: 1),
+      ),
+      width: MediaQuery.of(context).size.width * 0.9,
+      child: SizedBox(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Expanded(
-                    flex: 1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Title(
-                          color: Colors.black,
-                          child: const Text(
-                            "필터",
-                            style: TextStyle(fontSize: 35),
-                          ),
-                        ),
-                      ],
+                  Title(
+                    color: Colors.black,
+                    child: const Text(
+                      "필터",
+                      style: TextStyle(fontSize: 35),
                     ),
-                  ),
-                  Filters(
-                    sliderValue: widget.sliderValue,
-                    disabled: widget.disabled,
-                    spaceController: widget.spaceController,
-                    setPrice: widget.setPrice,
-                    setSpace: widget.setSpace,
-                    setDisabled: widget.setDisabled,
                   ),
                 ],
               ),
             ),
-          ),
-        );
-      },
+            Filters(
+              sliderValue: widget.sliderValue,
+              disabled: widget.disabled,
+              spaceController: widget.spaceController,
+              setPrice: widget.setPrice,
+              setSpace: widget.setSpace,
+              setDisabled: widget.setDisabled,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -72,10 +72,8 @@ class _PayScreenState extends State<PayScreen> {
                       return ElevatedButton(
                           onPressed: () async {
                             final data = ref.read(userDataProvider);
-                            timeDiff < 1
-                                ? null
-                                : payment(data.accessToken!, data.refreshToken!,
-                                    widget.data['paymentId']);
+                            payment(data.accessToken!, data.refreshToken!,
+                                widget.data['paymentId']);
                           },
                           child: const Text("결제하기"));
                     },
