@@ -59,7 +59,7 @@ class _CardAddScreenState extends ConsumerState<CardAddScreen> {
           builder: (BuildContext context) {
             return AlertDialog(
               title: Text("Error"),
-              content: Text("카드 등록에 실패했습니다. : ${response.body}"),
+              content: Text("카드 등록에 실패했습니다."),
               actions: [
                 TextButton(
                   child: Text("OK"),
