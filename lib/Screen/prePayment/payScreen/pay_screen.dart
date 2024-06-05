@@ -99,7 +99,7 @@ class _PayScreenState extends State<PayScreen> {
     });
     final res = json.decode(response.body);
     debugPrint("123$res");
-    if (res['status'] == 'PAID') {
+    if (response.statusCode == 200) {
       return showDialog(
         context: context,
         builder: (BuildContext context) {
