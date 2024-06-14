@@ -6,9 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:appfront/Screen/Card/card_add_screen.dart';
 import 'package:appfront/userData.dart';
-import 'package:appfront/main.dart';
 
 class CardScreen extends ConsumerStatefulWidget {
+  const CardScreen({super.key});
+
   @override
   _CardScreenState createState() => _CardScreenState();
 }
@@ -27,12 +28,13 @@ class _CardScreenState extends ConsumerState<CardScreen> {
     String apiUrl = "https://api.parkchargego.link/api/v1/payment/card";
     try {
       final data = ref.read(userDataProvider);
+      final accessToken = await data.storage!.read(key: "accessToken");
+      final refreshToken = await data.storage!.read(key: "refreshToken");
       var response = await http.get(
         Uri.parse(apiUrl),
         headers: {
           'Content-Type': 'application/json',
-          'Cookie':
-              'access-token=${data.accessToken}; refresh-token=${data.refreshToken}'
+          'Cookie': 'access-token=$accessToken; refresh-token=$refreshToken'
         },
       );
       if (response.statusCode == 200) {
@@ -58,11 +60,12 @@ class _CardScreenState extends ConsumerState<CardScreen> {
     String apiUrl = "https://api.parkchargego.link/api/v1/payment/card";
     try {
       final data = ref.read(userDataProvider);
+      final accessToken = await data.storage!.read(key: "accessToken");
+      final refreshToken = await data.storage!.read(key: "refreshToken");
       var response = await http.delete(
         Uri.parse(apiUrl),
         headers: {
-          'Cookie':
-              'access-token=${data.accessToken}; refresh-token=${data.refreshToken}'
+          'Cookie': 'access-token=$accessToken; refresh-token=$refreshToken'
         },
       );
       if (response.statusCode == 200) {
@@ -82,28 +85,28 @@ class _CardScreenState extends ConsumerState<CardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("카드 관리"),
+        title: const Text("카드 관리"),
         centerTitle: true,
       ),
       body: Center(
         child: isLoading
-            ? CircularProgressIndicator()
+            ? const CircularProgressIndicator()
             : cardNumber == null
                 ? ElevatedButton(
                     onPressed: () async {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => CardAddScreen()),
+                            builder: (context) => const CardAddScreen()),
                       );
                       fetchCard();
                     },
-                    child: Text('카드 등록'),
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                        backgroundColor: Color(0xFF39c5bb),
+                        foregroundColor: Colors.white,
+                        backgroundColor: const Color(0xFF39c5bb),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18))),
+                    child: const Text('카드 등록'),
                   )
                 : Container(
                     width: MediaQuery.of(context).size.width * 0.9,
@@ -112,7 +115,7 @@ class _CardScreenState extends ConsumerState<CardScreen> {
                     decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(
-                          color: Color(0xFF39c5bb),
+                          color: const Color(0xFF39c5bb),
                           width: 5,
                         ),
                         borderRadius: BorderRadius.circular(12)),
@@ -125,16 +128,16 @@ class _CardScreenState extends ConsumerState<CardScreen> {
                               fontSize:
                                   MediaQuery.of(context).size.width * 0.05,
                             )),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         const SizedBox(width: 10),
                         ElevatedButton(
                           onPressed: deleteCard,
-                          child: Text('카드 삭제'),
                           style: ElevatedButton.styleFrom(
                               foregroundColor: Colors.white,
-                              backgroundColor: Color(0xFF39c5bb),
+                              backgroundColor: const Color(0xFF39c5bb),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(18))),
+                          child: const Text('카드 삭제'),
                         ),
                       ],
                     ),

@@ -1,7 +1,5 @@
-import 'package:appfront/Screen/Auth/Login/login_screen.dart';
 import 'package:appfront/Screen/Auth/reset_pwd/widgets/reset_pwd.dart';
 import 'package:appfront/Screen/Auth/reset_pwd/widgets/send_email.dart';
-import 'package:appfront/main.dart';
 import 'package:flutter/material.dart';
 
 class ResetPwdScreen extends StatefulWidget {

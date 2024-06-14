@@ -1,8 +1,6 @@
 import 'package:appfront/Screen/Car/car_screen.dart';
 import 'package:appfront/Screen/user/widget/slider_widget.dart';
 import 'package:appfront/userData.dart';
-import 'package:appfront/Screen/usedDetail/used_detail_screen.dart';
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -108,7 +106,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => CarScreen(),
+                                  builder: (context) => const CarScreen(),
                                 ),
                               );
                             },
@@ -132,7 +130,6 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
             Consumer(
               builder: (context, ref, child) {
                 final data = ref.read(userDataProvider);
-                debugPrint("${data.accessToken}");
                 return MyCarouselSlider(
                   userData: data,
                 );

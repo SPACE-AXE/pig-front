@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:appfront/Screen/Car/car_add_screen.dart';
 import 'package:appfront/userData.dart';
-import 'package:appfront/main.dart';
 
 class CarScreen extends ConsumerStatefulWidget {
   const CarScreen({super.key});
@@ -22,9 +21,11 @@ class _CarScreenState extends ConsumerState<CarScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       final data = ref.read(userDataProvider);
-      fetchCars(data.accessToken!, data.refreshToken!);
+      final accessToken = await data.storage!.read(key: "accessToken");
+      final refreshToken = await data.storage!.read(key: "refreshToken");
+      fetchCars(accessToken!, refreshToken!);
     });
   }
 
@@ -63,16 +64,17 @@ class _CarScreenState extends ConsumerState<CarScreen> {
 
   Future<void> deleteCar(String carId) async {
     final data = ref.read(userDataProvider);
+    final accessToken = await data.storage!.read(key: "accessToken");
+    final refreshToken = await data.storage!.read(key: "refreshToken");
     String apiUrl = "https://api.parkchargego.link/api/v1/car/$carId";
     try {
       var response = await http.delete(Uri.parse(apiUrl), headers: {
         'Content-Type': 'application/json',
-        'Cookie':
-            'access-token=${data.accessToken}; refresh-token=${data.refreshToken}'
+        'Cookie': 'access-token=$accessToken; refresh-token=$refreshToken'
       });
       if (response.statusCode == 200) {
         print("차량 삭제 성공");
-        await fetchCars(data.accessToken!, data.refreshToken!);
+        await fetchCars(accessToken!, refreshToken!);
       } else {
         print("차량 삭제 실패");
       }
@@ -136,7 +138,9 @@ class _CarScreenState extends ConsumerState<CarScreen> {
               MaterialPageRoute(builder: (context) => const CarAddScreen()),
             );
             final data = ref.read(userDataProvider);
-            fetchCars(data.accessToken!, data.refreshToken!);
+            final accessToken = await data.storage!.read(key: "accessToken");
+            final refreshToken = await data.storage!.read(key: "refreshToken");
+            fetchCars(accessToken!, refreshToken!);
           },
           foregroundColor: Colors.white,
           backgroundColor: const Color(0xFF39c5bb),

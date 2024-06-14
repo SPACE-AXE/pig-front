@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:appfront/main.dart';
 import 'package:appfront/userData.dart';
 
 class CarAddScreen extends ConsumerStatefulWidget {
@@ -45,12 +44,13 @@ class _CarAddScreenState extends ConsumerState<CarAddScreen> {
     debugPrint("Request Body: $carNum");
     try {
       final data = ref.read(userDataProvider);
+      final accessToken = await data.storage!.read(key: "accessToken");
+      final refreshToken = await data.storage!.read(key: "refreshToken");
       var response = await http.post(
         Uri.parse(apiUrl),
         headers: {
           'Content-Type': 'application/json',
-          'Cookie':
-              'access-token=${data.accessToken}; refresh-token=${data.refreshToken}'
+          'Cookie': 'access-token=$accessToken; refresh-token=$refreshToken'
         },
         body: jsonEncode({"carNum": carNum}),
       );
@@ -101,7 +101,7 @@ class _CarAddScreenState extends ConsumerState<CarAddScreen> {
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text("Error"),
-              content: Text("차량 등록 실패"),
+              content: const Text("차량 등록 실패"),
               actions: [
                 TextButton(
                   child: const Text("OK"),
@@ -121,7 +121,7 @@ class _CarAddScreenState extends ConsumerState<CarAddScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text("Error"),
-            content: Text("차량 등록 실패"),
+            content: const Text("차량 등록 실패"),
             actions: [
               TextButton(
                 child: const Text("OK"),

@@ -106,9 +106,11 @@ class _SelectScreenState extends State<SelectScreen> {
   void getData() async {
     String url = 'https://api.parkchargego.link/api/v1/parking-transaction';
     Uri uri = Uri.parse(url);
+    final accessToken = await widget.userData.storage!.read(key: "accessToken");
+    final refreshToken =
+        await widget.userData.storage!.read(key: "refreshToken");
     await http.get(uri, headers: {
-      'Cookie':
-          'access-token=${widget.userData.accessToken}; refresh-token=${widget.userData.refreshToken}',
+      'Cookie': 'access-token=$accessToken; refresh-token=$refreshToken',
     }).then((value) {
       dynamic response = json.decode(value.body);
       if (isLoading) {
