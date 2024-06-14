@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:appfront/Screen/map/map_screen.dart';
 import 'package:appfront/Screen/user/user_info_screen.dart';
 import 'package:appfront/widget/drawer.dart';
@@ -99,6 +98,16 @@ class MainBody extends StatefulWidget {
 }
 
 class _MainBodyState extends State<MainBody> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _asyncMethod();
+    });
+  }
+
+  _asyncMethod() async {}
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -282,7 +291,7 @@ class _MainBodyState extends State<MainBody> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CardScreen(),
+                          builder: (context) => const CardScreen(),
                         ),
                       );
                     }
@@ -459,9 +468,11 @@ class _DraggableFloatingActionButtonState
         );
       } else {
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => QRScreen()));
+            .push(MaterialPageRoute(builder: (context) => const QRScreen()));
       }
     }
     position = Offset(screenWidth / 2 - 24, screenHeight - 56);
   }
 }
+
+void checkUserLogin(WidgetRef ref) {}

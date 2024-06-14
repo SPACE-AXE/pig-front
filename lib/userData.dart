@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class UserData extends ChangeNotifier {
   int? id;
@@ -13,8 +14,7 @@ class UserData extends ChangeNotifier {
   String? deletedAt;
   String? emailToken;
   String? card;
-  String? accessToken;
-  String? refreshToken;
+  FlutterSecureStorage? storage;
 
   UserData({
     this.id,
@@ -28,8 +28,7 @@ class UserData extends ChangeNotifier {
     this.deletedAt,
     this.emailToken,
     this.card,
-    this.accessToken,
-    this.refreshToken,
+    this.storage,
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) {
@@ -45,8 +44,7 @@ class UserData extends ChangeNotifier {
       deletedAt: json['deletedAt'],
       emailToken: json['emailToken'],
       card: json['card'],
-      accessToken: json['accessToken'],
-      refreshToken: json['refreshToken'],
+      storage: json['storage'],
     );
   }
 
@@ -63,8 +61,6 @@ class UserData extends ChangeNotifier {
       'deletedAt': deletedAt,
       'emailToken': emailToken,
       'card': card,
-      'accessToken': accessToken,
-      'refreshToken': refreshToken,
     };
   }
 
@@ -80,14 +76,14 @@ class UserData extends ChangeNotifier {
     deletedAt = data.deletedAt;
     emailToken = data.emailToken;
     card = data.card;
-    accessToken = data.accessToken;
-    refreshToken = data.refreshToken;
+    storage = data.storage;
     notifyListeners();
     debugPrint(
-        "$id, $name, $nickname, $email, $username, $password, $birth, $createdAt, $deletedAt, $emailToken, $card, $accessToken, $refreshToken");
+        "$id, $name, $nickname, $email, $username, $password, $birth, $createdAt, $deletedAt, $emailToken, $card, $storage");
   }
 
   void deleteUserData() {
+    storage!.delete(key: "login");
     id = null;
     name = null;
     nickname = null;
@@ -99,8 +95,7 @@ class UserData extends ChangeNotifier {
     deletedAt = null;
     emailToken = null;
     card = null;
-    accessToken = null;
-    refreshToken = null;
+    storage = null;
     notifyListeners();
   }
 }

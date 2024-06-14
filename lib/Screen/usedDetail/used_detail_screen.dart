@@ -4,9 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-
 import 'package:appfront/userData.dart';
-import 'package:appfront/main.dart';
 
 class UsedScreen extends ConsumerStatefulWidget {
   const UsedScreen({super.key});
@@ -22,9 +20,11 @@ class _UsedScreenState extends ConsumerState<UsedScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       final data = ref.read(userDataProvider);
-      fetchused(data.accessToken!, data.refreshToken!);
+      final accessToken = await data.storage!.read(key: "accessToken");
+      final refreshToken = await data.storage!.read(key: "refreshToken");
+      fetchused(accessToken!, refreshToken!);
     });
   }
 

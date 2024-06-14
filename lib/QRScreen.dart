@@ -3,7 +3,6 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:appfront/userData.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class QRScreen extends ConsumerStatefulWidget {
   const QRScreen({super.key});
@@ -75,21 +74,20 @@ class _QRScreenState extends ConsumerState<QRScreen> {
 
   Future<void> _sendPayment(String? paymentjson) async {
     final data = ref.read(userDataProvider);
+    final accessToken = await data.storage!.read(key: "accessToken");
+    final refreshToken = await data.storage!.read(key: "refreshToken");
     if (paymentjson != null) {
       final url = Uri.parse('https://api.parkchargego.link/api/v1/payment');
       final response = await http.post(
         url,
         headers: {
           'Content-Type': 'application/json',
-          'Cookie':
-              'access-token=${data.accessToken}; refresh-token=${data.refreshToken}'
+          'Cookie': 'access-token=$accessToken; refresh-token=$refreshToken'
         },
         body: paymentjson,
       );
 
       debugPrint('\n\n\npaymentID : $paymentjson\n');
-      debugPrint(
-          'Cookie : access-token=${data.accessToken}; refresh-token=${data.refreshToken}\n');
       debugPrint('response.statusCode : ${response.statusCode}\n\n\n');
       debugPrint('response.body : ${response.body}\n\n\n');
 

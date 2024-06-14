@@ -3,11 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:appfront/main.dart';
 import 'package:appfront/userData.dart';
 
 class CardAddScreen extends ConsumerStatefulWidget {
+  const CardAddScreen({super.key});
+
   @override
   _CardAddScreenState createState() => _CardAddScreenState();
 }
@@ -21,12 +21,13 @@ class _CardAddScreenState extends ConsumerState<CardAddScreen> {
     String apiUrl = "https://api.parkchargego.link/api/v1/payment/card";
     try {
       final data = ref.read(userDataProvider);
+      final accessToken = await data.storage!.read(key: "accessToken");
+      final refreshToken = await data.storage!.read(key: "refreshToken");
       var response = await http.post(
         Uri.parse(apiUrl),
         headers: {
           'Content-Type': 'application/json',
-          'Cookie':
-              'access-token=${data.accessToken}; refresh-token=${data.refreshToken}',
+          'Cookie': 'access-token=$accessToken; refresh-token=$refreshToken',
         },
         body: jsonEncode({
           "number": cardNumberController.text,
@@ -39,11 +40,11 @@ class _CardAddScreenState extends ConsumerState<CardAddScreen> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text("카드 등록"),
-              content: Text("카드 등록에 성공했습니다."),
+              title: const Text("카드 등록"),
+              content: const Text("카드 등록에 성공했습니다."),
               actions: [
                 TextButton(
-                  child: Text("OK"),
+                  child: const Text("OK"),
                   onPressed: () {
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
@@ -58,11 +59,11 @@ class _CardAddScreenState extends ConsumerState<CardAddScreen> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text("Error"),
-              content: Text("카드 등록에 실패했습니다."),
+              title: const Text("Error"),
+              content: const Text("카드 등록에 실패했습니다."),
               actions: [
                 TextButton(
-                  child: Text("OK"),
+                  child: const Text("OK"),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -81,7 +82,7 @@ class _CardAddScreenState extends ConsumerState<CardAddScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("카드 등록"),
+        title: const Text("카드 등록"),
         centerTitle: true,
       ),
       body: Center(
@@ -89,7 +90,7 @@ class _CardAddScreenState extends ConsumerState<CardAddScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 controller: cardNumberController,
                 keyboardType: TextInputType.number,
@@ -97,7 +98,7 @@ class _CardAddScreenState extends ConsumerState<CardAddScreen> {
                   FilteringTextInputFormatter.digitsOnly,
                   LengthLimitingTextInputFormatter(16),
                 ],
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "0000 0000 0000 0000",
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Color(0xff39c5bb)),
@@ -109,7 +110,7 @@ class _CardAddScreenState extends ConsumerState<CardAddScreen> {
               children: [
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       controller: monthController,
                       keyboardType: TextInputType.number,
@@ -117,7 +118,7 @@ class _CardAddScreenState extends ConsumerState<CardAddScreen> {
                         FilteringTextInputFormatter.digitsOnly,
                         LengthLimitingTextInputFormatter(2),
                       ],
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: "MM",
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Color(0xff39c5bb)),
@@ -128,7 +129,7 @@ class _CardAddScreenState extends ConsumerState<CardAddScreen> {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       controller: yearController,
                       keyboardType: TextInputType.number,
@@ -136,7 +137,7 @@ class _CardAddScreenState extends ConsumerState<CardAddScreen> {
                         FilteringTextInputFormatter.digitsOnly,
                         LengthLimitingTextInputFormatter(2),
                       ],
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: "YY",
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Color(0xff39c5bb)),
@@ -151,8 +152,8 @@ class _CardAddScreenState extends ConsumerState<CardAddScreen> {
               onPressed: registerCard,
               style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
-                  backgroundColor: Color(0xff39c5bb)),
-              child: Text('등록 완료'),
+                  backgroundColor: const Color(0xff39c5bb)),
+              child: const Text('등록 완료'),
             ),
           ],
         ),

@@ -1,4 +1,3 @@
-import 'package:appfront/Screen/Auth/reset_pwd/reset_pwd_screen.dart';
 import 'package:appfront/main.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
