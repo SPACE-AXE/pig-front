@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,13 +17,14 @@ class _CardAddScreenState extends ConsumerState<CardAddScreen> {
   TextEditingController cardNumberController = TextEditingController();
   TextEditingController monthController = TextEditingController();
   TextEditingController yearController = TextEditingController();
+  final storage = const FlutterSecureStorage();
 
   Future<void> registerCard() async {
     String apiUrl = "https://api.parkchargego.link/api/v1/payment/card";
     try {
       final data = ref.read(userDataProvider);
-      final accessToken = await data.storage!.read(key: "accessToken");
-      final refreshToken = await data.storage!.read(key: "refreshToken");
+      final accessToken = await storage.read(key: "accessToken");
+      final refreshToken = await storage.read(key: "refreshToken");
       var response = await http.post(
         Uri.parse(apiUrl),
         headers: {

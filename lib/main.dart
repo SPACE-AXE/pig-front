@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:appfront/Screen/map/map_screen.dart';
 import 'package:appfront/Screen/user/user_info_screen.dart';
 import 'package:appfront/widget/drawer.dart';
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:appfront/userData.dart';
 import 'package:appfront/Screen/Auth/Login/login_screen.dart';
 import 'package:appfront/QRScreen.dart';
@@ -13,6 +15,7 @@ import 'package:appfront/Screen/usedDetail/used_detail_screen.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 void main() async {
@@ -89,20 +92,21 @@ class MainApp extends StatelessWidget {
   }
 }
 
-class MainBody extends StatefulWidget {
+class MainBody extends ConsumerStatefulWidget {
   final BuildContext context;
   const MainBody({super.key, required this.context});
 
   @override
-  State<MainBody> createState() => _MainBodyState();
+  ConsumerState<MainBody> createState() => _MainBodyState();
 }
 
-class _MainBodyState extends State<MainBody> {
+class _MainBodyState extends ConsumerState<MainBody> {
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkUserLogin(ref);
       _asyncMethod();
     });
   }
@@ -475,4 +479,46 @@ class _DraggableFloatingActionButtonState
   }
 }
 
-void checkUserLogin(WidgetRef ref) {}
+Future<bool> checkUserLogin(WidgetRef ref) async {
+  const storage = FlutterSecureStorage();
+
+  try {
+    final accessToken = await storage.read(key: "accessToken");
+    final refreshToken = await storage.read(key: "refreshToken");
+    if (accessToken == null && refreshToken == null) {
+      Fluttertoast.showToast(
+        msg: "로그아웃되었습니다.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: const Color(0xff39c5bb),
+        textColor: Colors.white,
+        fontSize: 16,
+      );
+      return false;
+    }
+
+    String url = "https://api.parkchargego.link/api/v2/auth/validate";
+    Uri uri = Uri.parse(url);
+    http.Response response = await http.post(uri, headers: {
+      'access-token': accessToken!,
+      'refresh-token': refreshToken!
+    });
+
+    var json = jsonDecode(response.body);
+    ref.read(userDataProvider).updateUserData(UserData.fromJson(json));
+    debugPrint("${response.headers}");
+    return true;
+  } catch (e) {
+    Fluttertoast.showToast(
+      msg: "로그아웃되었습니다",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: const Color(0xff39c5bb),
+      textColor: Colors.white,
+      fontSize: 16,
+    );
+    return false;
+  }
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,6 +16,7 @@ class CarAddScreen extends ConsumerStatefulWidget {
 
 class _CarAddScreenState extends ConsumerState<CarAddScreen> {
   TextEditingController carNumberController = TextEditingController();
+  final storage = const FlutterSecureStorage();
 
   Future<void> registerCar() async {
     String apiUrl = "https://api.parkchargego.link/api/v1/car";
@@ -44,8 +46,8 @@ class _CarAddScreenState extends ConsumerState<CarAddScreen> {
     debugPrint("Request Body: $carNum");
     try {
       final data = ref.read(userDataProvider);
-      final accessToken = await data.storage!.read(key: "accessToken");
-      final refreshToken = await data.storage!.read(key: "refreshToken");
+      final accessToken = await storage.read(key: "accessToken");
+      final refreshToken = await storage.read(key: "refreshToken");
       var response = await http.post(
         Uri.parse(apiUrl),
         headers: {

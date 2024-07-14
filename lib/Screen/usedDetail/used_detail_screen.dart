@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,14 +17,15 @@ class UsedScreen extends ConsumerStatefulWidget {
 class _UsedScreenState extends ConsumerState<UsedScreen> {
   bool isLoading = true;
   List<dynamic> jsonResponse = [];
+  final storage = const FlutterSecureStorage();
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final data = ref.read(userDataProvider);
-      final accessToken = await data.storage!.read(key: "accessToken");
-      final refreshToken = await data.storage!.read(key: "refreshToken");
+      final accessToken = await storage.read(key: "accessToken");
+      final refreshToken = await storage.read(key: "refreshToken");
       fetchused(accessToken!, refreshToken!);
     });
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,14 +18,15 @@ class CarScreen extends ConsumerStatefulWidget {
 class _CarScreenState extends ConsumerState<CarScreen> {
   bool isLoading = true;
   List<Map<String, String>> cars = [];
+  final storage = const FlutterSecureStorage();
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final data = ref.read(userDataProvider);
-      final accessToken = await data.storage!.read(key: "accessToken");
-      final refreshToken = await data.storage!.read(key: "refreshToken");
+      final accessToken = await storage.read(key: "accessToken");
+      final refreshToken = await storage.read(key: "refreshToken");
       fetchCars(accessToken!, refreshToken!);
     });
   }
@@ -64,8 +66,8 @@ class _CarScreenState extends ConsumerState<CarScreen> {
 
   Future<void> deleteCar(String carId) async {
     final data = ref.read(userDataProvider);
-    final accessToken = await data.storage!.read(key: "accessToken");
-    final refreshToken = await data.storage!.read(key: "refreshToken");
+    final accessToken = await storage.read(key: "accessToken");
+    final refreshToken = await storage.read(key: "refreshToken");
     String apiUrl = "https://api.parkchargego.link/api/v1/car/$carId";
     try {
       var response = await http.delete(Uri.parse(apiUrl), headers: {
@@ -138,8 +140,8 @@ class _CarScreenState extends ConsumerState<CarScreen> {
               MaterialPageRoute(builder: (context) => const CarAddScreen()),
             );
             final data = ref.read(userDataProvider);
-            final accessToken = await data.storage!.read(key: "accessToken");
-            final refreshToken = await data.storage!.read(key: "refreshToken");
+            final accessToken = await storage.read(key: "accessToken");
+            final refreshToken = await storage.read(key: "refreshToken");
             fetchCars(accessToken!, refreshToken!);
           },
           foregroundColor: Colors.white,

@@ -3,6 +3,7 @@ import 'package:appfront/userData.dart';
 import 'package:appfront/Screen/usedDetail/used_detail_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -244,9 +245,10 @@ class _MyCarouselSliderState extends State<MyCarouselSlider> {
   void getData() async {
     String url = 'https://api.parkchargego.link/api/v1/parking-transaction';
     Uri uri = Uri.parse(url);
-    final accessToken = await widget.userData.storage!.read(key: "accessToken");
-    final refreshToken =
-        await widget.userData.storage!.read(key: "refreshToken");
+    const storage = FlutterSecureStorage();
+
+    final accessToken = await storage.read(key: "accessToken");
+    final refreshToken = await storage.read(key: "refreshToken");
     await http.get(uri, headers: {
       'Cookie': 'access-token=$accessToken; refresh-token=$refreshToken',
     }).then((value) {

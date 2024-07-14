@@ -72,15 +72,9 @@ class _LoginBtnState extends ConsumerState<LoginBtn> {
           refreshToken = cookie.split('=')[1].split(';')[0];
         }
       }
-      var res = jsonDecode(response.body);
+      var json = jsonDecode(response.body);
       await storage.write(key: "accessToken", value: accessToken);
       await storage.write(key: "refreshToken", value: refreshToken);
-      Map<String, dynamic> json = {
-        ...res,
-        "accessToken": accessToken,
-        "refreshToken": refreshToken,
-        "storage": storage,
-      };
       ref.read(userDataProvider).updateUserData(UserData.fromJson(json));
       Navigator.pop(context);
       Fluttertoast.showToast(

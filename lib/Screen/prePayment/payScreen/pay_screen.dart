@@ -9,6 +9,7 @@ import 'package:appfront/main.dart';
 import 'package:appfront/userData.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
@@ -23,6 +24,7 @@ class PayScreen extends StatefulWidget {
 class _PayScreenState extends State<PayScreen> {
   int timeDiff = 0;
   String date = '';
+  final storage = const FlutterSecureStorage();
 
   @override
   void initState() {
@@ -71,11 +73,10 @@ class _PayScreenState extends State<PayScreen> {
                     builder: (context, ref, child) {
                       return ElevatedButton(
                           onPressed: () async {
-                            final data = ref.read(userDataProvider);
                             final accessToken =
-                                await data.storage!.read(key: "accessToken");
+                                await storage.read(key: "accessToken");
                             final refreshToken =
-                                await data.storage!.read(key: "refreshToken");
+                                await storage.read(key: "refreshToken");
                             payment(accessToken!, refreshToken!,
                                 widget.data['paymentId']);
                           },

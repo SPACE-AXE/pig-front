@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
@@ -26,6 +27,7 @@ class _SelectScreenState extends State<SelectScreen> {
   int selectedId = 0;
   bool isLoading = true;
   bool isEmpty = false;
+  final storage = const FlutterSecureStorage();
 
   @override
   void initState() {
@@ -106,9 +108,8 @@ class _SelectScreenState extends State<SelectScreen> {
   void getData() async {
     String url = 'https://api.parkchargego.link/api/v1/parking-transaction';
     Uri uri = Uri.parse(url);
-    final accessToken = await widget.userData.storage!.read(key: "accessToken");
-    final refreshToken =
-        await widget.userData.storage!.read(key: "refreshToken");
+    final accessToken = await storage.read(key: "accessToken");
+    final refreshToken = await storage.read(key: "refreshToken");
     await http.get(uri, headers: {
       'Cookie': 'access-token=$accessToken; refresh-token=$refreshToken',
     }).then((value) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,6 +18,7 @@ class CardScreen extends ConsumerStatefulWidget {
 class _CardScreenState extends ConsumerState<CardScreen> {
   bool isLoading = true;
   String? cardNumber;
+  final storage = const FlutterSecureStorage();
 
   @override
   void initState() {
@@ -28,8 +30,8 @@ class _CardScreenState extends ConsumerState<CardScreen> {
     String apiUrl = "https://api.parkchargego.link/api/v1/payment/card";
     try {
       final data = ref.read(userDataProvider);
-      final accessToken = await data.storage!.read(key: "accessToken");
-      final refreshToken = await data.storage!.read(key: "refreshToken");
+      final accessToken = await storage.read(key: "accessToken");
+      final refreshToken = await storage.read(key: "refreshToken");
       var response = await http.get(
         Uri.parse(apiUrl),
         headers: {
@@ -60,8 +62,8 @@ class _CardScreenState extends ConsumerState<CardScreen> {
     String apiUrl = "https://api.parkchargego.link/api/v1/payment/card";
     try {
       final data = ref.read(userDataProvider);
-      final accessToken = await data.storage!.read(key: "accessToken");
-      final refreshToken = await data.storage!.read(key: "refreshToken");
+      final accessToken = await storage.read(key: "accessToken");
+      final refreshToken = await storage.read(key: "refreshToken");
       var response = await http.delete(
         Uri.parse(apiUrl),
         headers: {
