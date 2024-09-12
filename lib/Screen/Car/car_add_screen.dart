@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:appfront/Screen/Car/services/car_add_service.dart';
 import 'package:appfront/userData.dart';
 
 class CarAddScreen extends ConsumerStatefulWidget {
@@ -17,123 +15,48 @@ class _CarAddScreenState extends ConsumerState<CarAddScreen> {
   TextEditingController carNumberController = TextEditingController();
 
   Future<void> registerCar() async {
-    String apiUrl = "https://api.parkchargego.link/api/v1/car";
     String carNum = carNumberController.text;
 
     if (carNum.isEmpty) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text("Error"),
-            content: const Text("차량 번호는 필수 요소입니다."),
-            actions: [
-              TextButton(
-                child: const Text("OK"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
+      _showDialog("Error", "차량 번호는 필수 요소입니다.");
       return;
     }
 
-    debugPrint("Request Body: $carNum");
-    try {
-      final data = ref.read(userDataProvider);
-      final accessToken = await data.storage!.read(key: "accessToken");
-      final refreshToken = await data.storage!.read(key: "refreshToken");
-      var response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'Cookie': 'access-token=$accessToken; refresh-token=$refreshToken'
-        },
-        body: jsonEncode({"carNum": carNum}),
-      );
+    final data = ref.read(userDataProvider);
+    final accessToken = await data.storage!.read(key: "accessToken");
+    final refreshToken = await data.storage!.read(key: "refreshToken");
 
-      debugPrint("Response status: ${response.statusCode}");
-      debugPrint("Response body: ${response.body}");
+    final response =
+        await CarService.registerCar(carNum, accessToken!, refreshToken!);
 
-      if (response.statusCode == 201) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text("Success"),
-              content: const Text("차량 등록 성공."),
-              actions: [
-                TextButton(
-                  child: const Text("OK"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      } else if (response.statusCode == 409) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text("Error"),
-              content: const Text("이미 등록된 차량 번호입니다."),
-              actions: [
-                TextButton(
-                  child: const Text("OK"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text("Error"),
-              content: const Text("차량 등록 실패"),
-              actions: [
-                TextButton(
-                  child: const Text("OK"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      }
-    } catch (e) {
-      print("차량 등록 실패");
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text("Error"),
-            content: const Text("차량 등록 실패"),
-            actions: [
-              TextButton(
-                child: const Text("OK"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
+    if (response == 201) {
+      _showDialog("Success", "차량 등록 성공.", onSuccess: true);
+    } else if (response == 409) {
+      _showDialog("Error", "이미 등록된 차량 번호입니다.");
+    } else {
+      _showDialog("Error", "차량 등록 실패");
     }
+  }
+
+  void _showDialog(String title, String content, {bool onSuccess = false}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(content),
+          actions: [
+            TextButton(
+              child: const Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                if (onSuccess) Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override

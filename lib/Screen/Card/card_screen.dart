@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:appfront/Screen/Card/card_add_screen.dart';
+import 'package:appfront/Screen/Card/services/card_service.dart';
 import 'package:appfront/userData.dart';
+import 'package:appfront/Screen/Card/card_add_screen.dart';
 
 class CardScreen extends ConsumerStatefulWidget {
   const CardScreen({super.key});
@@ -21,63 +18,32 @@ class _CardScreenState extends ConsumerState<CardScreen> {
   @override
   void initState() {
     super.initState();
-    fetchCard();
+    _fetchCard();
   }
 
-  Future<void> fetchCard() async {
-    String apiUrl = "https://api.parkchargego.link/api/v1/payment/card";
-    try {
-      final data = ref.read(userDataProvider);
-      final accessToken = await data.storage!.read(key: "accessToken");
-      final refreshToken = await data.storage!.read(key: "refreshToken");
-      var response = await http.get(
-        Uri.parse(apiUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'Cookie': 'access-token=$accessToken; refresh-token=$refreshToken'
-        },
-      );
-      if (response.statusCode == 200) {
-        var data = jsonDecode(response.body);
-        setState(() {
-          cardNumber = data['number'];
-          isLoading = false;
-        });
-      } else {
-        setState(() {
-          isLoading = false;
-        });
-      }
-    } catch (e) {
-      print('카드 조회에 실패했습니다.');
+  Future<void> _fetchCard() async {
+    final data = ref.read(userDataProvider);
+    final accessToken = await data.storage!.read(key: "accessToken");
+    final refreshToken = await data.storage!.read(key: "refreshToken");
+
+    final fetchedCard =
+        await CardService.fetchCard(accessToken!, refreshToken!);
+    setState(() {
+      cardNumber = fetchedCard;
+      isLoading = false;
+    });
+  }
+
+  Future<void> _deleteCard() async {
+    final data = ref.read(userDataProvider);
+    final accessToken = await data.storage!.read(key: "accessToken");
+    final refreshToken = await data.storage!.read(key: "refreshToken");
+
+    final success = await CardService.deleteCard(accessToken!, refreshToken!);
+    if (success) {
       setState(() {
-        isLoading = false;
+        cardNumber = null;
       });
-    }
-  }
-
-  Future<void> deleteCard() async {
-    String apiUrl = "https://api.parkchargego.link/api/v1/payment/card";
-    try {
-      final data = ref.read(userDataProvider);
-      final accessToken = await data.storage!.read(key: "accessToken");
-      final refreshToken = await data.storage!.read(key: "refreshToken");
-      var response = await http.delete(
-        Uri.parse(apiUrl),
-        headers: {
-          'Cookie': 'access-token=$accessToken; refresh-token=$refreshToken'
-        },
-      );
-      if (response.statusCode == 200) {
-        print("카드를 삭제했습니다.");
-        setState(() {
-          cardNumber = null;
-        });
-      } else {
-        print("카드 삭제에 실패하였습니다.");
-      }
-    } catch (e) {
-      print('카드 삭제에 실패하였습니다.');
     }
   }
 
@@ -99,7 +65,7 @@ class _CardScreenState extends ConsumerState<CardScreen> {
                         MaterialPageRoute(
                             builder: (context) => const CardAddScreen()),
                       );
-                      fetchCard();
+                      _fetchCard();
                     },
                     style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
@@ -129,9 +95,8 @@ class _CardScreenState extends ConsumerState<CardScreen> {
                                   MediaQuery.of(context).size.width * 0.05,
                             )),
                         const SizedBox(height: 20),
-                        const SizedBox(width: 10),
                         ElevatedButton(
-                          onPressed: deleteCard,
+                          onPressed: _deleteCard,
                           style: ElevatedButton.styleFrom(
                               foregroundColor: Colors.white,
                               backgroundColor: const Color(0xFF39c5bb),
